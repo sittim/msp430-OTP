@@ -29,6 +29,7 @@ Code Composer Studio V6+
 **Download Region** Flash memory region to where new Application is written.
 
 **Image Status** can be one of the following:
+
 1. *None* - No activity, nothing to be done
 2. *Download* - New Image in Download Area
 3. *Loaded* - The new Image has been loaded
