@@ -24,11 +24,9 @@ Code Composer Studio V6+ (CCS6) and msp430f5xxx uC
 
 ## Terminology
 
-**cBSL** Custom BSL, resides in Z area of the MSP430 Memory, this section is persistent and does not get updated.
+**cBSL** Custom BSL, resides in BSL area of the MSP430 Memory, this section is persistent and does not get updated over the life of the product.
 
 **Application** Application code, resides in FLASH and FLASH2 area.  The application code gets updated.
-
-**BSL** Bootstrap loader
 
 **Current Image** Image that is currently running
 

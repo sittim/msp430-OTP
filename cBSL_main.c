@@ -3,16 +3,16 @@
  * --/COPYRIGHT--*/
 #include <msp430.h>
 
+void cBSL_init();
+
 /*******************************************************************************
 * *Function:    main
 * *Description: Initializes the BSL Command Interpreter and begins listening for
 *             incoming packets
 *******************************************************************************/
-
+#pragma CODE_SECTION(cBSL_init, ".BSL")
 void cBSL_main(void) {
-    unsigned char eventFlags = 0;
-    volatile int i, ii;
-
+    //
     cBSL_init();
 
     while (1) {
@@ -23,6 +23,7 @@ void cBSL_main(void) {
 *Description: Init the clocks and the UART for Debugging
 *Parameters:
 *******************************************************************************/
+#pragma CODE_SECTION(cBSL_init, ".BSL")
 void cBSL_init() {
     WDTCTL = WDTPW + WDTHOLD;                 // Stop WDT
 
