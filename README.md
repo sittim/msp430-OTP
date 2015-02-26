@@ -2,10 +2,14 @@
 
 MSP430f5xxx Over The Air Programming.
 
+# Notice
+
+This code does not yet work, I am looking for contributors.  If you would like to help, please communicate with me via issues.
+
 ## Revisions
 
 ### v0.0.1
-Compiler: TI v4.3.5 2/25/2015
+Compiler: TI v4.3.5 2/26/2015
 1. Sorted out the lnk_msp430f5335.cmd
 2. Removed Files that may not be needed
 3. System can now compile
