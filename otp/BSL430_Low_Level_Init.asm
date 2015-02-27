@@ -7,27 +7,27 @@
 
     .cdecls C,LIST,"msp430.h"
 
-ARG1 .equ R12
-ARG2 .equ R13
-ARG3 .equ R14
-ARG4 .equ R15
+ARG1     .equ R12
+ARG2     .equ R13
+ARG3     .equ R14
+ARG4     .equ R15
 
-RET_low .equ R12
+RET_low  .equ R12
 RET_high .equ r13
 
- .ref _c_int00
+ .ref cBSL_main
 ;--------------------------------------------------------------
  .sect "ZAREA"
 ;--------------------------------------------------------------
 BSL_Entry_JMP
               JMP    C_Branch
-              JMP    BSL_ACTION0                 ;BSL_ACTION0 unused
-              JMP    $                           ;BSL_ACTION1 unused
-              JMP    $                           ;BSL_ACTION2 unused
-              JMP    $                           ;BSL_ACTION3 unused
-C_Branch      BR     #_c_int00
-              ;JMP    $                          ;BSL_ACTION5 unused
-              ;JMP    $                          ;BSL_ACTION6 unused
+              JMP    BSL_ACTION0                 ; BSL_ACTION0 unused
+              JMP    $                           ; BSL_ACTION1 unused
+              JMP    $                           ; BSL_ACTION2 unused
+              JMP    $                           ; BSL_ACTION3 unused
+C_Branch      BR     #cBSL_main                  ; call cBSL main
+              ;JMP    $                          ; BSL_ACTION5 unused
+              ;JMP    $                          ; BSL_ACTION6 unused
  .sect "ZAREA_CODE"
 
 ;**************************************************************
@@ -46,7 +46,7 @@ BSL_ACTION0
               JNE      RETURN_ERROR
               ;CMP      #0x01, ARG1
               ; to do ... comment!
-              ;JEQ      BSL_Unprotect          ; 1 == unlock BSL flash area
+              JEQ      BSL_Unprotect          ; 1 == unlock BSL flash area
               ;JEQ      JTAG_Lock
               ;JL       BSL_SW_ID              ; 0 == return SW ID
               ;JL       RETURN_ERROR           ; 0 == return SW ID
@@ -69,6 +69,20 @@ RETURN_TO_BSL
 
               RETA                       ; should now return to the BSL location
 
+;;**************************************************************
+;; Name       :BSL_Unprotect
+;; Function   :Unlocks the BSL for writing and erasing of its flash area
+;; Arguments  :none
+;; Returns    :1 in r14.0, for success
+;;**************************************************************
+BSL_Unprotect
+              ;JMP      RETURN_ERROR          ; 5438 BSL ONLY!
+              BIC      #SYSBSLPE, &SYSBSLC  ; opens BSL
+              MOV      #0x01, RET_low
+              CLR      RET_high
+
+              RETA
+
 
 ;**************************************************************
 ; Name       :BSL_Protect
@@ -84,7 +98,7 @@ BSL_REQ_APP_CALL   .equ  0x0002                  ;Return Value for BSLUNLOCK Fun
 BSL_Protect
               CLR      RET_low                  ;lock (keep JTAGLOCK_KEY state)
 
-              BIC     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; protects BSL
+              BIS     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; protects BSL
               ;BIC     #BSL_REQ_JTAG_OPEN, RET_low   ;lock (keep JTAGLOCK_KEY state)
               ;BIS     #BSL_REQ_JTAG_OPEN, RET_low   ;make sure it remains open for debugging
 
@@ -92,12 +106,8 @@ BSL_Protect
               ; (0x1900)
               CMP.W    #0x5552, &0x1900
               JNZ      BCC2BSL
-              CMP.W    #0x424E, &0x1902
-              JNZ      BCC2BSL
-              CMP.W    #0x4C53, &0x1904
-              JNZ      BCC2BSL
 
-              BIS.W   #BSL_REQ_APP_CALL, RET_low
+              BIS.W   #BSL_REQ_APP_CALL, RET_low     ; set R12 to 2
 BCC2BSL       RETA
 
  .sect "BSLSIG"
