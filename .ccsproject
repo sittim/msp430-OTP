@@ -8,4 +8,6 @@
 	<linkerCommandFile value="lnk_msp430f5335.cmd"/>
 	<rts value="libc.a"/>
 	<createSlaveProjects value=""/>
+	<connection value="common/targetdb/connections/TIMSP430-USB.xml"/>
+	<isTargetManual value="false"/>
 </projectOptions>
