@@ -5,5 +5,15 @@
 			"follow_symlinks": true,
 			"path": "."
 		}
-	]
+	],
+    "build_systems":
+    [
+        {
+            "name": "OTP",
+            "shell_cmd": "make && ./serial_unittest",
+            "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+            "working_dir": "${file_path}",
+            "selector": "source.C++"
+        }
+    ]
 }

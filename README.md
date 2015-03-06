@@ -8,8 +8,14 @@ This code does not yet work, I am looking for contributors.  If you would like t
 
 ## Revisions
 
+### v0.0.2
+Compiler: TI v4.3.5 3/6/2015
+
+1. Added serial.c library
+
 ### v0.0.1
 Compiler: TI v4.3.5 2/26/2015
+
 1. Sorted out the lnk_msp430f5335.cmd
 2. Removed Files that may not be needed
 3. System can now compile

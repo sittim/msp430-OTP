@@ -1,19 +1,87 @@
 /* --COPYRIGHT--
  * See LICENCE File
- * --/COPYRIGHT--*/
+ * --/COPYRIGHT--
+ *
+ * This is a library to help with byte arrays to make them safer
+ *
+ * */
+
+
 #ifndef SERIAL_H
 #define SERIAL_H
 
 #include <stdint.h>
 #include <stdlib.h>
-#include <msp430.h>
+
+#define UI8_ARRAY(name, len) \
+uint8_t name ## len[(len)];\
+ui8_array name = {name ## len, name ## len, len, 0};
 
 typedef struct {
     const uint8_t* base_ptr;
-    const unsigned int max_len;
     uint8_t* start_ptr;
+    const unsigned int max_len;
     unsigned int len;
 } ui8_array;
+
+/**
+ * Room left in the array
+ * @param  Arr Array to analyze
+ * @return     room in elements
+ */
+unsigned int room(ui8_array* Arr);
+/**
+ * Room on the right side of the array
+ * @param  Arr Array to analyze
+ * @return     room on the right side of the array
+ */
+unsigned int room_r(ui8_array* Arr);
+
+/**
+ * Add a c string to array
+ * @param  Arr Pointer to array
+ * @param  str c string
+ * @return     true if successfull
+ */
+unsigned int add_cst(ui8_array* Arr, const char* str);
+/**
+ * Add single byte to the right
+ */
+unsigned int push(ui8_array* Arr, uint8_t byte);
+/**
+ * Pops the value from the right
+ * @param  Arr  The array from which to get the value
+ * @param  byte location to store the value
+ * @return      1 if there was value to return, otherwise 0
+ */
+unsigned int pop(ui8_array* Arr, uint8_t* byte);
+/**
+ * Add single byte to the left
+ */
+unsigned int push_l(ui8_array* Arr, uint8_t byte);
+/**
+ * Pop an element from the leftx
+ * @param  Arr  Array to pop from
+ * @param  byte where to place the byte
+ * @return      1 if success, 0 if there is none to return
+ */
+unsigned int pop_l(ui8_array* Arr, uint8_t* byte);
+/**
+ * Pushes unsigned int on the right side of the array
+ * @param  Arr  Array to which to push into
+ * @param  source Location from where to push
+ * @return      1 if there was room, 0 otherwise
+ */
+unsigned int push_ui(ui8_array* Arr, unsigned int* source);
+/**
+ * Copies memory into the array.  Normally the sizeof the unsigned integer is
+ * the same as the uC bus size.  This is the most efficient way to copy
+ * @param  Arr   The Array to push into
+ * @param  start Start of memory lcoation
+ * @param  len   leng to copy in bytes
+ * @return       1 if there was enough room, 0 if there was not
+ */
+unsigned int push_mem(ui8_array* Arr, uint8_t* start, unsigned int length);
 /**
  * Output Constant String to Debug port
  * @param str Pointer to Null terminated String
@@ -29,4 +97,19 @@ void put_ui16(uint16_t out);
  * Output hex to uart
  */
 void put_ui8(ui8_array* in);
+
+/**
+ * Output uint8_t array to Debug Port
+ * @param in [description]
+ */
+void put_ui8_arr(ui8_array* In);
+
+/**
+ * Defined in hw_layer.c
+ * @param data data to output
+ *
+ * Note, it is defined in hw_layer.c due to the decoupling requirements for
+ * unit testing
+ */
+void putch(uint8_t data);
 #endif
