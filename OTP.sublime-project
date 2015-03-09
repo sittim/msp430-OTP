@@ -3,7 +3,9 @@
 	[
 		{
 			"follow_symlinks": true,
-			"path": "."
+			"path": ".",
+            "path": "/work/c1202-firmware/driverlib",
+            "path": "/home/sporty/ti/ccsv6/ccs_base/msp430/include"
 		}
 	],
     "build_systems":

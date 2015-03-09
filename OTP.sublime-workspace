@@ -4,28 +4,168 @@
 		"selected_items":
 		[
 			[
-				"put",
-				"put_ui16"
+				"cBSL",
+				"cBSL_main"
 			],
 			[
-				"comm",
-				"comm-section-header	Comment - Section header comment"
+				"IMAG",
+				"IMAGE_STATUS"
+			],
+			[
+				"imag",
+				"image_stat_ptr"
+			],
+			[
+				"Flash",
+				"FlashErase"
+			],
+			[
+				"uin",
+				"uint8_t"
 			],
 			[
 				"uint",
 				"uint16_t"
 			],
 			[
-				"cBSL",
-				"cBSL_init"
+				"left",
+				"leftover"
+			],
+			[
+				"gold",
+				"golden"
+			],
+			[
+				"to_cp",
+				"to_cp_sz"
+			],
+			[
+				"push",
+				"push_mem"
+			],
+			[
+				"to",
+				"to_cp_sz"
+			],
+			[
+				"cp",
+				"cp_bus_l_qty"
+			],
+			[
+				"EXP",
+				"EXPECT_EQ"
+			],
+			[
+				"EX",
+				"EXPECT_TRUE"
+			],
+			[
+				"golden",
+				"golden_edit"
+			],
+			[
+				"usig",
+				"unsigned"
+			],
+			[
+				"bus",
+				"bus_w"
+			],
+			[
+				"room",
+				"room_l"
+			],
+			[
+				"leng",
+				"length"
+			],
+			[
+				"abc",
+				"abcde"
+			],
+			[
+				"add",
+				"add_cst"
+			],
+			[
+				"arra",
+				"array_sz"
+			],
+			[
+				"arr",
+				"array_sz"
+			],
+			[
+				"Seria",
+				"SerialRX"
+			],
+			[
+				"Seri",
+				"SerialRX"
+			],
+			[
+				"Ser",
+				"SerialRX"
+			],
+			[
+				"Deb",
+				"DebugRX"
+			],
+			[
+				"Debu",
+				"DebugRX"
+			],
+			[
+				"printf",
+				"printf	printf …"
+			],
+			[
+				"msp",
+				"msp430"
+			],
+			[
+				"gt",
+				"gtest/	Dir"
+			],
+			[
+				"c1202",
+				"c1202-firmware/	Dir"
+			],
+			[
+				"max",
+				"max_len"
+			],
+			[
+				"start",
+				"start_ptr"
+			],
+			[
+				"base",
+				"base_ptr"
+			],
+			[
+				"out",
+				"out_bff"
+			],
+			[
+				"put",
+				"putch"
+			],
+			[
+				"UCA",
+				"UCA0TXBUF"
+			],
+			[
+				"USCI_A",
+				"USCI_A0_BASE"
+			],
+			[
+				"comm",
+				"comm-section-header	Comment - Section header comment"
 			],
 			[
 				"Down",
 				"Download"
-			],
-			[
-				"uin",
-				"uint16_t"
 			],
 			[
 				"del",
@@ -42,10 +182,6 @@
 			[
 				"hw",
 				"hw_abstraction"
-			],
-			[
-				"start",
-				"startTimer"
 			],
 			[
 				"Timer",
@@ -112,10 +248,6 @@
 				"print_str_s"
 			],
 			[
-				"add",
-				"add_cstr"
-			],
-			[
 				"error",
 				"error_code"
 			],
@@ -132,16 +264,8 @@
 				"retry_register"
 			],
 			[
-				"out",
-				"out_str"
-			],
-			[
 				"com",
 				"comm-subsection	Comment - Subsection comment"
-			],
-			[
-				"printf",
-				"printf_ui"
 			],
 			[
 				"Mode",
@@ -184,10 +308,6 @@
 				"SVMLVLRPE"
 			],
 			[
-				"Debu",
-				"DebugTX"
-			],
-			[
 				"SVML",
 				"SVMLVLRIFG"
 			],
@@ -198,10 +318,6 @@
 			[
 				"uni",
 				"uint16_t"
-			],
-			[
-				"Deb",
-				"DebugTX"
 			],
 			[
 				"modem_k",
@@ -398,134 +514,117 @@
 			[
 				"SM",
 				"SMD"
-			],
-			[
-				"BIT",
-				"BIT0"
-			],
-			[
-				"gps",
-				"gps_success"
-			],
-			[
-				"erro",
-				"error_str"
-			],
-			[
-				"subsub",
-				"subsubsection*{title}	latex-document"
-			],
-			[
-				"ui",
-				"uint32_t"
-			],
-			[
-				"add_to",
-				"add_to_task"
-			],
-			[
-				"msp",
-				"msp430-os"
-			],
-			[
-				"Debug",
-				"DebugTX"
-			],
-			[
-				"pri",
-				"printf_ui"
-			],
-			[
-				"lock",
-				"locked_to"
-			],
-			[
-				"sample",
-				"sample_no"
-			],
-			[
-				"MODEM",
-				"MODEM_ON"
-			],
-			[
-				"Cell",
-				"CellModemInterface"
-			],
-			[
-				"ext",
-				"extern"
-			],
-			[
-				"MOC",
-				"MOCK_METHOD2"
-			],
-			[
-				"MOCKM",
-				"MOCK_METHOD2"
-			],
-			[
-				"ErrorLo",
-				"ErrorLogInterface"
-			],
-			[
-				"err",
-				"err_str"
-			],
-			[
-				"peek",
-				"peek_f"
-			],
-			[
-				"Error",
-				"ErrorLogInterface"
-			],
-			[
-				"Cyp",
-				"CypEncQueueInterface"
-			],
-			[
-				"ui16d",
-				"ui16d_b"
-			],
-			[
-				"B",
-				"BInterface"
-			],
-			[
-				"offs",
-				"offset_end"
-			],
-			[
-				"pritf",
-				"printf_ui"
-			],
-			[
-				"SerialTX",
-				"SerialTXInterface"
-			],
-			[
-				"apply",
-				"apply_setting"
-			],
-			[
-				"key",
-				"key_e"
-			],
-			[
-				"keys",
-				"keys_sz"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "otp/cBSL_main.c",
+			"settings":
+			{
+				"buffer_size": 3497,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/work/msp430-remote-flash/bootloader.cpp",
+			"settings":
+			{
+				"buffer_size": 15647,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 2974,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/work/msp430-remote-flash/bootloader.h",
+			"settings":
+			{
+				"buffer_size": 5364,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/work/c1202-firmware/driverlib/flash.c",
+			"settings":
+			{
+				"buffer_size": 15379,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "otp/uml/concept.wsd",
+			"settings":
+			{
+				"buffer_size": 1594,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "otp/BSL430_Low_Level_Init.asm",
+			"settings":
+			{
+				"buffer_size": 5251,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "otp/uml/cBSL.wsd",
+			"settings":
+			{
+				"buffer_size": 511,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "/* --COPYRIGHT--\n * See LICENCE File\n * --/COPYRIGHT--*/\n\n#include \"msp430-OTP/hw_layer.h\"\n\n// -----------------------------------------------------------------------------\nvoid init() {\n    // ----- 32 kHz crystal config\n    while (BAKCTL & LOCKBAK) {                // Unlock XT1 pins for operation\n        BAKCTL &= ~(LOCKBAK);\n    }\n\n    UCSCTL6 &= ~(XT1OFF);                     // XT1 On\n    UCSCTL6 |= XCAP_3;                        // Internal load cap\n\n    // Loop until XT1 fault flag is cleared\n    do {\n        UCSCTL7 &= ~(XT2OFFG + XT1LFOFFG + DCOFFG);\n                                            // Clear XT2,XT1,DCO fault flags\n        SFRIFG1 &= ~OFIFG;                  // Clear fault flags\n    } while (SFRIFG1 & OFIFG);              // Test oscillator fault flag\n\n\n    // ----- Setup Clocks\n    UCS_clockSignalInit(\n                UCS_FLLREF,\n                UCS_XT1CLK_SELECT,\n                UCS_CLOCK_DIVIDER_1);\n\n    // Set ACLK = REFO\n    UCS_clockSignalInit(\n                UCS_ACLK,\n                UCS_XT1CLK_SELECT,\n                UCS_CLOCK_DIVIDER_1);\n\n    // Set DCO to 1,048,576 hz\n    UCS_initFLLSettle(1048, 32);      // 1,048,576 / 32,768 = 32\n    PMM_setVCore(PMM_CORE_LEVEL_0);   // Set Core Voltage\n\n    // ----- Configure UART\n    UCA0CTL1 |= UCSWRST;              // Disable UART\n\n    // Setup Debug UART Pins\n    GPIO_setAsPeripheralModuleFunctionInputPin(\n            GPIO_PORT_P2,\n            GPIO_PIN4 + GPIO_PIN5);\n\n    USCI_UART_initParam UART_init_params;  // Init UART config struct\n\n     // Setup the non uC rate dependent param of struct\n    UART_init_params.selectClockSource = USCI_A_UART_CLOCKSOURCE_SMCLK;\n    UART_init_params.parity            = USCI_A_UART_NO_PARITY;\n    UART_init_params.msborLsbFirst     = USCI_A_UART_LSB_FIRST;\n    UART_init_params.numberofStopBits  = USCI_A_UART_ONE_STOP_BIT;\n    UART_init_params.uartMode          = USCI_A_UART_MODE;\n    UART_init_params.overSampling\n                                = USCI_A_UART_LOW_FREQUENCY_BAUDRATE_GENERATION;\n    UART_init_params.clockPrescalar    = 9;  // set\n    UART_init_params.firstModReg       = 0;  // UART\n    UART_init_params.secondModReg      = 1;  // params\n\n    USCI_UART_init(USCI_A0_BASE, &UART_init_params);  // Init UART\n\n    USCI_A_UART_disableInterrupt(\n            USCI_A0_BASE,\n            USCI_UART_TRANSMIT_INTERRUPT);\n    USCI_A_UART_disableInterrupt(\n            USCI_A0_BASE,\n            USCI_A_UART_RECEIVE_INTERRUPT);\n\n    USCI_A_UART_clearInterruptFlag(\n               USCI_A0_BASE,\n               USCI_A_UART_RECEIVE_INTERRUPT);\n\n    UCA0CTL1 &= ~UCSWRST;                     // Enable UART\n}\n\n// -----------------------------------------------------------------------------\nvoid putch(uint8_t data) {\n    if ((UCA0IE & UCTXIE) == 0) {             // Is interrupt disabled\n        while ((UCA0IFG & UCTXIFG) == 0);     // Yes so wait\n    }\n    UCA0TXBUF = data;\n}\n\n// -----------------------------------------------------------------------------\ninline void FlashErase(uint8_t* flash_ptr, uint32_t mode) {\n    while (FCTL3 & BUSY) {}             // Test Busy\n    FCTL3 = FWPW;                       // Clear Lock bit\n    FCTL1 = FWPW + mode;                // Set erase mode bit\n    *flash_ptr = 0;                     // Dummy write to erase flash segment\n    while (FCTL3 & BUSY) {}             // test busy\n    FCTL1 = FWKEY;                      // Clear erase mode bit\n    FCTL3 = FWKEY + LOCK;               // Set LOCK bit\n}\n\n// -----------------------------------------------------------------------------\nvoid set_img_stat_flg(uint8_t img_stat) {\n    UI8_ARRAY(Buffer, 128);                    // Init array\n\n    uint8_t* image_stat_ptr;                   // Pointer to info pointer\n    image_stat_ptr = reinterpret_cast<uint8_t*>(IMG_STAT_PTR);\n\n    push_mem(&Buffer, image);                  // Copy Data to RAM\n\n    Buffer.base_ptr[0] = img_stat;             // Set new Status\n\n    FlashErase(image_stat_ptr, ERASE);\n\n\n\n}\n",
+			"file": "hw_layer.c",
+			"file_size": 3986,
+			"file_write_time": 130703862919214802,
+			"settings":
+			{
+				"buffer_size": 3986,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5335.h",
+			"settings":
+			{
+				"buffer_size": 324888,
+				"line_ending": "Unix"
+			}
+		}
 	],
-	"build_system": "Sensor",
+	"build_system": "OTP",
 	"command_palette":
 	{
-		"height": 332.0,
+		"height": 375.0,
 		"selected_items":
 		[
+			[
+				"save",
+				"Project: Save As"
+			],
+			[
+				"project",
+				"Project: Edit"
+			],
+			[
+				"menu",
+				"View: Toggle Menu"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
 			[
 				"prevei",
 				"Markdown Preview: Preview in Browser"
@@ -667,7 +766,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 579.0
+		"width": 518.0
 	},
 	"console":
 	{
@@ -688,10 +787,63 @@
 	},
 	"expanded_folders":
 	[
-		"/work/c1202-firmware/msp430-OTP"
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include"
 	],
 	"file_history":
 	[
+		"/work/c1202-firmware/msp430-OTP/hw_layer.h",
+		"/work/msp430-remote-flash/flash.c",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/rf430frl152h.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5335.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5333.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5304.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5131.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f110.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430.h",
+		"/work/c1202-firmware/msp430-OTP/serial.c",
+		"/work/c1202-firmware/msp430-OTP/serial.h",
+		"/work/msp430-remote-flash/flash.h",
+		"/work/c1202-firmware/msp430-OTP/README.md",
+		"/work/c1202-firmware/msp430-OTP/lnk_msp430f5335.cmd",
+		"/work/c1202-firmware/c1202-f5336/debug.h",
+		"/work/c1202-firmware/c1202-f5336/debug.cpp",
+		"/work/c1202-firmware/msp430-os/array_safe.h",
+		"/work/c1202-firmware/msp430-OTP/OTP.sublime-project",
+		"/work/c1202-firmware/msp430-os/unittest/MSP430-OS.sublime-project",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430afe221.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/lnk_msp430f5358.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5359.h",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5359.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5358.h",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5358.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/lnk_msp430f5335.cmd",
+		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5335.h",
+		"/work/c1202-firmware/msp430-OTP/unittest/serial_unittest.cc",
+		"/work/c1202-firmware/msp430-OTP/unittest/Makefile",
+		"/home/sporty/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/work/c1202-firmware/msp430-os/unittest/circular_que_test.cpp",
+		"/work/c1202-firmware/gtest/samples/sample1_unittest.cc",
+		"/work/c1202-firmware/msp430-os/unittest/aes_128.sublime-project",
+		"/work/c1202-firmware/msp430-OTP/init.h",
+		"/work/c1202-firmware/msp430-OTP/debug.cpp",
+		"/work/c1202-firmware/msp430-OTP/init.c",
+		"/work/c1202-firmware/msp430-OTP/debug.h",
+		"/work/c1202-firmware/msp430-OTP/main.c",
+		"/work/c1202-firmware/c1202-f5336/globals.h",
+		"/home/sporty/.config/sublime-text-3/Packages/User/Distraction Free.sublime-settings",
+		"/work/c1202-firmware/msp430-os/serial_tx.h",
+		"/work/c1202-firmware/msp430-OTP/otp/serial.h",
+		"/work/c1202-firmware/msp430-OTP/LICENSE",
+		"/work/c1202-firmware/msp430-OTP/otp/cBSL_serial.h",
+		"/work/c1202-firmware/c1202-f5336/init.cpp",
+		"/work/c1202-firmware/msp430-OTP/otp/cBSL_main.c",
+		"/work/c1202-firmware/msp430-OTP/otp/cBSL_serial.c",
+		"/work/c1202-firmware/msp430-OTP/otp/BSL430_Low_Level_Init.asm",
+		"/work/c1202-firmware/driverlib/eusci_a_uart.h",
+		"/work/c1202-firmware/driverlib/usci_uart.c",
+		"/work/c1202-firmware/driverlib/usci_a_uart.c",
+		"/work/c1202-firmware/driverlib/eusci_a_uart.c",
+		"/work/c1202-firmware/msp430-OTP/Debug/subdir_vars.mk",
 		"/work/c1202-fw-v2/msp430-os/Debug/msp430-os.lib",
 		"/home/sporty/.xmonad/xmonad.hs",
 		"/usr/share/applications/nautilus.desktop",
@@ -699,7 +851,6 @@
 		"/work/c1202-firmware/c1202-f5336/msp430-OTP/BSL430_Low_Level_Init.asm",
 		"/usr/share/applications/atom.desktop",
 		"/home/sporty/.local/share/applications/ccs.desktop",
-		"/work/c1202-firmware/c1202-f5336/debug.h",
 		"/home/sporty/.local/share/applications/playonlinux-Microsoft Powerpoint 2010.desktop",
 		"/work/BSL/5xx_6xx_Example_BSL_Source/CCS_v5.5.0_BSL-5438A/BSL430_Low_Level_Init.asm",
 		"/work/c1202-firmware/aes/TI_aes_128.c",
@@ -757,7 +908,6 @@
 		"/work/c1202-firmware/c1202-f5336/main.cpp",
 		"/work/c1202-firmware/c1202-f5336/hw_abstraction.h",
 		"/work/c1202-firmware/driverlib/inc/hw_memmap.h",
-		"/work/c1202-firmware/c1202-f5336/init.cpp",
 		"/work/msp430-remote-flash/bootloader.h",
 		"/work/msp430-remote-flash/bootloader.cpp",
 		"/work/msp430-remote-flash/msp430.x",
@@ -768,68 +918,19 @@
 		"/work/c1202-firmware/c1202-f5336/msp430-OTP/BSL430_API.c",
 		"/work/BSL/5xx_6xx_BSL_Source/MSP430F552x_TA_UART/BSL_Device_File.h",
 		"/work/c1202-firmware/c1202-f5336/msp430-OTP/README.md",
-		"/work/c1202-firmware/c1202-f5336/msp430-OTP/BSL430_API.h",
-		"/work/c1202-firmware/driverlib/deprecated/CCS/msp430f5xx_6xxgeneric.h",
-		"/work/c1202-firmware/gtest/xcode/Samples/FrameworkSample/Info.plist",
-		"/work/BSL/5xx_6xx_Example_BSL_Source/CCS_v5.5.0_BSL-5438A/BSL430_Command_Interpreter.h",
-		"/work/c1202-docs/c1202-srs-web_app/uml/powermode.uml",
-		"/work/c1202-firmware/driverlib/eusci_b_spi.c",
-		"/work/c1202-firmware/driverlib/battbak.c",
-		"/work/BSL/5xx_6xx_BSL_Source/API/BSL430_API.c",
-		"/work/c1202-firmware/c1202-f5336/BSL430_API.c",
-		"/work/c1202-firmware/msp430-os/dispatcher.h",
-		"/home/sporty/.config/sublime-text-3/Packages/sublime_diagram_plugin/Syntaxes/README.md",
-		"/work/c1202-firmware/c1202-f5336/sm_names.cpp",
-		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/lnk_msp430f5335.cmd",
-		"/work/c1202-firmware/c1202-f5336/sm_names.h",
-		"/work/c1202-firmware/c1202-f5336/globals.cpp",
-		"/work/c1202-firmware/driverlib/pmm.c",
-		"/work/c1202-firmware/c1202-f5336/msp430-OTP/concept.uml",
-		"/work/c1202-firmware/gmock/CONTRIBUTORS",
-		"/work/c1202-firmware/msp430-os/common.cpp",
-		"/work/c1202-firmware/c1202-f5336/modem_sm.cpp",
-		"/work/c1202-docs/c1202-srs-web_app/uml/actions.uml",
-		"/work/c1202-docs/c1202-srs-web_app/uml/data.uml",
-		"/home/sporty/temp/receiver.production.log",
-		"/work/c1202-firmware/msp430-os/modem.md",
-		"/work/c1202-firmware/msp430-os/modem.h",
-		"/work/c1202-firmware/msp430-os/modem.cpp",
-		"/work/BSL/5xx_6xx_Example_BSL_Source/CCS_v5.5.0_BSL-5438A/BSL430_API.h",
-		"/work/c1202-firmware/driverlib/README.md",
-		"/work/BSL/5xx_6xx_Example_BSL_Source/CCS_v5.5.0_BSL-5438A/BSL430_API.c",
-		"/work/c1202-firmware/driverlib/driverlib.h",
-		"/work/BSL/5xx_6xx_BSL_Source/CC430F613x_USCI_UART/BSL430_Low_Level_Init.s43",
-		"/work/c1202-docs/c1202-srs-web_app/reqErrorLogApp.md",
-		"/work/BSL/5xx_6xx_BSL_Source/CC430F613x_USCI_UART/CONFIG/lnk430_BSL_AREA_RAM_1C00-23FF.xcl",
-		"/work/BSL/5xx_6xx_Example_BSL_Source/CCS_v5.5.0_BSL-5438A_READ_ME.txt",
-		"/work/BSL/5xx_6xx_Example_BSL_Source/CCS_v5.5.0_BSL-5438A/BSL_Device_File.h",
-		"/work/BSL/5xx_6xx_Example_BSL_Source/CCS_v5.5.0_BSL-5438A/targetConfigs/MSP430F5418A.ccxml",
-		"/work/BSL/5xx_6xx_BSL_Source/CC430F613x_USCI_UART/BSL_Device_File.h",
-		"/work/BSL/5xx_6xx_BSL_Source/BSLs.eww",
-		"/work/c1202-firmware/c1202-f5336/Test/c1202-f5336.map",
-		"/ccsv6/ccs_base/msp430/include/lnk_msp430f5335.cmd",
-		"/work/c1202-firmware/c1202-f5336/docs/vizscript/files/state_machine.erb",
-		"/work/c1202-firmware/c1202-f5336/test_sm.cpp",
-		"/work/c1202-firmware/c1202-f5336/hw_layer_ISRs.cpp",
-		"/work/c1202-firmware/msp430-os/error_log_interface.h",
-		"/work/c1202-firmware/c1202-f5336/globals.h",
-		"/work/c1202-firmware/msp430-os/serial_tx.h",
-		"/work/c1202-firmware/msp430-os/app_engine.h",
-		"/work/c1202-firmware/c1202-f5336/debug.cpp",
-		"/work/c1202-firmware/c1202-f5336/clock_sm.cpp",
-		"/work/c1202-firmware/c1202-f5336/unittest/debug/LogToDot.rb",
-		"/work/c1202-firmware/driverlib/eusci_a_spi.c",
-		"/work/c1202-firmware/gtest/xcode/Config/StaticLibraryTarget.xcconfig"
+		"/work/c1202-firmware/c1202-f5336/msp430-OTP/BSL430_API.h"
 	],
 	"find":
 	{
-		"height": 25.0
+		"height": 37.0
 	},
 	"find_in_files":
 	{
 		"height": 346.0,
 		"where_history":
 		[
+			"/work/c1202-firmware/c1202-f5336,/work/c1202-firmware/msp430-os",
+			"/work/c1202-firmware/c1202-f5336",
 			"/work/BSL",
 			"/work/BSL/5xx_6xx_Example_BSL_Source",
 			"/work/c1202-firmware/msp430-os,/work/c1202-firmware/c1202-f5336,*.cpp,*.h",
@@ -869,6 +970,35 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"address",
+			"ERASE",
+			"image_info_ptr",
+			"push_mem",
+			"str",
+			"act_str",
+			"str",
+			"SerialRX",
+			"copy_step",
+			"b_w",
+			"pop(",
+			"pop",
+			"Arr",
+			"SerialRX4",
+			"name ## len",
+			"USER_DIR",
+			"cc",
+			"sample1",
+			"sample1_unittest",
+			"SIZEOF",
+			"const",
+			"6",
+			"char",
+			"void",
+			"enable",
+			"transmitData",
+			"transmit",
+			"clearIn",
+			"baseAddress",
 			"UCBR",
 			"_c_int00",
 			"_c_int",
@@ -967,36 +1097,7 @@
 			"request",
 			"set_settings",
 			"ModemRX",
-			"scan_for",
-			".find",
-			"{11",
-			"{10",
-			"{",
-			"g++ ",
-			"printf \"\\n### Running\\n\\n\"",
-			"Making",
-			"g++ ",
-			"./",
-			"\\n\"",
-			"printf \"\\n#",
-			"printf \"#",
-			"echo",
-			"false",
-			"### Making",
-			"### Mking",
-			"### Making",
-			"###king",
-			"echo \"#########################\"\necho \"#",
-			"''",
-			"``",
-			"= 12;",
-			"--------------------------------------------------------------------------------",
-			"mvp_stat & ",
-			"= 5;",
-			"5",
-			"mvpOK_keys",
-			"mvpCREG_keys",
-			"34"
+			"scan_for"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1035,14 +1136,332 @@
 	"groups":
 	[
 		{
+			"selected": 2,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "otp/cBSL_main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3497,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								952,
+								952
+							]
+						],
+						"settings":
+						{
+							"history_list_is_closing": true,
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/work/msp430-remote-flash/bootloader.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15647,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8663,
+								8663
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3707.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2974,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2434,
+								2434
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 960.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/work/msp430-remote-flash/bootloader.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5364,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2063,
+								2063
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1104.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"file": "otp/uml/concept.png",
+					"semi_transient": false,
+					"stack_index": 8,
+					"type": "image"
+				},
+				{
+					"buffer": 4,
+					"file": "/work/c1202-firmware/driverlib/flash.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15379,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2968,
+								2968
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4232.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 5,
+					"file": "otp/uml/concept.wsd",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1594,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1585,
+								1585
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/sublime_diagram_plugin/Syntaxes/diagram.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 288.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "otp/BSL430_Low_Level_Init.asm",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5251,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2368,
+								2368
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/User/Msp430Assembly.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 576.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "otp/uml/cBSL.wsd",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 511,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								511,
+								511
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/sublime_diagram_plugin/Syntaxes/diagram.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 8,
+					"file": "hw_layer.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3986,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3981,
+								3981
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 912.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"file": "otp/uml/cBSL.png",
+					"semi_transient": false,
+					"stack_index": 2,
+					"type": "image"
+				},
+				{
+					"buffer": 9,
+					"file": "/home/sporty/ti/ccsv6/ccs_base/msp430/include/msp430f5335.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 324888,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								125811,
+								125811
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 26367.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 25.0
+		"height": 24.0
 	},
 	"input":
 	{
@@ -1057,11 +1476,25 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			],
+			[
+				2,
+				0,
+				3,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.316563635651,
+			0.623678013381,
 			1.0
 		],
 		"rows":
@@ -1070,7 +1503,7 @@
 			1.0
 		]
 	},
-	"menu_visible": true,
+	"menu_visible": false,
 	"output.GoSublime-main-output":
 	{
 		"height": 138.0
@@ -1085,7 +1518,7 @@
 	},
 	"output.exec":
 	{
-		"height": 65.0
+		"height": 280.0
 	},
 	"output.find_results":
 	{
@@ -1098,7 +1531,7 @@
 	"project": "OTP.sublime-project",
 	"replace":
 	{
-		"height": 46.0
+		"height": 44.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1106,6 +1539,46 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"msp430f5335",
+				"msp430f5335.h"
+			],
+			[
+				"seria",
+				"serial.c"
+			],
+			[
+				"read",
+				"README.md"
+			],
+			[
+				"rea",
+				"README.md"
+			],
+			[
+				"hw",
+				"hw_layer.c"
+			],
+			[
+				"se",
+				"serial.h"
+			],
+			[
+				"lnk",
+				"lnk_msp430f5335.cmd"
+			],
+			[
+				"cb",
+				"otp/cBSL_serial.c"
+			],
+			[
+				"b",
+				"otp/cBSL_main.c"
+			],
+			[
+				"ma",
+				"main.c"
+			],
 			[
 				"init",
 				"c1202-f5336/init.cpp"
@@ -1129,10 +1602,6 @@
 			[
 				"",
 				"c1202-f5336/clock_sm.cpp"
-			],
-			[
-				"lnk",
-				"c1202-f5336/msp430-OTP/lnk_msp430f5335.cmd"
 			],
 			[
 				"msp430f",
@@ -1175,10 +1644,6 @@
 				"c1202-f5336/msp430-OTP/concept.uml"
 			],
 			[
-				"read",
-				"c1202-f5336/readme.md"
-			],
-			[
 				"modem",
 				"c1202-f5336/modem_sm.cpp"
 			],
@@ -1205,10 +1670,6 @@
 			[
 				"l",
 				"c1202-f5336/lnk_msp430f5335.cmd"
-			],
-			[
-				"seria",
-				"msp430-os/serial_tx.h"
 			],
 			[
 				"app_en",
@@ -1239,20 +1700,12 @@
 				"c1202-f5336/debug.h"
 			],
 			[
-				"hw",
-				"c1202-f5336/hw_abstraction.cpp"
-			],
-			[
 				"clock_sm",
 				"c1202-f5336/clock_sm.cpp"
 			],
 			[
 				"gps",
 				"c1202-f5336/gps_sm.cpp"
-			],
-			[
-				"msp430f5335",
-				"msp430-stub/msp430f5335.h"
 			],
 			[
 				"glob",
@@ -1597,26 +2050,6 @@
 			[
 				"mock_di",
 				"msp430-os/unittest/mock_dispatcher.h"
-			],
-			[
-				"iwtte",
-				"c1202-f5336/iwttest.h"
-			],
-			[
-				"mock_dis",
-				"msp430-os/unittest/mock_dispatcher.h"
-			],
-			[
-				"test_sm.cp",
-				"c1202-f5336/test_sm.cpp"
-			],
-			[
-				"dispa",
-				"msp430-os/dispatcher.h"
-			],
-			[
-				"test_s",
-				"c1202-f5336/test_sm.cpp"
 			]
 		],
 		"width": 0.0
@@ -1657,7 +2090,7 @@
 		],
 		"width": 473.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},

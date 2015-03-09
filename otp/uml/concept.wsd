@@ -12,7 +12,7 @@ group Upload Image
         the Download Region
     end note
 
-    Application -> cBSL: Set Image Status to //Download//
+    Application -> cBSL: Set Image Status to //DOWNLOAD//
 
     Application -> uC: Reset by entering a while(1) loop due to WDT timeout
 end
@@ -21,64 +21,8 @@ end
 
 group Load Downloaded Image
     note left of cBSL
-        **System Power Up**
+        **See cBSL Activity Diagram**
     end note
-
-    cBSL -> cBSL: //Download// status detected,\nbackup the //Current Image//
-
-    cBSL -> cBSL: Copy //New Image// to //Program Region//
-
-    cBSL -> cBSL: Set Status to //Loaded//
-
-    cBSL -> uC: Reset
-
-end
-
-...
-
-group Validation, No Errors
-
-    note left of Application
-        **System Power Up**
-        This is the sequence if
-        there is no errors
-    end note
-
-    cBSL -> cBSL: //Loaded// Status detected,\nchange to //Pending Validation//
-
-    note left of cBSL
-        Run the Application
-    end note
-
-    Application -> cBSL: changes the Image status to //None//
-
-    note left of Application
-        Done!
-    end note
-
-end
-
-...
-
-group Validation, Errors
-
-    note left of cBSL
-        **System Power Up**
-        Assuming the new application
-        did not pass self test and was reset
-    end note
-
-    cBSL -> cBSL: //Pending Validation// is detected, Recover Image.
-
-    cBSL -> cBSL: change image status to //Loaded//
-
-    cBSL -> uC: Reset the uC
-
-    note left of cBSL
-        Will continue to cycle till
-        sucessfull validation
-    end note
-
 end
 
 @enduml

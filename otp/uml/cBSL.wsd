@@ -1,0 +1,22 @@
+@startuml
+
+:Restart;
+if ((IMAGE_STATUS == NONE) OR\n(IMAGE_STATUS == PENDING_VALIDATION)) then (yes)
+    : IMAGE_STATUS &= ~0xFF00;
+    : Run User Application;
+else (no)
+    partition cBSL_main {
+        if (IMAGE_STATUS == DOWNLOAD) then (yes)
+            :cBSL_backup();
+            :cBSL_load();
+            :cBSL_set_img_stat_flg(\nPENDING_VALIDATION);
+        else (no)
+            :cBSL_recover();
+            :cBSL_set_img_stat_flg(NONE);
+        endif
+        :reboot;
+        stop
+    }
+endif
+
+@enduml

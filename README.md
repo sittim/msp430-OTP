@@ -11,6 +11,12 @@ This code does not yet work, I am looking for contributors.  If you would like t
 ### v0.0.2
 Compiler: TI v4.3.5 3/6/2015
 
+1. Updated README.md, changed ther overall sequence.
+
+
+### v0.0.2
+Compiler: TI v4.3.5 3/6/2015
+
 1. Added serial.c library
 
 ### v0.0.1
@@ -44,13 +50,12 @@ Code Composer Studio V6+ (CCS6) and msp430f5xxx uC
 
 **Download Region** Flash memory region to where new Application is written.
 
-**Image Status** can be one of the following:
+**Image Status** - 16 bit register, can be one of the following:
 
-1. *None* - No activity, nothing to be done
-2. *Download* - New Image in Download Area
-3. *Loaded* - The new Image has been loaded
-4. *Pending Validation* - Waiting to be validated by application.
-5. *Recovered* - Image Recovered from Backup region
+1. 0x00EE - *NONE* - No activity, nothing to be done
+2. 0x00CC - *DOWNLOAD* - New Image in Download Area
+3. 0xFF88 - *PENDING_VALIDATION* - Waiting to be validated by application.
+4. 0x0088 - *VALIDATION*
 
 ## Usage
 
@@ -58,16 +63,39 @@ Code Composer Studio V6+ (CCS6) and msp430f5xxx uC
 2. Adjust the lnk_msp430f5xxx.cmd file.
 3. Add OTP and Production build configuration to CCS6
 
-## Concept
+## BSL and The Application
 
-This BSL will be part of the project, this way the production has to flash the uC only once.  There project will have two build configurations:
+This BSL will be part of the project, this way the production has to flash the uC only once.  The project will have two build configurations:
 
-1. *OTP* - Will produce the hex just the Application the BSL, Server will upload this hex over the air.
-2. *Production* - Will produce hex with BSL and Application for production flashing.
+1. *OTP* - The hex will include onlye the Application, Server will upload this hex over the air.
+2. *Production* - The hex will include the BSL and the Application for production flashing.
 
-Below is the initial cut of the sequence:
+## BSL Role
 
-![Sequencee](uml/concept.png)
+The BSL will have the following functions:
+
+1. **cBSL_main()**    - main BSL function
+2. **cBSL_backup()**  - Backup the current Application
+3. **cBSL_recover()** - Recover the Application from Backup
+4. **cBSL_load()**    - Load new application
+
+The BSL will be able to set image status to the following:
+
+1. *PENDING_VALIDATION*, indicating to the application that this is the new image, it needs to be validated.
+
+The following is the activity diagram of the process:
+![cBSL Activity](otp/uml/cBSL.png)
+
+## Application Role
+
+The Appliation will:
+
+1. Download the new image to the *New Image* region and perform data integrity check.
+
+The Application will be able to set image status to the following:
+
+1. **None** - Once validation is completed, the image status is set to none.
+2. **Download** - Once the new image has been written and the data integrity check was passed by the Application.
 
 
 

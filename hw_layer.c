@@ -1,11 +1,12 @@
 /* --COPYRIGHT--
  * See LICENCE File
  * --/COPYRIGHT--*/
-/**
- * Initialize the system
- */
+
+#include "msp430-OTP/hw_layer.h"
+
+// -----------------------------------------------------------------------------
 void init() {
-    // ----- 32 kHz crystal config --------------------------------------------
+    // ----- 32 kHz crystal config
     while (BAKCTL & LOCKBAK) {                // Unlock XT1 pins for operation
         BAKCTL &= ~(LOCKBAK);
     }
@@ -21,7 +22,7 @@ void init() {
     } while (SFRIFG1 & OFIFG);              // Test oscillator fault flag
 
 
-    // ----- Setup Clocks ------------------------------------------------------
+    // ----- Setup Clocks
     UCS_clockSignalInit(
                 UCS_FLLREF,
                 UCS_XT1CLK_SELECT,
@@ -37,7 +38,7 @@ void init() {
     UCS_initFLLSettle(1048, 32);      // 1,048,576 / 32,768 = 32
     PMM_setVCore(PMM_CORE_LEVEL_0);   // Set Core Voltage
 
-    // ----- Configure UART ----------------------------------------------------
+    // ----- Configure UART
     UCA0CTL1 |= UCSWRST;              // Disable UART
 
     // Setup Debug UART Pins
@@ -72,15 +73,41 @@ void init() {
                USCI_A0_BASE,
                USCI_A_UART_RECEIVE_INTERRUPT);
 
-    UCA0CTL1 &= ~UCSWRST;              // Enable UART
+    UCA0CTL1 &= ~UCSWRST;                     // Enable UART
 }
-/**
- * Out
- * @param data [description]
- */
+
+// -----------------------------------------------------------------------------
 void putch(uint8_t data) {
-    if ((UCA0IE & UCTXIE) == 0) {          // Is interrupt disabled
-        while ((UCA0IFG & UCTXIFG) == 0);   // Yes so wait
+    if ((UCA0IE & UCTXIE) == 0) {             // Is interrupt disabled
+        while ((UCA0IFG & UCTXIFG) == 0);     // Yes so wait
     }
     UCA0TXBUF = data;
+}
+
+// -----------------------------------------------------------------------------
+inline void FlashErase(uint8_t* flash_ptr, uint32_t mode) {
+    while (FCTL3 & BUSY) {}             // Test Busy
+    FCTL3 = FWPW;                       // Clear Lock bit
+    FCTL1 = FWPW + mode;                // Set erase mode bit
+    *flash_ptr = 0;                     // Dummy write to erase flash segment
+    while (FCTL3 & BUSY) {}             // test busy
+    FCTL1 = FWKEY;                      // Clear erase mode bit
+    FCTL3 = FWKEY + LOCK;               // Set LOCK bit
+}
+
+// -----------------------------------------------------------------------------
+void set_img_stat_flg(uint8_t img_stat) {
+    UI8_ARRAY(Buffer, 128);                    // Init array
+
+    uint8_t* image_stat_ptr;                   // Pointer to info pointer
+    image_stat_ptr = reinterpret_cast<uint8_t*>(IMG_STAT_PTR);
+
+    push_mem(&Buffer, image);                  // Copy Data to RAM
+
+    Buffer.base_ptr[0] = img_stat;             // Set new Status
+
+    FlashErase(image_stat_ptr, ERASE);
+
+
+
 }
