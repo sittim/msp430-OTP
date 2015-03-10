@@ -25,6 +25,11 @@ typedef struct {
 } ui8_array;
 
 /**
+ * Reinit the array
+ * @param Arr pointer to Array
+ */
+void flush(ui8_array* Arr);
+/**
  * Room left in the array
  * @param  Arr Array to analyze
  * @return     room in elements
@@ -43,7 +48,7 @@ unsigned int room_r(ui8_array* Arr);
  * @param  str c string
  * @return     true if successfull
  */
-unsigned int add_cst(ui8_array* Arr, const char* str);
+unsigned int push_cst(ui8_array* Arr, const char* str);
 /**
  * Add single byte to the right
  */
@@ -82,6 +87,25 @@ unsigned int push_ui(ui8_array* Arr, unsigned int* source);
  * @return       1 if there was enough room, 0 if there was not
  */
 unsigned int push_mem(ui8_array* Arr, uint8_t* start, unsigned int length);
+
+/**
+ * Compare ui8_array to char array
+ * @param  Arr Array to caompare to
+ * @param  in  C String as input
+ * @return     1 if matches, 0 otherwise
+ *
+ * Note:  Handles strings up to 128 chars long
+ */
+unsigned int is_equal(ui8_array* Arr, const char* in);
+
+/**
+ * Match up the input to one of the strings in the array of strings.
+ * @param  keys   array of strings
+ * @param  key_sz qty of strings in array
+ * @param  Arr    input
+ * @return        key number if match is found, otherwise return ~0
+ */
+unsigned int get_enum(ui8_array* Arr, const char* keys[], unsigned int key_sz);
 /**
  * Output Constant String to Debug port
  * @param str Pointer to Null terminated String

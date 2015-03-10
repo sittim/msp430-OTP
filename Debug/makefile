@@ -6,6 +6,8 @@ CG_TOOL_ROOT := /home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3
 
 ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
+"./debug.obj" \
+"./hw_layer.obj" \
 "./main.obj" \
 "./serial.obj" \
 "./otp/BSL430_Low_Level_Init.obj" \
@@ -130,10 +132,10 @@ BIN_OUTPUTS__QUOTED += \
 all: msp430-OTP.out
 
 # Tool invocations
-msp430-OTP.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+msp430-OTP.out: $(OBJS) $(CMD_SRCS) $(A_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP430 Linker'
-	"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmspx --abi=eabi --code_model=large --data_model=large --near_data=none --use_hw_mpy=F5 --advice:power=all -g --define=__MSP430F5335__ --diag_warning=225 --display_error_number --diag_wrap=off --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 --printf_support=minimal -z -m"msp430-OTP.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/home/sporty/ti/ccsv6/ccs_base/msp430/include" -i"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" -i"/home/sporty/ti/ccsv6/ccs_base/msp430/lib/5xx_6xx_FRxx" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="msp430-OTP_linkInfo.xml" --rom_model -o "msp430-OTP.out" $(ORDERED_OBJS)
+	"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmspx --abi=eabi --code_model=large --data_model=large --near_data=none --use_hw_mpy=F5 --advice:power=all -g --define=__MSP430F5335__ --diag_warning=225 --display_error_number --diag_wrap=off --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 --printf_support=minimal -z -m"msp430-OTP.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/home/sporty/ti/ccsv6/ccs_base/msp430/include" -i"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" -i"/home/sporty/ti/ccsv6/ccs_base/msp430/lib/5xx_6xx_FRxx" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="msp430-OTP_linkInfo.xml" --rom_model -o "msp430-OTP.out" $(ORDERED_OBJS) $(A_SRCS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -146,8 +148,8 @@ msp430-OTP.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.pp" "serial.pp" "otp/cBSL_main.pp" "otp/cBSL_serial.pp" 
-	-$(RM) "main.obj" "serial.obj" "otp/BSL430_Low_Level_Init.obj" "otp/cBSL_main.obj" "otp/cBSL_serial.obj" 
+	-$(RM) "debug.pp" "hw_layer.pp" "main.pp" "serial.pp" "otp/cBSL_main.pp" "otp/cBSL_serial.pp" 
+	-$(RM) "debug.obj" "hw_layer.obj" "main.obj" "serial.obj" "otp/BSL430_Low_Level_Init.obj" "otp/cBSL_main.obj" "otp/cBSL_serial.obj" 
 	-$(RM) "otp/BSL430_Low_Level_Init.pp" 
 	-@echo 'Finished clean'
 	-@echo ' '

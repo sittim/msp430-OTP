@@ -7,10 +7,13 @@ prohibited.  By: Timofey Sitikov Created on: 3 April 2013
 #ifndef DEBUG_HPP_
 #define DEBUG_HPP_
 
-#include <stdint>
-#include "serial.h"
+#include <stdint.h>
+#include <msp430.h>
+#include "msp430-OTP/serial.h"
 
 #define SIZEOFKEY(k) (sizeof(k)/sizeof(k[0]))
+
+extern ui8_array SerialRX;
 
 /**
  * See the source file for descriptions in debug_keys_desc array
@@ -24,3 +27,4 @@ enum debug_cmd {
 void debug_scan();
 
 #endif
+

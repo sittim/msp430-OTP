@@ -4,9 +4,21 @@
 		{
 			"follow_symlinks": true,
 			"path": ".",
-            "path": "/work/c1202-firmware/driverlib",
+            "file_exclude_patterns": [
+                "*.o",
+                "*.a",
+                "*.pp",
+                "*.obj",
+                "*_unittest"
+            ],
+            "folder_exclude_patterns": ["Debug"]
+        },
+        {
+            "path": "/work/c1202-firmware/driverlib"
+        },
+        {
             "path": "/home/sporty/ti/ccsv6/ccs_base/msp430/include"
-		}
+        }
 	],
     "build_systems":
     [

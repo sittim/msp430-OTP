@@ -71,7 +71,7 @@ TEST(Serial, Macro) {
   EXPECT_EQ(DebugRX.len, 1);
 }
 
-TEST(Serial, add_cst) {
+TEST(Serial, push_cst) {
     uint8_t base[5];      // Declare Array
     base[0] = 'a';        // Init
     base[1] = 'b';        // array
@@ -83,16 +83,16 @@ TEST(Serial, add_cst) {
 
     EXPECT_TRUE(ArrayEqCstr(base, "abcde"));
 
-    EXPECT_FALSE(add_cst(&Base, "opqrstu"));   // Buffer overflow protection
-    EXPECT_TRUE(add_cst(&Base, "fghij"));      // Just the right size
-    EXPECT_FALSE(add_cst(&Base, "fghij"));     // Buffer overflow protetcion
+    EXPECT_FALSE(push_cst(&Base, "opqrstu"));   // Buffer overflow protection
+    EXPECT_TRUE(push_cst(&Base, "fghij"));      // Just the right size
+    EXPECT_FALSE(push_cst(&Base, "fghij"));     // Buffer overflow protetcion
 
     EXPECT_TRUE(ArrayEqCstr(base, "fghij"));
 
     // Build an inner array and verify that elements around it did not change
     ui8_array Inner = {base + 1, base + 1, 3, 0};
 
-    EXPECT_TRUE(add_cst(&Inner, "klm"));
+    EXPECT_TRUE(push_cst(&Inner, "klm"));
 
     EXPECT_TRUE(ArrayEqCstr(base, "fklmj"));
 }
@@ -240,3 +240,70 @@ TEST(Serial, push_mem) {
 
     EXPECT_TRUE(ArrayEqCstr(base, (const char*)golden));
 }
+
+TEST(Serial, is_equal) {
+    UI8_ARRAY(In, 128);
+    const char in1[] = "";
+    const char in2[] = "1";
+    const char in3[] = "123";
+    const char in4[] = "1234";
+    const char in5[] = "\r";
+
+
+    EXPECT_EQ(is_equal(&In, in1), 1);
+    EXPECT_EQ(is_equal(&In, in2), 0);
+    push(&In, '1');
+    EXPECT_EQ(is_equal(&In, in2), 1);
+
+    push_cst(&In, "234");
+    EXPECT_EQ(is_equal(&In, in3), 0);
+    EXPECT_EQ(is_equal(&In, in4), 1);
+
+    flush(&In);
+    push(&In, '\r');
+    EXPECT_EQ(is_equal(&In, in5), 1);
+}
+
+TEST(Serial, get_enum) {
+    const char* keys[] = {
+        "\r",            // 0 - Empty
+        "key",           // 1 - Second Key
+        "key1\r",        // 2 - First Key
+        "key1",          // 3 - Second Key
+        "k"              // 4 - Third Key
+    };
+
+    const unsigned int keys_sz = sizeof(keys)/sizeof(keys[0]);
+
+    UI8_ARRAY(In, 128);
+
+    EXPECT_EQ(get_enum(&In, keys, keys_sz), ~0);
+
+    push_cst(&In, "\r");
+    EXPECT_EQ(get_enum(&In, keys, keys_sz), 0);
+
+    flush(&In);
+    push_cst(&In, "key");
+    EXPECT_EQ(get_enum(&In, keys, keys_sz), 1);
+
+    flush(&In);
+    push_cst(&In, "key1\r");
+    EXPECT_EQ(get_enum(&In, keys, keys_sz), 2);
+
+    flush(&In);
+    push_cst(&In, "key1");
+    EXPECT_EQ(get_enum(&In, keys, keys_sz), 3);
+
+    flush(&In);
+    push_cst(&In, "k");
+    EXPECT_EQ(get_enum(&In, keys, keys_sz), 4);
+
+    flush(&In);
+    push_cst(&In, "ke");
+    EXPECT_EQ(get_enum(&In, keys, keys_sz), ~0);
+
+    flush(&In);
+    push_cst(&In, "e");
+    EXPECT_EQ(get_enum(&In, keys, keys_sz), ~0);
+}
+

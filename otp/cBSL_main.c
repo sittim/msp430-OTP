@@ -2,6 +2,7 @@
  * See LICENCE File
  * --/COPYRIGHT--*/
 #include <msp430.h>
+#include "msp430-OTP/otp/cBSL_serial.h"
 
 void cBSL_init();
 
@@ -14,8 +15,10 @@ void cBSL_init();
 void cBSL_main(void) {
     //
     cBSL_init();
+    cBSL_put_cstr("cBSL\r\n>");
 
     while (1) {
+
     }
 }
 /*******************************************************************************
@@ -25,6 +28,12 @@ void cBSL_main(void) {
 *******************************************************************************/
 #pragma CODE_SECTION(cBSL_init, ".BSL")
 void cBSL_init() {
+    __disable_interrupt();                    // Disable the Interrupts
+
+    PMAPPWD = 0x02D52;                        // Disable Write to port mapping
+
+    PMAPCTL = PMAPRECFG;                      // Allow reconfig during runtime
+
     WDTCTL = WDTPW + WDTHOLD;                 // Stop WDT
 
     while (BAKCTL & LOCKBAK) {                // Unlock XT1 pins for operation
@@ -41,42 +50,41 @@ void cBSL_init() {
         SFRIFG1 &= ~OFIFG;                  // Clear fault flags
     } while (SFRIFG1 & OFIFG);              // Test oscillator fault flag
 
+    // The next set of configurations were defined by driverlib in msp430-OTP
+    // project.  They can be seen by debugging the program then viewing
+    // registers.
+
+    // Setup PMM
+    PMMCTL0  = 0x9600;
+    PMMCTL0  = 0x0000;
+    SVSMHCTL = 0x4400;
+    SVSMLCTL = 0x4400;
+
     // Setup uC clock speed
+    UCSCTL0 = 0x13E0;
+    UCSCTL1 = 0x0020;
+    UCSCTL2 = 0x101F;
+    UCSCTL3 = 0x0000;
+    UCSCTL4 = 0x0044;
+    UCSCTL5 = 0x0000;
+    UCSCTL6 = 0xC1CC;
+    UCSCTL7 = 0x0400;
+    UCSCTL8 = 0x0707;
 
-    // Initialize DCO to 1.048576MHz
-    __bis_SR_register(SCG0);                  // Disable the FLL control loop
-    UCSCTL0 = 0x0000;                         // Set lowest possible DCOx, MODx
-    UCSCTL1 = DCORSEL_3;                      // Set RSELx for DCO = 4.9 MHz
-    UCSCTL2 = FLLD_1 + 74;                    // Set DCO Multiplier for 2.45MHz
-                                              // (N + 1) * FLLRef = Fdco
-                                              // (74 + 1) * 32768 = 2.45MHz
-                                              // Set FLL Div = fDCOCLK/2
-    __bic_SR_register(SCG0);                  // Enable the FLL control loop
+    // Setup io
+    P2SEL = 0x30;
 
-    // Worst-case settling time for the DCO when the DCO range bits have been
-    // changed is n x 32 x 32 x f_MCLK / f_FLL_reference. See UCS chapter in 5xx
-    // UG for optimization.
-    // 32 x 32 x 1.048576 MHz / 32768 Hz = 32768 = MCLK cycles for DCO to settle
-    __delay_cycles(32768);
-
-    // Loop until XT1,XT2 & DCO fault flag is cleared
-    do {
-        UCSCTL7 &= ~(XT2OFFG + XT1LFOFFG + XT1HFOFFG + DCOFFG);
-                                             // Clear XT2,XT1,DCO fault flags
-        SFRIFG1 &= ~OFIFG;                   // Clear fault flags
-    } while (SFRIFG1 & OFIFG);               // Test oscillator f
-
-    P2SEL |= BIT4 + BIT5;                     // Assign P2.4 to UCA0TXD and...
-    P2DIR |= BIT4 + BIT5;                     // P2.5 to UCA0RXD
-
-    UCA0CTL1 |= UCSWRST;                      // **Put state machine in reset**
-    UCA0CTL1 |= UCSSEL_2;                     // SMCLK
-    UCA0BR0 = 9;                              // 1MHz 115200 (see User's Guide)
-    UCA0BR1 = 0;                              // 1MHz 115200
-    UCA0MCTL = UCBRS_0 + UCBRF_13 + UCOS16;   // Modln UCBRSx=0, UCBRFx=0,
-                                              // over sampling
-    UCA0CTL1 &= ~UCSWRST;                     // Initialize USCI state machine
-    UCA0IE |= UCRXIE;                         // Enable USCI_A0 RX interrupt
-
-    while (1);
+    // Setup the A0 UART
+    UCA0CTLW0 = 0x0080;
+    UCA0BRW   = 0x0009;
+    UCA0MCTL  = 0x02;
 }  // init
+
+// -----------------------------------------------------------------------------
+void cBSL_putch(uint8_t data) {
+    if ((UCA0IE & UCTXIE) == 0) {             // Is interrupt disabled
+        while ((UCA0IFG & UCTXIFG) == 0);     // Yes so wait
+    }
+    UCA0TXBUF = data;
+}
+

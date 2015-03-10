@@ -1,33 +1,30 @@
 /* --COPYRIGHT--
  * See LICENCE File
  * --/COPYRIGHT--*/
-#ifdef OTP
 #ifndef CBSL_SERIAL_H
 #define CBSL_SERIAL_H
 
 #include <stdint.h>
 
+#define CBSL_UI8_ARRAY(name, len) \
+uint8_t name ## len[(len)];\
+cBSL_ui8_array name = {name ## len, name ## len, len, 0};
+
 typedef struct {
-    uint8_t* start;
-    uint16_t len;
-} ui8_array;
-/**
- * Output Constant String to Debug port
- * @param str Pointer to Null terminated String
- */
-#pragma CODE_SECTION(cBSL_put_cstr, ".BSL")
-void cBSL_put_cstr(const char str);
+    const uint8_t* base_ptr;
+    uint8_t* start_ptr;
+    const unsigned int max_len;
+    unsigned int len;
+} cBSL_ui8_array;
+
+unsigned int put_cstr(const char* str);
 
 /**
- * Output uint16_t to Debug Port
+ * Outputs byte to the Debug TX
+ * @param data byte to otuput
+ * Note:  This function is not defined by this module
  */
-#pragma CODE_SECTION(cBSL_put_ui16, ".BSL")
-void cBSL_put_ui16(uint16_t out);
+void cBSL_putch(uint8_t data);
 
-/**
- * Output hex to uart
- */
-#pragma CODE_SECTION(cBSL_put_ui8, ".BSL")
-void cBSL_put_ui8(ui8_array* in);
+
 #endif
-#endif  // otp

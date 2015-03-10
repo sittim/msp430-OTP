@@ -97,5 +97,11 @@ The Application will be able to set image status to the following:
 1. **None** - Once validation is completed, the image status is set to none.
 2. **Download** - Once the new image has been written and the data integrity check was passed by the Application.
 
+## High Level
+
+Below is the high level sequence of the over the air programming.
+![cBSL Activity](otp/uml/concept.png)
+
+
 
 

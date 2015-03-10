@@ -1,1 +1,1 @@
-"./main.obj" "./serial.obj" "./otp/BSL430_Low_Level_Init.obj" "./otp/cBSL_main.obj" "./otp/cBSL_serial.obj" "../lnk_msp430f5335.cmd" -l"libc.a" -l"/work/c1202-firmware/driverlib/Debug/driverlib.lib" -l"libmath.a" 
+"./debug.obj" "./hw_layer.obj" "./main.obj" "./serial.obj" "./otp/BSL430_Low_Level_Init.obj" "./otp/cBSL_main.obj" "./otp/cBSL_serial.obj" "../lnk_msp430f5335.cmd" -l"libc.a" -l"/work/c1202-firmware/driverlib/Debug/driverlib.lib" -l"libmath.a" 

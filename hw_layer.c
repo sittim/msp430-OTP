@@ -4,8 +4,18 @@
 
 #include "msp430-OTP/hw_layer.h"
 
+uint16_t hooks;
+UI8_ARRAY(SerialRX, 128);                     // Init array
+
 // -----------------------------------------------------------------------------
 void init() {
+    //
+    __disable_interrupt();
+
+    PMAPPWD = 0x02D52;                        // Enable Write to port mapping
+
+    PMAPCTL = PMAPRECFG;                      // Allow reconfig during runtime
+
     // ----- 32 kHz crystal config
     while (BAKCTL & LOCKBAK) {                // Unlock XT1 pins for operation
         BAKCTL &= ~(LOCKBAK);
@@ -73,7 +83,13 @@ void init() {
                USCI_A0_BASE,
                USCI_A_UART_RECEIVE_INTERRUPT);
 
-    UCA0CTL1 &= ~UCSWRST;                     // Enable UART
+    UCA0CTL1 &= ~UCSWRST;               // Enable UART
+
+    WDT_A_watchdogTimerInit(WDT_A_BASE,
+                         WDT_A_CLOCKSOURCE_XCLK,
+                         WDT_A_CLOCKDIVIDER_8192);
+
+    PMAPPWD = 0;                        // Disable Write to port mapping
 }
 
 // -----------------------------------------------------------------------------
@@ -85,7 +101,7 @@ void putch(uint8_t data) {
 }
 
 // -----------------------------------------------------------------------------
-inline void FlashErase(uint8_t* flash_ptr, uint32_t mode) {
+inline void flash_erase(uint8_t* flash_ptr, uint32_t mode) {
     while (FCTL3 & BUSY) {}             // Test Busy
     FCTL3 = FWPW;                       // Clear Lock bit
     FCTL1 = FWPW + mode;                // Set erase mode bit
@@ -96,18 +112,57 @@ inline void FlashErase(uint8_t* flash_ptr, uint32_t mode) {
 }
 
 // -----------------------------------------------------------------------------
-void set_img_stat_flg(uint8_t img_stat) {
-    UI8_ARRAY(Buffer, 128);                    // Init array
+void flash_write32(uint32_t* data_ptr,
+                   uint32_t* flash_ptr,
+                   unsigned int count) {
+    FCTL3 = FWPW;                           // Clear Lock bit
+    FCTL1 = FWKEY + BLKWRT;                 // Write to flash
 
-    uint8_t* image_stat_ptr;                   // Pointer to info pointer
-    image_stat_ptr = reinterpret_cast<uint8_t*>(IMG_STAT_PTR);
+    while (count > 0) {
+        while (FCTL3 & BUSY) {}             // test busy
 
-    push_mem(&Buffer, image);                  // Copy Data to RAM
+        *flash_ptr++ = *data_ptr++;         // Write to Flash
 
-    Buffer.base_ptr[0] = img_stat;             // Set new Status
+        count--;
+    }
 
-    FlashErase(image_stat_ptr, ERASE);
-
-
-
+    FCTL1 = FWKEY;                          // Clear BLKWRT bit
+    FCTL3 = FWKEY + LOCK;                   // Set Lock bit
 }
+
+// -----------------------------------------------------------------------------
+void set_img_stat_flg(uint16_t img_stat) {
+    UI8_ARRAY(Buffer, 128);                     // Init array
+
+    uint8_t* image_start_ptr;                   // Pointer to info pointer
+    image_start_ptr = (uint8_t*)IMG_STAT_PTR;
+
+    push_mem(&Buffer, image_start_ptr, 128);    // Copy Data to RAM
+
+    *((uint16_t*)Buffer.base_ptr) = img_stat;   // Set new Status
+
+    flash_erase(image_start_ptr, ERASE);
+
+    flash_write32(Buffer.base_ptr, image_start_ptr, 4);
+}
+
+
+// // Echo back RXed character, confirm TX buffer is ready first
+// #pragma vector = USCI_A0_VECTOR
+// __interrupt void USCI_A0_ISR(void) {
+//     uint8_t tmp;
+//     switch (__even_in_range(UCA0IV, 4)) {
+//     case 0:break;                             // Vector 0 - no interrupt
+//     case 2:                                   // Vector 2 - RXIFG
+//         tmp = UCA0RXBUF;                      // Read off the buffer
+//         if (tmp == '\r') {
+//             hooks |= DEBG_INPUT_IN;           // Signal to handle debug input
+//         }
+//         push(&SerialRX, tmp);                 // Add char to the queue
+//         while ((UCA0IFG & UCTXIFG) == 0);     // wait for tx to transmit
+//         UCA0TXBUF = tmp;                      // Echo the char
+//     break;
+//     case 4:break;                             // Vector 4 - TXIFG
+//     default: break;
+//     }
+// }

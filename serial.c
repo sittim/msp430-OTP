@@ -11,7 +11,7 @@
 UI8_ARRAY(DebugRX, 16);
 
 // -----------------------------------------------------------------------------
-void arr_flush(ui8_array* Arr) {
+void flush(ui8_array* Arr) {
     Arr->start_ptr = (uint8_t*)Arr->base_ptr;      // Reinit Base Ptr
     Arr->len = 0;                                  // Reset the leng
 }
@@ -36,7 +36,10 @@ unsigned int room_r(ui8_array* Arr) {
 }
 
 // -----------------------------------------------------------------------------
-unsigned int add_cst(ui8_array* Arr, const char* str) {
+// unsigned int at
+
+// -----------------------------------------------------------------------------
+unsigned int push_cst(ui8_array* Arr, const char* str) {
     unsigned int array_sz = 0;                    // Store array size
     uint8_t* el_ptr = (uint8_t*)str;              // pointer to element
 
@@ -156,18 +159,52 @@ unsigned int push_mem(ui8_array* Arr, uint8_t* start, unsigned int length) {
     // copy by bus length blocks
     unsigned int cp_bus_l_qty;                // qty of bus length copies
     cp_bus_l_qty = length / bus_w;            // calculate qty
-    for (unsigned int itr = 0; itr < cp_bus_l_qty; ++itr) {
+    unsigned int itr = 0;
+    for (; itr < cp_bus_l_qty; ++itr) {
         push_ui(Arr, (unsigned int*)start);  // Push the value
         start += sizeof(unsigned int);        // incurment pointer by size
     }
 
     // copy by single byte
-    for (unsigned int itr = 0; itr < length % bus_w; ++itr) {
+    itr = 0;
+    for (; itr < length % bus_w; ++itr) {
         push(Arr, *start);
         ++start;
     }
 
     return 1;                                 // Signal Success
+}
+
+// -----------------------------------------------------------------------------
+unsigned int is_equal(ui8_array* Arr, const char* in) {
+    unsigned int iii = 0;
+
+    do {
+        if (iii == Arr->len) {                 // At the end of Arr?
+            if (in[iii] == '\0') {             // At the end of in?
+                return 1;                      // Yes, so match
+            } else {
+                return 0;                      // not the end of in, no match
+            }
+        }
+        if (Arr->start_ptr[iii] != in[iii]) {  // Chars ar not equal?
+            return 0;                          // Not equal signal no match
+        }
+        ++iii;                                 // incrument iterator
+    } while (iii < 128);
+
+    return 0;                                  // Over the limit, no  match
+}
+
+// -----------------------------------------------------------------------------
+unsigned int get_enum(ui8_array* Arr, const char* keys[], unsigned int key_sz) {
+    unsigned int iii = 0;
+    for (; iii < key_sz; ++iii) {
+        if (is_equal(Arr, keys[iii]) == 1) {
+            return iii;
+        }
+    }
+    return ~0;                                   // No result
 }
 
 // -----------------------------------------------------------------------------
