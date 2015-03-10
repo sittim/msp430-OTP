@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker Unix v4.4.3                    
 ******************************************************************************
->> Linked Tue Mar 10 14:37:30 2015
+>> Linked Tue Mar 10 17:12:37 2015
 
 OUTPUT FILE NAME:   <msp430-OTP.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 00008000
@@ -90,7 +90,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   0000d400  00000972  0000ca8e  RWIX
+  FLASH2                00010000   0000d400  00000a5c  0000c9a4  RWIX
   OTP                   0001d800   0002a800  00000000  0002a800  RWIX
 
 
@@ -220,7 +220,7 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_ld_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    00000972     
+.text      0    00010000    00000a5c     
                   00010000    000000f2     hw_layer.obj (.text:init)
                   000100f2    000000e2     driverlib.lib : ucs.obj (.text:UCS_initFLL)
                   000101d4    000000e0                   : pmm.obj (.text:PMM_setVCoreUp)
@@ -228,32 +228,32 @@ SYSNMI     0    0000fffc    00000002
                   0001038a    000000a2                   : pmm.obj (.text:PMM_setVCoreDown)
                   0001042c    00000092     rts430x_lc_ld_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
                   000104be    00000090     driverlib.lib : ucs.obj (.text:UCS_clockSignalInit)
-                  0001054e    00000074     main.obj (.text:main)
-                  000105c2    00000068     rts430x_lc_ld_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  0001062a    00000056     serial.obj (.text:push)
-                  00010680    00000054     debug.obj (.text:debug_scan)
-                  000106d4    00000040     driverlib.lib : pmm.obj (.text:PMM_setVCore)
-                  00010714    0000003e     rts430x_lc_ld_eabi.lib : asr32.obj (.text:l_asr_const)
-                  00010752    0000003a     serial.obj (.text:is_equal)
-                  0001078c    00000036     driverlib.lib : ucs.obj (.text:UCS_initFLLSettle)
-                  000107c2    00000030     serial.obj (.text:get_enum)
-                  000107f2    0000002a     rts430x_lc_ld_eabi.lib : memcpy.obj (.text:memcpy)
-                  0001081c    00000028     driverlib.lib : gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionInputPin)
-                  00010844    00000026                   : usci_a_uart.obj (.text:USCI_A_UART_disableInterrupt)
-                  0001086a    00000026     serial.obj (.text:put_cstr)
-                  00010890    00000024     rts430x_lc_ld_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
-                  000108b4    0000001c     driverlib.lib : wdt_a.obj (.text:WDT_A_resetTimer)
-                  000108d0    0000001c                   : wdt_a.obj (.text:WDT_A_start)
-                  000108ec    00000018     hw_layer.obj (.text:putch)
-                  00010904    00000016     rts430x_lc_ld_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  0001091a    00000014     driverlib.lib : wdt_a.obj (.text:WDT_A_watchdogTimerInit)
-                  0001092e    00000014     serial.obj (.text:room_r)
-                  00010942    0000000c     driverlib.lib : usci_a_uart.obj (.text:USCI_A_UART_clearInterruptFlag)
-                  0001094e    0000000c     serial.obj (.text:flush)
-                  0001095a    0000000a     serial.obj (.text:room_l)
-                  00010964    00000006     rts430x_lc_ld_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  0001096a    00000004                            : pre_init.obj (.text:_system_pre_init)
-                  0001096e    00000004                            : exit.obj (.text:abort)
+                  0001054e    00000082     serial.obj (.text:push)
+                  000105d0    00000078     main.obj (.text:main)
+                  00010648    00000068     rts430x_lc_ld_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  000106b0    00000064     serial.obj (.text:is_equal)
+                  00010714    00000062     debug.obj (.text:debug_scan)
+                  00010776    00000050     serial.obj (.text:get_enum)
+                  000107c6    00000040     driverlib.lib : pmm.obj (.text:PMM_setVCore)
+                  00010806    0000003e     rts430x_lc_ld_eabi.lib : asr32.obj (.text:l_asr_const)
+                  00010844    0000003c     serial.obj (.text:put_cstr)
+                  00010880    00000036     driverlib.lib : ucs.obj (.text:UCS_initFLLSettle)
+                  000108b6    0000002c     serial.obj (.text:room_l)
+                  000108e2    0000002a     rts430x_lc_ld_eabi.lib : memcpy.obj (.text:memcpy)
+                  0001090c    00000028     driverlib.lib : gpio.obj (.text:GPIO_setAsPeripheralModuleFunctionInputPin)
+                  00010934    00000026                   : usci_a_uart.obj (.text:USCI_A_UART_disableInterrupt)
+                  0001095a    00000026     serial.obj (.text:room_r)
+                  00010980    00000024     rts430x_lc_ld_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
+                  000109a4    00000020     hw_layer.obj (.text:putch)
+                  000109c4    0000001c     driverlib.lib : wdt_a.obj (.text:WDT_A_resetTimer)
+                  000109e0    0000001c                   : wdt_a.obj (.text:WDT_A_start)
+                  000109fc    0000001c     serial.obj (.text:flush)
+                  00010a18    00000016     rts430x_lc_ld_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  00010a2e    00000014     driverlib.lib : wdt_a.obj (.text:WDT_A_watchdogTimerInit)
+                  00010a42    0000000c                   : usci_a_uart.obj (.text:USCI_A_UART_clearInterruptFlag)
+                  00010a4e    00000006     rts430x_lc_ld_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  00010a54    00000004                            : pre_init.obj (.text:_system_pre_init)
+                  00010a58    00000004                            : exit.obj (.text:abort)
 
 
 LINKER GENERATED COPY TABLES
@@ -377,7 +377,7 @@ address   name
 00000486  BAKMEM3_L                                 
 000004be  BCD2BIN                                   
 000004bc  BIN2BCD                                   
-0001096e  C$$EXIT                                   
+00010a58  C$$EXIT                                   
 000008c0  CBCTL0                                    
 000008c1  CBCTL0_H                                  
 000008c0  CBCTL0_L                                  
@@ -493,7 +493,7 @@ address   name
 00000146  FCTL4                                     
 00000147  FCTL4_H                                   
 00000146  FCTL4_L                                   
-0001081c  GPIO_setAsPeripheralModuleFunctionInputPin
+0001090c  GPIO_setAsPeripheralModuleFunctionInputPin
 00000900  LDOKEYPID                                 
 00000901  LDOKEYPID_H                               
 00000900  LDOKEYPID_L                               
@@ -708,7 +708,7 @@ address   name
 0000012e  PMMRIE                                    
 0000012f  PMMRIE_H                                  
 0000012e  PMMRIE_L                                  
-000106d4  PMM_setVCore                              
+000107c6  PMM_setVCore                              
 0001038a  PMM_setVCoreDown                          
 000101d4  PMM_setVCoreUp                            
 00000904  PUCTL                                     
@@ -983,16 +983,16 @@ address   name
 00000170  UCSCTL8_L                                 
 000104be  UCS_clockSignalInit                       
 000100f2  UCS_initFLL                               
-0001078c  UCS_initFLLSettle                         
-00010942  USCI_A_UART_clearInterruptFlag            
-00010844  USCI_A_UART_disableInterrupt              
+00010880  UCS_initFLLSettle                         
+00010a42  USCI_A_UART_clearInterruptFlag            
+00010934  USCI_A_UART_disableInterrupt              
 000102b4  USCI_UART_init                            
 0000015c  WDTCTL                                    
 0000015d  WDTCTL_H                                  
 0000015c  WDTCTL_L                                  
-000108b4  WDT_A_resetTimer                          
-000108d0  WDT_A_start                               
-0001091a  WDT_A_watchdogTimerInit                   
+000109c4  WDT_A_resetTimer                          
+000109e0  WDT_A_start                               
+00010a2e  WDT_A_watchdogTimerInit                   
 00006400  __STACK_END                               
 000000a0  __STACK_SIZE                              
 0000809a  __TI_CINIT_Base                           
@@ -1002,8 +1002,8 @@ address   name
 UNDEFED   __TI_INITARRAY_Base                       
 UNDEFED   __TI_INITARRAY_Limit                      
 0000801a  __TI_ISR_TRAP                             
-00010904  __TI_decompress_none                      
-00010964  __TI_decompress_rle24                     
+00010a18  __TI_decompress_none                      
+00010a4e  __TI_decompress_rle24                     
 0000ffca  __TI_int37                                
 0000ffcc  __TI_int38                                
 0000ffce  __TI_int39                                
@@ -1028,46 +1028,46 @@ UNDEFED   __TI_INITARRAY_Limit
 0000fff8  __TI_int60                                
 0000fffa  __TI_int61                                
 0000fffc  __TI_int62                                
-00010890  __TI_zero_init                            
+00010980  __TI_zero_init                            
 ffffffff  __binit__                                 
 ffffffff  __c_args__                                
-0001074c  __mspabi_sral_1                           
-00010728  __mspabi_sral_10                          
-00010724  __mspabi_sral_11                          
-00010720  __mspabi_sral_12                          
-0001071c  __mspabi_sral_13                          
-00010718  __mspabi_sral_14                          
-00010714  __mspabi_sral_15                          
-00010748  __mspabi_sral_2                           
-00010744  __mspabi_sral_3                           
-00010740  __mspabi_sral_4                           
-0001073c  __mspabi_sral_5                           
-00010738  __mspabi_sral_6                           
-00010734  __mspabi_sral_7                           
-00010730  __mspabi_sral_8                           
-0001072c  __mspabi_sral_9                           
+0001083e  __mspabi_sral_1                           
+0001081a  __mspabi_sral_10                          
+00010816  __mspabi_sral_11                          
+00010812  __mspabi_sral_12                          
+0001080e  __mspabi_sral_13                          
+0001080a  __mspabi_sral_14                          
+00010806  __mspabi_sral_15                          
+0001083a  __mspabi_sral_2                           
+00010836  __mspabi_sral_3                           
+00010832  __mspabi_sral_4                           
+0001082e  __mspabi_sral_5                           
+0001082a  __mspabi_sral_6                           
+00010826  __mspabi_sral_7                           
+00010822  __mspabi_sral_8                           
+0001081e  __mspabi_sral_9                           
 0001042c  _auto_init_hold_wdt                       
 00008000  _c_int00_noargs_noexit                    
 0000fffe  _reset_vector                             
 00006360  _stack                                    
-0001096a  _system_pre_init                          
-0001096e  abort                                     
+00010a54  _system_pre_init                          
+00010a58  abort                                     
 ffffffff  binit                                     
 00001c82  dbg_keys                                  
 00008068  dbg_keys_sz                               
-00010680  debug_scan                                
-0001094e  flush                                     
-000107c2  get_enum                                  
+00010714  debug_scan                                
+000109fc  flush                                     
+00010776  get_enum                                  
 00001c80  hooks                                     
 00010000  init                                      
-00010752  is_equal                                  
-0001054e  main                                      
-000107f2  memcpy                                    
-0001062a  push                                      
-0001086a  put_cstr                                  
-000108ec  putch                                     
-0001095a  room_l                                    
-0001092e  room_r                                    
+000106b0  is_equal                                  
+000105d0  main                                      
+000108e2  memcpy                                    
+0001054e  push                                      
+00010844  put_cstr                                  
+000109a4  putch                                     
+000108b6  room_l                                    
+0001095a  room_r                                    
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1822,46 +1822,46 @@ address   name
 0001038a  PMM_setVCoreDown                          
 0001042c  _auto_init_hold_wdt                       
 000104be  UCS_clockSignalInit                       
-0001054e  main                                      
-0001062a  push                                      
-00010680  debug_scan                                
-000106d4  PMM_setVCore                              
-00010714  __mspabi_sral_15                          
-00010718  __mspabi_sral_14                          
-0001071c  __mspabi_sral_13                          
-00010720  __mspabi_sral_12                          
-00010724  __mspabi_sral_11                          
-00010728  __mspabi_sral_10                          
-0001072c  __mspabi_sral_9                           
-00010730  __mspabi_sral_8                           
-00010734  __mspabi_sral_7                           
-00010738  __mspabi_sral_6                           
-0001073c  __mspabi_sral_5                           
-00010740  __mspabi_sral_4                           
-00010744  __mspabi_sral_3                           
-00010748  __mspabi_sral_2                           
-0001074c  __mspabi_sral_1                           
-00010752  is_equal                                  
-0001078c  UCS_initFLLSettle                         
-000107c2  get_enum                                  
-000107f2  memcpy                                    
-0001081c  GPIO_setAsPeripheralModuleFunctionInputPin
-00010844  USCI_A_UART_disableInterrupt              
-0001086a  put_cstr                                  
-00010890  __TI_zero_init                            
-000108b4  WDT_A_resetTimer                          
-000108d0  WDT_A_start                               
-000108ec  putch                                     
-00010904  __TI_decompress_none                      
-0001091a  WDT_A_watchdogTimerInit                   
-0001092e  room_r                                    
-00010942  USCI_A_UART_clearInterruptFlag            
-0001094e  flush                                     
-0001095a  room_l                                    
-00010964  __TI_decompress_rle24                     
-0001096a  _system_pre_init                          
-0001096e  C$$EXIT                                   
-0001096e  abort                                     
+0001054e  push                                      
+000105d0  main                                      
+000106b0  is_equal                                  
+00010714  debug_scan                                
+00010776  get_enum                                  
+000107c6  PMM_setVCore                              
+00010806  __mspabi_sral_15                          
+0001080a  __mspabi_sral_14                          
+0001080e  __mspabi_sral_13                          
+00010812  __mspabi_sral_12                          
+00010816  __mspabi_sral_11                          
+0001081a  __mspabi_sral_10                          
+0001081e  __mspabi_sral_9                           
+00010822  __mspabi_sral_8                           
+00010826  __mspabi_sral_7                           
+0001082a  __mspabi_sral_6                           
+0001082e  __mspabi_sral_5                           
+00010832  __mspabi_sral_4                           
+00010836  __mspabi_sral_3                           
+0001083a  __mspabi_sral_2                           
+0001083e  __mspabi_sral_1                           
+00010844  put_cstr                                  
+00010880  UCS_initFLLSettle                         
+000108b6  room_l                                    
+000108e2  memcpy                                    
+0001090c  GPIO_setAsPeripheralModuleFunctionInputPin
+00010934  USCI_A_UART_disableInterrupt              
+0001095a  room_r                                    
+00010980  __TI_zero_init                            
+000109a4  putch                                     
+000109c4  WDT_A_resetTimer                          
+000109e0  WDT_A_start                               
+000109fc  flush                                     
+00010a18  __TI_decompress_none                      
+00010a2e  WDT_A_watchdogTimerInit                   
+00010a42  USCI_A_UART_clearInterruptFlag            
+00010a4e  __TI_decompress_rle24                     
+00010a54  _system_pre_init                          
+00010a58  C$$EXIT                                   
+00010a58  abort                                     
 ffffffff  __binit__                                 
 ffffffff  __c_args__                                
 ffffffff  binit                                     

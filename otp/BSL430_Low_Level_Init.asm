@@ -98,7 +98,8 @@ BSL_REQ_APP_CALL   .equ  0x0002                  ;Return Value for BSLUNLOCK Fun
 BSL_Protect
               CLR      RET_low                  ;lock (keep JTAGLOCK_KEY state)
 
-              BIS     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; protects BSL
+              ;BIS     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; protects BSL
+              ;BIC     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; Unprotect BSL
               ;BIC     #BSL_REQ_JTAG_OPEN, RET_low   ;lock (keep JTAGLOCK_KEY state)
               ;BIS     #BSL_REQ_JTAG_OPEN, RET_low   ;make sure it remains open for debugging
 

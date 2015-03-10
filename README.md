@@ -61,7 +61,11 @@ Code Composer Studio V6+ (CCS6) and msp430f5xxx uC
 
 1. Clone the directory into you project.
 2. Adjust the lnk_msp430f5xxx.cmd file.
-3. Add OTP and Production build configuration to CCS6
+
+### Debugging with CCS6
+
+Be sure to check the "Allow read/write erase to BSL memory"
+
 
 ## BSL and The Application
 

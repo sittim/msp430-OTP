@@ -122,26 +122,26 @@ EXE_OUTPUTS__QUOTED += \
 "msp430-OTP.out" \
 
 BIN_OUTPUTS += \
-msp430-OTP.hex \
+msp430-OTP.txt \
 
 BIN_OUTPUTS__QUOTED += \
-"msp430-OTP.hex" \
+"msp430-OTP.txt" \
 
 
 # All Target
-all: msp430-OTP.out
+all: msp430-OTP.out secondary-outputs
 
 # Tool invocations
 msp430-OTP.out: $(OBJS) $(CMD_SRCS) $(A_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP430 Linker'
-	"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmspx --abi=eabi --code_model=large --data_model=large --near_data=none --use_hw_mpy=F5 --advice:power=all -g --define=__MSP430F5335__ --diag_warning=225 --display_error_number --diag_wrap=off --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 --printf_support=minimal -z -m"msp430-OTP.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/home/sporty/ti/ccsv6/ccs_base/msp430/include" -i"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" -i"/home/sporty/ti/ccsv6/ccs_base/msp430/lib/5xx_6xx_FRxx" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="msp430-OTP_linkInfo.xml" --rom_model -o "msp430-OTP.out" $(ORDERED_OBJS) $(A_SRCS)
+	"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmspx --abi=eabi --code_model=large --data_model=large --near_data=none -Ooff --use_hw_mpy=F5 --advice:power="all" -g --define=__MSP430F5335__ --diag_warning=225 --display_error_number --diag_wrap=off --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 --printf_support=minimal -z -m"msp430-OTP.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/home/sporty/ti/ccsv6/ccs_base/msp430/include" -i"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" -i"/home/sporty/ti/ccsv6/ccs_base/msp430/lib/5xx_6xx_FRxx" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="msp430-OTP_linkInfo.xml" --rom_model -o "msp430-OTP.out" $(ORDERED_OBJS) $(A_SRCS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-msp430-OTP.hex: $(EXE_OUTPUTS)
+msp430-OTP.txt: $(EXE_OUTPUTS)
 	@echo 'Invoking: MSP430 Hex Utility'
-	"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/hex430" --memwidth=8 --romwidth=8 -o "msp430-OTP.hex" $(EXE_OUTPUTS__QUOTED)
+	"/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/hex430" --memwidth=8 --romwidth=8 --ti_txt -o "msp430-OTP.txt" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 
@@ -153,6 +153,8 @@ clean:
 	-$(RM) "otp/BSL430_Low_Level_Init.pp" 
 	-@echo 'Finished clean'
 	-@echo ' '
+
+secondary-outputs: $(BIN_OUTPUTS)
 
 .PHONY: all clean dependents
 .SECONDARY:

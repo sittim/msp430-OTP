@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.obj
+*.pp
 
 # Precompiled Headers
 *.gch
@@ -27,4 +28,3 @@
 *.out
 *.app
 
-Debug
