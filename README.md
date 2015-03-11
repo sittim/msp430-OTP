@@ -64,7 +64,8 @@ Code Composer Studio V6+ (CCS6) and msp430f5xxx uC
 
 ### Debugging with CCS6
 
-Be sure to check the "Allow read/write erase to BSL memory"
+Be sure to check the "Allow read/write erase to BSL memory" as shown below:
+![BSL Memory Config](otp/uml/allow_read_write_erase_bsl.png)
 
 
 ## BSL and The Application

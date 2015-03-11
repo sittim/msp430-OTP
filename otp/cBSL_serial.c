@@ -4,6 +4,7 @@
 #include "msp430-OTP/otp/cBSL_serial.h"
 
 // -----------------------------------------------------------------------------
+// #pragma RETAIN(cBSL_main)
 #pragma CODE_SECTION(cBSL_put_cstr, ".BSL")
 unsigned int cBSL_put_cstr(const char* str) {
     unsigned int max = 2048;

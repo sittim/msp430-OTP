@@ -17,7 +17,7 @@ typedef struct {
     unsigned int len;
 } cBSL_ui8_array;
 
-unsigned int put_cstr(const char* str);
+unsigned int cBSL_put_cstr(const char* str);
 
 /**
  * Outputs byte to the Debug TX

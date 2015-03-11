@@ -5,7 +5,7 @@
 ; BSL SW low level functions
 ;**************************************************************
 
-    .cdecls C,LIST,"msp430.h"
+  .cdecls C,LIST,"msp430.h"
 
 ARG1     .equ R12
 ARG2     .equ R13
@@ -16,8 +16,10 @@ RET_low  .equ R12
 RET_high .equ r13
 
  .ref cBSL_main
+
 ;--------------------------------------------------------------
- .sect "ZAREA"
+ .sect ".ZAREA"
+; .retain
 ;--------------------------------------------------------------
 BSL_Entry_JMP
               JMP    C_Branch
@@ -28,7 +30,11 @@ BSL_Entry_JMP
 C_Branch      BR     #cBSL_main                  ; call cBSL main
               ;JMP    $                          ; BSL_ACTION5 unused
               ;JMP    $                          ; BSL_ACTION6 unused
- .sect "ZAREA_CODE"
+
+;--------------------------------------------------------------
+ .sect ".ZAREA_CODE"
+ .retain
+;--------------------------------------------------------------
 
 ;**************************************************************
 ; Name       :BSL_ACTION0
@@ -93,10 +99,10 @@ BSL_Unprotect
 ;            :0 in R12.1 for no appended call
 ;            :1 in R12.1 for appended call via BSLENTRY : BSL_REQ_APP_CALL
 ;**************************************************************
-BSL_REQ_JTAG_OPEN  .equ  0x0001                  ;Return Value for BSLUNLOCK Function to open JTAG
-BSL_REQ_APP_CALL   .equ  0x0002                  ;Return Value for BSLUNLOCK Function to Call BSL again
+BSL_REQ_JTAG_OPEN  .equ  0x0001      ;Return Value for BSLUNLOCK Function to open JTAG
+BSL_REQ_APP_CALL   .equ  0x0002      ;Return Value for BSLUNLOCK Function to Call BSL again
 BSL_Protect
-              CLR      RET_low                  ;lock (keep JTAGLOCK_KEY state)
+              CLR      RET_low       ;lock (keep JTAGLOCK_KEY state)
 
               ;BIS     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; protects BSL
               ;BIC     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; Unprotect BSL
@@ -111,8 +117,10 @@ BSL_Protect
               BIS.W   #BSL_REQ_APP_CALL, RET_low     ; set R12 to 2
 BCC2BSL       RETA
 
- .sect "BSLSIG"
-
+;-------------------------------------------------------------------------------
+ .sect ".BSLSIG"
+; .retain
+;-------------------------------------------------------------------------------
                  .word       0xFFFF         ; 0x17F0
 BslProtectVecLoc .word       BSL_Protect    ; 0x17F2 adress of function
 PBSLSigLoc       .word       03CA5h         ; 0x17F4 1st BSL signature
@@ -120,8 +128,10 @@ SBSLSigLoc       .word       0C35Ah         ; 0x17F6 2nd BSL signature
                  .word       0xFFFF         ; 0x17F8
 BslEntryLoc      .word       BSL_Entry_JMP  ; 0x17FA BSL_Entry_JMP
 
-
- .sect "JTAGLOCK_KEY"
+;-------------------------------------------------------------------------------
+ .sect ".JTAGLOCK_KEY"
+; .retain
+;-------------------------------------------------------------------------------
 PJTAGLOCK_KEY    .word       0xFFFF         ; 0x17FC Primary Key Location
 SJTAGLOCK_KEY    .word       0xFFFF         ; 0x17FD Secondary Key Location
                                             ; set default unlock JTAG with

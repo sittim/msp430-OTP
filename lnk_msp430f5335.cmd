@@ -58,8 +58,8 @@ MEMORY
     PERIPHERALS_16BIT       : origin = 0x0100, length = 0x0100
     ZAREA                   : origin = 0x1000, length = 0x0010  // 0x1010
     BSL_VER                 : origin = 0x1010, length = 0x0001  // 0x1011
-    ZAREA_CODE              : origin = 0x1011, length = 0x002E  // 0x103F
-    BSL                     : origin = 0x103F, length = 0x07B1  // Datasheet
+    ZAREA_CODE              : origin = 0x1011, length = 0x0040  // 0x103F
+    BSL                     : origin = 0x1051, length = 0x079F  // Datasheet
     BSLSIG                  : origin = 0x17F0, length = 0x000C
     JTAGLOCK_KEY            : origin = 0x17FC, length = 0x0004
     INFOD                   : origin = 0x1800, length = 0x0080

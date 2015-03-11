@@ -11,7 +11,8 @@ void cBSL_init();
 * *Description: Initializes the BSL Command Interpreter and begins listening for
 *             incoming packets
 *******************************************************************************/
-#pragma CODE_SECTION(cBSL_init, ".BSL")
+#pragma RETAIN(cBSL_main)
+#pragma CODE_SECTION(cBSL_main, ".BSL")
 void cBSL_main(void) {
     //
     cBSL_init();
@@ -21,11 +22,13 @@ void cBSL_main(void) {
 
     }
 }
+
 /*******************************************************************************
 *Function:    cBSL_init
 *Description: Init the clocks and the UART for Debugging
 *Parameters:
 *******************************************************************************/
+// #pragma RETAIN(cBSL_init)
 #pragma CODE_SECTION(cBSL_init, ".BSL")
 void cBSL_init() {
     __disable_interrupt();                    // Disable the Interrupts
