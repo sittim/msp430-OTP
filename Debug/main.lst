@@ -1,11 +1,11 @@
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE    1
 
        1            ;******************************************************************************
        2            ;* MSP430 C/C++ Codegen                                           Unix v4.4.3 *
-       3            ;* Date/Time created: Wed Mar 11 11:28:30 2015                                *
+       3            ;* Date/Time created: Wed Mar 11 17:15:22 2015                                *
        4            ;******************************************************************************
        5                    .compiler_opts --abi=eabi --diag_wrap=off --hll_source=on --mem_model:code=large --mem_model:d
        6            
@@ -21,7 +21,7 @@ main.asm                                                             PAGE    1
       16                    .dwattr $C$DW$1, DW_AT_declaration
       17                    .dwattr $C$DW$1, DW_AT_external
       18                    .dwattr $C$DW$1, DW_AT_decl_file("/work/c1202-firmware/msp430-OTP/serial.h")
-      19                    .dwattr $C$DW$1, DW_AT_decl_line(0x37)
+      19                    .dwattr $C$DW$1, DW_AT_decl_line(0x49)
       20                    .dwattr $C$DW$1, DW_AT_decl_column(0x0e)
       21            $C$DW$2 .dwtag  DW_TAG_formal_parameter
       22                    .dwattr $C$DW$2, DW_AT_type(*$C$DW$T$70)
@@ -36,7 +36,7 @@ main.asm                                                             PAGE    1
       31                    .dwattr $C$DW$4, DW_AT_declaration
       32                    .dwattr $C$DW$4, DW_AT_external
       33                    .dwattr $C$DW$4, DW_AT_decl_file("/work/c1202-firmware/msp430-OTP/serial.h")
-      34                    .dwattr $C$DW$4, DW_AT_decl_line(0x71)
+      34                    .dwattr $C$DW$4, DW_AT_decl_line(0x83)
       35                    .dwattr $C$DW$4, DW_AT_decl_column(0x0e)
       36            $C$DW$5 .dwtag  DW_TAG_formal_parameter
       37                    .dwattr $C$DW$5, DW_AT_type(*$C$DW$T$128)
@@ -56,9 +56,9 @@ main.asm                                                             PAGE    1
       51                    .dwattr $C$DW$7, DW_AT_declaration
       52                    .dwattr $C$DW$7, DW_AT_external
       53                    .dwattr $C$DW$7, DW_AT_decl_file("/work/c1202-firmware/msp430-OTP/debug.h")
-      54                    .dwattr $C$DW$7, DW_AT_decl_line(0x1b)
+      54                    .dwattr $C$DW$7, DW_AT_decl_line(0x1c)
       55                    .dwattr $C$DW$7, DW_AT_decl_column(0x06)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE    2
@@ -101,7 +101,7 @@ main.asm                                                             PAGE    2
       91                    .dwattr $C$DW$12, DW_AT_declaration
       92                    .dwattr $C$DW$12, DW_AT_external
       93                    .dwattr $C$DW$12, DW_AT_decl_file("/work/c1202-firmware/msp430-OTP/debug.h")
-      94                    .dwattr $C$DW$12, DW_AT_decl_line(0x10)
+      94                    .dwattr $C$DW$12, DW_AT_decl_line(0x11)
       95                    .dwattr $C$DW$12, DW_AT_decl_column(0x12)
       96            $C$DW$13        .dwtag  DW_TAG_variable, DW_AT_name("hooks")
       97                    .dwattr $C$DW$13, DW_AT_TI_symbol_name("hooks")
@@ -111,14 +111,14 @@ main.asm                                                             PAGE    2
      101                    .dwattr $C$DW$13, DW_AT_decl_file("../main.c")
      102                    .dwattr $C$DW$13, DW_AT_decl_line(0x17)
      103                    .dwattr $C$DW$13, DW_AT_decl_column(0x11)
-     104            ;       /home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/acpia430 -@/tmp/182464sqCgI 
+     104            ;       /home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/acpia430 -@/tmp/00308GBc2CA 
      105 000000               .sect   ".text:main"
      106                    .clink
      107                    .global main
      108            
      109            $C$DW$14        .dwtag  DW_TAG_subprogram, DW_AT_name("main")
      110                    .dwattr $C$DW$14, DW_AT_low_pc(main)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE    3
@@ -178,7 +178,7 @@ main.asm                                                             PAGE    3
      157 000016 1840!         MOVX.W    #0,&hooks+0           ; [] |33| 
          000018 4382 
          00001a 0000 
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE    4
@@ -238,7 +238,7 @@ main.asm                                                             PAGE    4
          000040 000D 
          000042 0000 
      200 000044 200B          JNE       $C$L4                 ; [] |44| 
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE    5
@@ -298,7 +298,7 @@ main.asm                                                             PAGE    5
      244 000066       $C$L5:    
      245                    .dwpsn  file "../main.c",line 50,column 20,is_stmt,isa 0
      246 000066 1840!         BITX.B    #2,&UCA0ICTL_H+0      ; [] |50| 
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE    6
@@ -358,7 +358,7 @@ main.asm                                                             PAGE    6
      284            
      285            ;******************************************************************************
      286            ;* BUILD ATTRIBUTES                                                           *
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE    7
@@ -418,7 +418,7 @@ main.asm                                                             PAGE    7
      339            $C$DW$27        .dwtag  DW_TAG_member
      340                    .dwattr $C$DW$27, DW_AT_type(*$C$DW$T$21)
      341                    .dwattr $C$DW$27, DW_AT_name("base_ptr")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE    8
@@ -478,7 +478,7 @@ main.asm                                                             PAGE    8
      394                    .dwattr $C$DW$31, DW_AT_name("quot")
      395                    .dwattr $C$DW$31, DW_AT_TI_symbol_name("quot")
      396                    .dwattr $C$DW$31, DW_AT_data_member_location[DW_OP_plus_uconst 0x0]
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE    9
@@ -538,7 +538,7 @@ main.asm                                                             PAGE    9
      449                    .dwattr $C$DW$T$72, DW_AT_language(DW_LANG_C)
      450                    .dwattr $C$DW$T$72, DW_AT_decl_file("/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/
      451                    .dwattr $C$DW$T$72, DW_AT_decl_line(0x48)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   10
@@ -598,7 +598,7 @@ main.asm                                                             PAGE   10
      504                    .dwattr $C$DW$38, DW_AT_decl_file("/work/c1202-firmware/driverlib/adc12_a.h")
      505                    .dwattr $C$DW$38, DW_AT_decl_line(0x67)
      506                    .dwattr $C$DW$38, DW_AT_decl_column(0x0d)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   11
@@ -658,7 +658,7 @@ main.asm                                                             PAGE   11
      559                    .dwattr $C$DW$43, DW_AT_type(*$C$DW$T$19)
      560                    .dwattr $C$DW$43, DW_AT_name("Minutes")
      561                    .dwattr $C$DW$43, DW_AT_TI_symbol_name("Minutes")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   12
@@ -718,7 +718,7 @@ main.asm                                                             PAGE   12
      614                    .dwattr $C$DW$T$30, DW_AT_decl_file("/work/c1202-firmware/driverlib/rtc_b.h")
      615                    .dwattr $C$DW$T$30, DW_AT_decl_line(0x3f)
      616                    .dwattr $C$DW$T$30, DW_AT_decl_column(0x10)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   13
@@ -778,7 +778,7 @@ main.asm                                                             PAGE   13
      669                    .dwattr $C$DW$T$76, DW_AT_type(*$C$DW$T$31)
      670                    .dwattr $C$DW$T$76, DW_AT_language(DW_LANG_C)
      671                    .dwattr $C$DW$T$76, DW_AT_decl_file("/work/c1202-firmware/driverlib/comp_b.h")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   14
@@ -838,7 +838,7 @@ main.asm                                                             PAGE   14
      724            
      725                    .dwattr $C$DW$T$32, DW_AT_decl_file("/work/c1202-firmware/driverlib/comp_b.h")
      726                    .dwattr $C$DW$T$32, DW_AT_decl_line(0x3e)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   15
@@ -898,7 +898,7 @@ main.asm                                                             PAGE   15
      779                    .dwattr $C$DW$62, DW_AT_accessibility(DW_ACCESS_public)
      780                    .dwattr $C$DW$62, DW_AT_decl_file("/work/c1202-firmware/driverlib/dma.h")
      781                    .dwattr $C$DW$62, DW_AT_decl_line(0x82)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   16
@@ -958,7 +958,7 @@ main.asm                                                             PAGE   16
      834            $C$DW$67        .dwtag  DW_TAG_member
      835                    .dwattr $C$DW$67, DW_AT_type(*$C$DW$T$19)
      836                    .dwattr $C$DW$67, DW_AT_name("portMapReconfigure")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   17
@@ -1018,7 +1018,7 @@ main.asm                                                             PAGE   17
      889                    .dwattr $C$DW$71, DW_AT_data_member_location[DW_OP_plus_uconst 0x3]
      890                    .dwattr $C$DW$71, DW_AT_accessibility(DW_ACCESS_public)
      891                    .dwattr $C$DW$71, DW_AT_decl_file("/work/c1202-firmware/driverlib/rtc_b.h")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   18
@@ -1078,7 +1078,7 @@ main.asm                                                             PAGE   18
      944                    .dwattr $C$DW$75, DW_AT_decl_column(0x0e)
      945            $C$DW$76        .dwtag  DW_TAG_member
      946                    .dwattr $C$DW$76, DW_AT_type(*$C$DW$T$29)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   19
@@ -1138,7 +1138,7 @@ main.asm                                                             PAGE   19
      999                    .dwattr $C$DW$80, DW_AT_TI_symbol_name("compareOutputMode")
     1000                    .dwattr $C$DW$80, DW_AT_data_member_location[DW_OP_plus_uconst 0x4]
     1001                    .dwattr $C$DW$80, DW_AT_accessibility(DW_ACCESS_public)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   20
@@ -1198,7 +1198,7 @@ main.asm                                                             PAGE   20
     1054                    .dwattr $C$DW$84, DW_AT_decl_line(0x6c)
     1055                    .dwattr $C$DW$84, DW_AT_decl_column(0x0e)
     1056            $C$DW$85        .dwtag  DW_TAG_member
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   21
@@ -1258,7 +1258,7 @@ main.asm                                                             PAGE   21
     1109                    .dwattr $C$DW$89, DW_AT_name("timerPeriod")
     1110                    .dwattr $C$DW$89, DW_AT_TI_symbol_name("timerPeriod")
     1111                    .dwattr $C$DW$89, DW_AT_data_member_location[DW_OP_plus_uconst 0x4]
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   22
@@ -1318,7 +1318,7 @@ main.asm                                                             PAGE   22
     1164            $C$DW$T$41      .dwtag  DW_TAG_structure_type
     1165                    .dwattr $C$DW$T$41, DW_AT_name("Timer_A_initUpModeParam")
     1166                    .dwattr $C$DW$T$41, DW_AT_byte_size(0x0e)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   23
@@ -1378,7 +1378,7 @@ main.asm                                                             PAGE   23
     1219                    .dwattr $C$DW$99, DW_AT_decl_line(0x163)
     1220                    .dwattr $C$DW$99, DW_AT_decl_column(0x0e)
     1221            $C$DW$100       .dwtag  DW_TAG_member
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   24
@@ -1438,7 +1438,7 @@ main.asm                                                             PAGE   24
     1274                    .dwattr $C$DW$104, DW_AT_name("compareRegister")
     1275                    .dwattr $C$DW$104, DW_AT_TI_symbol_name("compareRegister")
     1276                    .dwattr $C$DW$104, DW_AT_data_member_location[DW_OP_plus_uconst 0x6]
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   25
@@ -1498,7 +1498,7 @@ main.asm                                                             PAGE   25
     1329                    .dwattr $C$DW$108, DW_AT_decl_file("/work/c1202-firmware/driverlib/timer_b.h")
     1330                    .dwattr $C$DW$108, DW_AT_decl_line(0xd8)
     1331                    .dwattr $C$DW$108, DW_AT_decl_column(0x0e)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   26
@@ -1558,7 +1558,7 @@ main.asm                                                             PAGE   26
     1384                    .dwattr $C$DW$113, DW_AT_type(*$C$DW$T$29)
     1385                    .dwattr $C$DW$113, DW_AT_name("compareRegister")
     1386                    .dwattr $C$DW$113, DW_AT_TI_symbol_name("compareRegister")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   27
@@ -1618,7 +1618,7 @@ main.asm                                                             PAGE   27
     1439                    .dwattr $C$DW$117, DW_AT_accessibility(DW_ACCESS_public)
     1440                    .dwattr $C$DW$117, DW_AT_decl_file("/work/c1202-firmware/driverlib/timer_b.h")
     1441                    .dwattr $C$DW$117, DW_AT_decl_line(0x105)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   28
@@ -1678,7 +1678,7 @@ main.asm                                                             PAGE   28
     1494            $C$DW$122       .dwtag  DW_TAG_member
     1495                    .dwattr $C$DW$122, DW_AT_type(*$C$DW$T$29)
     1496                    .dwattr $C$DW$122, DW_AT_name("clockSource")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   29
@@ -1738,7 +1738,7 @@ main.asm                                                             PAGE   29
     1549                    .dwattr $C$DW$128, DW_AT_type(*$C$DW$T$38)
     1550                    .dwattr $C$DW$128, DW_AT_name("startTimer")
     1551                    .dwattr $C$DW$128, DW_AT_TI_symbol_name("startTimer")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   30
@@ -1798,7 +1798,7 @@ main.asm                                                             PAGE   30
     1604                    .dwattr $C$DW$132, DW_AT_accessibility(DW_ACCESS_public)
     1605                    .dwattr $C$DW$132, DW_AT_decl_file("/work/c1202-firmware/driverlib/timer_b.h")
     1606                    .dwattr $C$DW$132, DW_AT_decl_line(0xaf)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   31
@@ -1858,7 +1858,7 @@ main.asm                                                             PAGE   31
     1659            $C$DW$137       .dwtag  DW_TAG_member
     1660                    .dwattr $C$DW$137, DW_AT_type(*$C$DW$T$29)
     1661                    .dwattr $C$DW$137, DW_AT_name("clockSourceDivider")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   32
@@ -1918,7 +1918,7 @@ main.asm                                                             PAGE   32
     1714                    .dwattr $C$DW$T$92, DW_AT_decl_column(0x03)
     1715            
     1716            $C$DW$T$50      .dwtag  DW_TAG_structure_type
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   33
@@ -1978,7 +1978,7 @@ main.asm                                                             PAGE   33
     1769                    .dwattr $C$DW$145, DW_AT_decl_column(0x0e)
     1770            $C$DW$146       .dwtag  DW_TAG_member
     1771                    .dwattr $C$DW$146, DW_AT_type(*$C$DW$T$49)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   34
@@ -2038,7 +2038,7 @@ main.asm                                                             PAGE   34
     1824                    .dwattr $C$DW$150, DW_AT_TI_symbol_name("selectClockSource")
     1825                    .dwattr $C$DW$150, DW_AT_data_member_location[DW_OP_plus_uconst 0x0]
     1826                    .dwattr $C$DW$150, DW_AT_accessibility(DW_ACCESS_public)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   35
@@ -2098,7 +2098,7 @@ main.asm                                                             PAGE   35
     1879                    .dwattr $C$DW$156, DW_AT_data_member_location[DW_OP_plus_uconst 0x8]
     1880                    .dwattr $C$DW$156, DW_AT_accessibility(DW_ACCESS_public)
     1881                    .dwattr $C$DW$156, DW_AT_decl_file("/work/c1202-firmware/driverlib/usci_a_uart.h")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   36
@@ -2158,7 +2158,7 @@ main.asm                                                             PAGE   36
     1934                    .dwattr $C$DW$160, DW_AT_decl_column(0x0e)
     1935            $C$DW$161       .dwtag  DW_TAG_member
     1936                    .dwattr $C$DW$161, DW_AT_type(*$C$DW$T$49)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   37
@@ -2218,7 +2218,7 @@ main.asm                                                             PAGE   37
     1989            $C$DW$T$55      .dwtag  DW_TAG_structure_type
     1990                    .dwattr $C$DW$T$55, DW_AT_name("USCI_B_SPI_initMasterParam")
     1991                    .dwattr $C$DW$T$55, DW_AT_byte_size(0x0e)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   38
@@ -2278,7 +2278,7 @@ main.asm                                                             PAGE   38
     2044                    .dwattr $C$DW$169, DW_AT_decl_line(0x56)
     2045                    .dwattr $C$DW$169, DW_AT_decl_column(0x0d)
     2046                    .dwendtag $C$DW$T$55
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   39
@@ -2338,7 +2338,7 @@ main.asm                                                             PAGE   39
     2099            
     2100            $C$DW$T$57      .dwtag  DW_TAG_structure_type
     2101                    .dwattr $C$DW$T$57, DW_AT_name("USCI_SPI_changeMasterClockParam")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   40
@@ -2398,7 +2398,7 @@ main.asm                                                             PAGE   40
     2154            $C$DW$177       .dwtag  DW_TAG_member
     2155                    .dwattr $C$DW$177, DW_AT_type(*$C$DW$T$49)
     2156                    .dwattr $C$DW$177, DW_AT_name("desiredSpiClock")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   41
@@ -2458,7 +2458,7 @@ main.asm                                                             PAGE   41
     2209                    .dwattr $C$DW$181, DW_AT_data_member_location[DW_OP_plus_uconst 0x0]
     2210                    .dwattr $C$DW$181, DW_AT_accessibility(DW_ACCESS_public)
     2211                    .dwattr $C$DW$181, DW_AT_decl_file("/work/c1202-firmware/driverlib/usci_uart.h")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   42
@@ -2518,7 +2518,7 @@ main.asm                                                             PAGE   42
     2264                    .dwattr $C$DW$187, DW_AT_accessibility(DW_ACCESS_public)
     2265                    .dwattr $C$DW$187, DW_AT_decl_file("/work/c1202-firmware/driverlib/usci_uart.h")
     2266                    .dwattr $C$DW$187, DW_AT_decl_line(0x66)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   43
@@ -2578,7 +2578,7 @@ main.asm                                                             PAGE   43
     2319                    .dwattr $C$DW$T$108, DW_AT_language(DW_LANG_C)
     2320                    .dwattr $C$DW$T$108, DW_AT_decl_file("/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3
     2321                    .dwattr $C$DW$T$108, DW_AT_decl_line(0x9a)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   44
@@ -2638,7 +2638,7 @@ main.asm                                                             PAGE   44
     2374            $C$DW$T$114     .dwtag  DW_TAG_typedef, DW_AT_name("uint_least8_t")
     2375                    .dwattr $C$DW$T$114, DW_AT_type(*$C$DW$T$19)
     2376                    .dwattr $C$DW$T$114, DW_AT_language(DW_LANG_C)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   45
@@ -2698,7 +2698,7 @@ main.asm                                                             PAGE   45
     2429                    .dwattr $C$DW$T$120, DW_AT_language(DW_LANG_C)
     2430                    .dwattr $C$DW$T$120, DW_AT_decl_file("/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3
     2431                    .dwattr $C$DW$T$120, DW_AT_decl_line(0x45)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   46
@@ -2758,7 +2758,7 @@ main.asm                                                             PAGE   46
     2484                    .dwattr $C$DW$T$134, DW_AT_decl_file("/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3
     2485                    .dwattr $C$DW$T$134, DW_AT_decl_line(0x3b)
     2486                    .dwattr $C$DW$T$134, DW_AT_decl_column(0x16)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   47
@@ -2818,7 +2818,7 @@ main.asm                                                             PAGE   47
     2539                    .dwattr $C$DW$T$142, DW_AT_language(DW_LANG_C)
     2540                    .dwattr $C$DW$T$142, DW_AT_decl_file("/home/sporty/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3
     2541                    .dwattr $C$DW$T$142, DW_AT_decl_line(0x8c)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   48
@@ -2878,7 +2878,7 @@ main.asm                                                             PAGE   48
     2594                    .dwattr $C$DW$T$149, DW_AT_decl_column(0x21)
     2595            $C$DW$T$150     .dwtag  DW_TAG_typedef, DW_AT_name("int_fast64_t")
     2596                    .dwattr $C$DW$T$150, DW_AT_type(*$C$DW$T$149)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   49
@@ -2938,7 +2938,7 @@ main.asm                                                             PAGE   49
     2649                    .dwattr $C$DW$T$16, DW_AT_name("float")
     2650                    .dwattr $C$DW$T$16, DW_AT_byte_size(0x04)
     2651            $C$DW$T$17      .dwtag  DW_TAG_base_type
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   50
@@ -2994,25 +2994,25 @@ main.asm                                                             PAGE   50
     2700                    .dwattr $C$DW$T$165, DW_AT_byte_size(0x02)
     2701            $C$DW$198       .dwtag  DW_TAG_enumerator, DW_AT_name("mdm_end_delay"), DW_AT_const_value(0x00)
     2702                    .dwattr $C$DW$198, DW_AT_decl_file("/work/c1202-firmware/msp430-OTP/debug.h")
-    2703                    .dwattr $C$DW$198, DW_AT_decl_line(0x16)
+    2703                    .dwattr $C$DW$198, DW_AT_decl_line(0x17)
     2704                    .dwattr $C$DW$198, DW_AT_decl_column(0x05)
     2705            $C$DW$199       .dwtag  DW_TAG_enumerator, DW_AT_name("empty"), DW_AT_const_value(0x01)
     2706                    .dwattr $C$DW$199, DW_AT_decl_file("/work/c1202-firmware/msp430-OTP/debug.h")
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   51
 
-    2707                    .dwattr $C$DW$199, DW_AT_decl_line(0x17)
+    2707                    .dwattr $C$DW$199, DW_AT_decl_line(0x18)
     2708                    .dwattr $C$DW$199, DW_AT_decl_column(0x05)
     2709            $C$DW$200       .dwtag  DW_TAG_enumerator, DW_AT_name("unknown"), DW_AT_const_value(0x02)
     2710                    .dwattr $C$DW$200, DW_AT_decl_file("/work/c1202-firmware/msp430-OTP/debug.h")
-    2711                    .dwattr $C$DW$200, DW_AT_decl_line(0x18)
+    2711                    .dwattr $C$DW$200, DW_AT_decl_line(0x19)
     2712                    .dwattr $C$DW$200, DW_AT_decl_column(0x05)
     2713                    .dwendtag $C$DW$T$165
     2714            
     2715                    .dwattr $C$DW$T$165, DW_AT_decl_file("/work/c1202-firmware/msp430-OTP/debug.h")
-    2716                    .dwattr $C$DW$T$165, DW_AT_decl_line(0x15)
+    2716                    .dwattr $C$DW$T$165, DW_AT_decl_line(0x16)
     2717                    .dwattr $C$DW$T$165, DW_AT_decl_column(0x06)
     2718            
     2719            $C$DW$T$60      .dwtag  DW_TAG_structure_type
@@ -3058,7 +3058,7 @@ main.asm                                                             PAGE   51
     2759            
     2760                    .dwattr $C$DW$T$60, DW_AT_decl_file("/work/c1202-firmware/driverlib/tlv.h")
     2761                    .dwattr $C$DW$T$60, DW_AT_decl_line(0x61)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   52
@@ -3118,7 +3118,7 @@ main.asm                                                             PAGE   52
     2814                    .dwattr $C$DW$210, DW_AT_name("adc_ref20_85_temp")
     2815                    .dwattr $C$DW$210, DW_AT_TI_symbol_name("adc_ref20_85_temp")
     2816                    .dwattr $C$DW$210, DW_AT_data_member_location[DW_OP_plus_uconst 0xa]
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   53
@@ -3178,7 +3178,7 @@ main.asm                                                             PAGE   53
     2869                    .dwattr $C$DW$215, DW_AT_TI_symbol_name("die_y_position")
     2870                    .dwattr $C$DW$215, DW_AT_data_member_location[DW_OP_plus_uconst 0x6]
     2871                    .dwattr $C$DW$215, DW_AT_accessibility(DW_ACCESS_public)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   54
@@ -3238,7 +3238,7 @@ main.asm                                                             PAGE   54
     2924                    .dwattr $C$DW$T$64, DW_AT_decl_column(0x08)
     2925            
     2926            $C$DW$T$65      .dwtag  DW_TAG_structure_type
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   55
@@ -3298,7 +3298,7 @@ main.asm                                                             PAGE   55
     2979                    .dwattr $C$DW$224, DW_AT_accessibility(DW_ACCESS_public)
     2980                    .dwattr $C$DW$224, DW_AT_decl_file("/work/c1202-firmware/driverlib/mpy32.h")
     2981                    .dwattr $C$DW$224, DW_AT_decl_line(0x42)
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   56
@@ -3358,7 +3358,7 @@ main.asm                                                             PAGE   56
     3034                    .dwcfi  same_value, 4
     3035                    .dwcfi  same_value, 5
     3036                    .dwcfi  same_value, 6
-MSP430 Assembler Unix v4.4.3 Wed Mar 11 11:28:30 2015
+MSP430 Assembler Unix v4.4.3 Wed Mar 11 17:15:22 2015
 
 Tools Copyright (c) 2003-2015 Texas Instruments Incorporated
 main.asm                                                             PAGE   57

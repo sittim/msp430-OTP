@@ -160,6 +160,62 @@ TEST(Serial, push_l) {
     EXPECT_EQ(byte, 'i');
 }
 
+TEST(Serial, at_ui16_get_set) {
+    // ----- Even Size Array
+    UI8_ARRAY(T, 5);
+
+    EXPECT_EQ(push_cst(&T, "abcde"), 1);
+
+    uint16_t x = ('b' << 8) + 'a';
+
+    uint16_t out;
+
+    EXPECT_EQ(at_ui16_get(&T, &out, 0), 1);
+
+    EXPECT_EQ(out, x);
+
+    x = ('d' << 8) + 'c';
+
+    EXPECT_EQ(at_ui16_get(&T, &out, 1), 1);
+
+    EXPECT_EQ(out, x);
+
+    EXPECT_EQ(at_ui16_get(&T, &out, 2), 0);
+
+    uint16_t in = ('x' << 8) + 'y';
+
+    EXPECT_EQ(at_ui16_set(&T, in, 0), 1);
+
+    EXPECT_EQ(*((uint16_t*)T.start_ptr), in);
+
+    in = ('m' << 8) + 'k';
+
+    EXPECT_EQ(at_ui16_set(&T, in, 1), 1);
+
+    EXPECT_EQ(*((uint16_t*)T.start_ptr + 1), in);
+
+    EXPECT_EQ(at_ui16_set(&T, in, 2), 0);
+
+    // ----- Add size array
+    UI8_ARRAY(U, 4);
+
+    EXPECT_EQ(push_cst(&U, "abcd"), 1);
+
+    x = ('b' << 8) + 'a';
+
+    EXPECT_EQ(at_ui16_get(&U, &out, 0), 1);
+
+    EXPECT_EQ(out, x);
+
+    x = ('d' << 8) + 'c';
+
+    EXPECT_EQ(at_ui16_get(&U, &out, 1), 1);
+
+    EXPECT_EQ(out, x);
+
+    EXPECT_EQ(at_ui16_get(&U, &out, 2), 0);
+}
+
 TEST(Serial, push_ui) {
     /**
      * This test is little complex since the copy function handles unsigned

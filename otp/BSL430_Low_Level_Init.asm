@@ -19,7 +19,7 @@ RET_high .equ r13
 
 ;--------------------------------------------------------------
  .sect ".ZAREA"
-; .retain
+ .retain
 ;--------------------------------------------------------------
 BSL_Entry_JMP
               JMP    C_Branch
@@ -105,21 +105,20 @@ BSL_Protect
               CLR      RET_low       ;lock (keep JTAGLOCK_KEY state)
 
               ;BIS     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; protects BSL
-              ;BIC     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; Unprotect BSL
               ;BIC     #BSL_REQ_JTAG_OPEN, RET_low   ;lock (keep JTAGLOCK_KEY state)
               ;BIS     #BSL_REQ_JTAG_OPEN, RET_low   ;make sure it remains open for debugging
 
-              ; check the BSL flag "RUNBSL" or 0x52554E42534C starting at INFOB
-              ; (0x1900)
-              CMP.W    #0x5552, &0x1900
+              CMP.W    #0x00CC, &0x1900
               JNZ      BCC2BSL
+
+              RETA
 
               BIS.W   #BSL_REQ_APP_CALL, RET_low     ; set R12 to 2
 BCC2BSL       RETA
 
 ;-------------------------------------------------------------------------------
  .sect ".BSLSIG"
-; .retain
+ .retain
 ;-------------------------------------------------------------------------------
                  .word       0xFFFF         ; 0x17F0
 BslProtectVecLoc .word       BSL_Protect    ; 0x17F2 adress of function
@@ -130,7 +129,7 @@ BslEntryLoc      .word       BSL_Entry_JMP  ; 0x17FA BSL_Entry_JMP
 
 ;-------------------------------------------------------------------------------
  .sect ".JTAGLOCK_KEY"
-; .retain
+ .retain
 ;-------------------------------------------------------------------------------
 PJTAGLOCK_KEY    .word       0xFFFF         ; 0x17FC Primary Key Location
 SJTAGLOCK_KEY    .word       0xFFFF         ; 0x17FD Secondary Key Location

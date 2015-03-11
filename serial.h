@@ -43,6 +43,24 @@ unsigned int room(ui8_array* Arr);
 unsigned int room_r(ui8_array* Arr);
 
 /**
+ * Get the Value at location
+ * @param  Arr    Array from where to fetch the value
+ * @param  val    Out Parameter, location to place the value
+ * @param  offset offset
+ * @return        1 if value is within range, zero if not
+ */
+unsigned int at_ui16_get(ui8_array* Arr, uint16_t* val, unsigned int offset);
+
+/**
+ * Set value in array at location
+ * @param  Arr      Array
+ * @param  val      Pointer to Pointer
+ * @param  offset   Offset from start of array
+ * @return          1 if the value is in range, zero otherwise
+ */
+unsigned int at_ui16_set(ui8_array* Arr, uint16_t val, unsigned int offset);
+
+/**
  * Add a c string to array
  * @param  Arr Pointer to array
  * @param  str c string

@@ -16,7 +16,7 @@ void cBSL_init();
 void cBSL_main(void) {
     //
     cBSL_init();
-    cBSL_put_cstr("cBSL\r\n>");
+    cBSL_put_cstr("cBSL\r\n");
 
     while (1) {
 
@@ -58,10 +58,10 @@ void cBSL_init() {
     // registers.
 
     // Setup PMM
-    PMMCTL0  = 0x9600;
-    PMMCTL0  = 0x0000;
-    SVSMHCTL = 0x4400;
-    SVSMLCTL = 0x4400;
+    // PMMCTL0  = 0x9600;
+    // PMMCTL1  = 0x0000;
+    // SVSMHCTL = 0x4400;
+    // SVSMLCTL = 0x4400;
 
     // Setup uC clock speed
     UCSCTL0 = 0x13E0;

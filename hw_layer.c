@@ -139,11 +139,11 @@ void set_img_stat_flg(uint16_t img_stat) {
 
     push_mem(&Buffer, image_start_ptr, 128);    // Copy Data to RAM
 
-    *((uint16_t*)Buffer.base_ptr) = img_stat;   // Set new Status
+    at_ui16_set(&Buffer, img_stat, 0);          // Set the Value
 
-    flash_erase(image_start_ptr, ERASE);
+    flash_erase(image_start_ptr, ERASE);        // Erase the Flash
 
-    flash_write32(Buffer.base_ptr, image_start_ptr, 4);
+    flash_write32(Buffer.base_ptr, image_start_ptr, 4);  // Write Back
 }
 
 

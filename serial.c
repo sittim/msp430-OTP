@@ -36,7 +36,28 @@ unsigned int room_r(ui8_array* Arr) {
 }
 
 // -----------------------------------------------------------------------------
-// unsigned int at
+unsigned int at_ui16_get(ui8_array* Arr, uint16_t* val, unsigned int offset) {
+    uint16_t* data_ptr;
+    data_ptr = ((uint16_t*)(Arr->start_ptr)) + offset;  // Calc Location
+    if ((void*)(data_ptr) < (void*)(Arr->start_ptr + Arr->len - 1)) {
+        *val = *data_ptr;                 // Set the Value
+        return 1;                         // Return Value is with range
+    } else {
+        return 0;                         // Return Out of Range
+    }
+}
+
+// -----------------------------------------------------------------------------
+unsigned int at_ui16_set(ui8_array* Arr, uint16_t val, unsigned int offset) {
+    uint16_t* data_ptr;
+    data_ptr = ((uint16_t*)(Arr->start_ptr)) + offset;  // Calc Location
+    if ((void*)(data_ptr) < (void*)(Arr->start_ptr + Arr->len - 1)) {
+        *data_ptr = val;
+        return 1;                         // Return Value is with range
+    } else {
+        return 0;                         // Return Out of Range
+    }
+}
 
 // -----------------------------------------------------------------------------
 unsigned int push_cst(ui8_array* Arr, const char* str) {
@@ -243,7 +264,7 @@ void put_ui16(uint16_t x) {
 }
 
 // -----------------------------------------------------------------------------
-void put_ui8_arr(ui8_array* In) {
+// void put_ui8_arr(ui8_array* In) {
 
-}
+// }
 
