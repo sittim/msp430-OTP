@@ -7,29 +7,38 @@
 
 #include <stdint.h>
 #include <msp430.h>
-#include "driverlib/driverlib.h"
-#include "msp430-OTP/serial.h"
+#include "msp430-OTP/otp/cBSL_serial.h"
 
 #define DEBG_INPUT_IN   0x0001
 
 // image status flag is stored in the INFO B area
-#define INFO_B_PTR 0x1900
 
 // Image Status
 #define STAT_NONE           0x00EE
 #define STAT_DONWLOAD       0x00CC
 #define STAT_PENDING_VALID  0xFF88
 
+#define INFO_B_PTR          0x1900
+#define IMG_STAT_PTR        0x1900
+#define C_INIT00_VECTOR     0x1901
+#define BSL_VECTOR          0x1000
+
+#pragma SET_DATA_SECTION(".BSL")
+#pragma SET_CODE_SECTION(".BSL")
+
+extern uint16_t g_hooks;
+extern ui8_array cBSL_SerialRX;
+
 /**
  * Init System IO
  */
-void init();
+void cBSL_init();
 
 /**
  * Output single char to the uart port
  * @param data byte to output
  */
-void putch(uint8_t data);
+void cBSL_putch(uint8_t data);
 
 /**
  * Erase Flash Memory
@@ -40,7 +49,7 @@ void putch(uint8_t data);
  * Note: ERASE and MERAS are defind in msp430.h.  The code sequence is from
  * TI MSP430x5xx Family Users Guide section "Initiating Erase From Flash"
  */
-inline void flash_erase(uint8_t* flash_ptr, uint32_t mode);
+inline void cBSL_flash_erase(uint8_t* flash_ptr, uint32_t mode);
 
 /**
  *  Write to Flash
@@ -48,7 +57,7 @@ inline void flash_erase(uint8_t* flash_ptr, uint32_t mode);
  *  @param flash_ptr to
  *  @param count Quantity of double words to copy
  */
-void flash_write32(uint32_t* data_ptr,
+void cBSL_flash_write32(uint32_t* data_ptr,
               uint32_t* flash_ptr,
               unsigned int count);
 
@@ -56,6 +65,9 @@ void flash_write32(uint32_t* data_ptr,
  * Set the image status
  * @param img_stat New Image Status.
  */
-void set_img_stat_flg(uint16_t img_stat);
+void cBSL_set_info_b(uint16_t value, unsigned int offset);
+
+#pragma SET_DATA_SECTION()
+#pragma SET_CODE_SECTION()
 
 #endif

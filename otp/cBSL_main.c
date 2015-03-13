@@ -3,91 +3,85 @@
  * --/COPYRIGHT--*/
 #include <msp430.h>
 #include "msp430-OTP/otp/cBSL_serial.h"
+#include "msp430-OTP/otp/cBSL_hw_layer.h"
 
-void cBSL_init();
+#pragma SET_CODE_SECTION(".BSL")
 
-/*******************************************************************************
-* *Function:    main
-* *Description: Initializes the BSL Command Interpreter and begins listening for
-*             incoming packets
-*******************************************************************************/
-#pragma RETAIN(cBSL_main)
-#pragma CODE_SECTION(cBSL_main, ".BSL")
-void cBSL_main(void) {
-    //
-    cBSL_init();
-    cBSL_put_cstr("cBSL\r\n");
-
-    while (1) {
-
-    }
-}
-
-/*******************************************************************************
-*Function:    cBSL_init
-*Description: Init the clocks and the UART for Debugging
-*Parameters:
-*******************************************************************************/
-// #pragma RETAIN(cBSL_init)
-#pragma CODE_SECTION(cBSL_init, ".BSL")
-void cBSL_init() {
-    __disable_interrupt();                    // Disable the Interrupts
-
-    PMAPPWD = 0x02D52;                        // Disable Write to port mapping
-
-    PMAPCTL = PMAPRECFG;                      // Allow reconfig during runtime
-
-    WDTCTL = WDTPW + WDTHOLD;                 // Stop WDT
-
-    while (BAKCTL & LOCKBAK) {                // Unlock XT1 pins for operation
-        BAKCTL &= ~(LOCKBAK);
-    }
-
-    UCSCTL6 &= ~(XT1OFF);                     // XT1 On
-    UCSCTL6 |= XCAP_3;                        // Internal load cap
-
-    // Loop until XT1 fault flag is cleared
-    do {
-        UCSCTL7 &= ~(XT2OFFG + XT1LFOFFG + DCOFFG);
-                                            // Clear XT2,XT1,DCO fault flags
-        SFRIFG1 &= ~OFIFG;                  // Clear fault flags
-    } while (SFRIFG1 & OFIFG);              // Test oscillator fault flag
-
-    // The next set of configurations were defined by driverlib in msp430-OTP
-    // project.  They can be seen by debugging the program then viewing
-    // registers.
-
-    // Setup PMM
-    // PMMCTL0  = 0x9600;
-    // PMMCTL1  = 0x0000;
-    // SVSMHCTL = 0x4400;
-    // SVSMLCTL = 0x4400;
-
-    // Setup uC clock speed
-    UCSCTL0 = 0x13E0;
-    UCSCTL1 = 0x0020;
-    UCSCTL2 = 0x101F;
-    UCSCTL3 = 0x0000;
-    UCSCTL4 = 0x0044;
-    UCSCTL5 = 0x0000;
-    UCSCTL6 = 0xC1CC;
-    UCSCTL7 = 0x0400;
-    UCSCTL8 = 0x0707;
-
-    // Setup io
-    P2SEL = 0x30;
-
-    // Setup the A0 UART
-    UCA0CTLW0 = 0x0080;
-    UCA0BRW   = 0x0009;
-    UCA0MCTL  = 0x02;
-}  // init
+unsigned int cBSL_backup();
+unsigned int cBSL_recover();
+unsigned int cBSL_load();
 
 // -----------------------------------------------------------------------------
-void cBSL_putch(uint8_t data) {
-    if ((UCA0IE & UCTXIE) == 0) {             // Is interrupt disabled
-        while ((UCA0IFG & UCTXIFG) == 0);     // Yes so wait
+#pragma RETAIN(cBSL_main)
+void cBSL_main(void) {
+    uint16_t* reset_vect_ptr = (uint16_t*)RESET_VECTOR;
+    uint16_t* image_stat_ptr = (uint16_t*)IMG_STAT_PTR;
+
+    // if there is nothing to do and reset pointer has been saved, just reset
+    // if ((*image_stat_ptr == STAT_NONE) && (*reset_vect_ptr == BSL_VECTOR)) {
+    //     ((void (*)())C_INIT00_VECTOR)();
+    // }
+
+    cBSL_init();
+    cBSL_put_cstr("cBSLyyy\r\n");
+
+    cBSL_put_cstr("xxx\r\n");
+
+    SYSBSLC &= ~SYSBSLPE;                          // Unprotect BSL
+
+    if (*reset_vect_ptr != BSL_VECTOR) {
+        cBSL_put_cstr("Crazy...\r\n");
+
     }
-    UCA0TXBUF = data;
+
+    // If the reset pointer has not been saved, save it
+    if (*reset_vect_ptr != BSL_VECTOR) {           // Reset Ptr not saved?
+        cBSL_put_cstr("Saving reset ptr...\r\n");
+        cBSL_set_info_b(*reset_vect_ptr, 1);       // Save the reset pointer
+    }
+
+
+
+    // -- If this appears first, then the system was not able to validate the
+    // the new image, so recovery is needed.
+    if (*image_stat_ptr == STAT_PENDING_VALID) {
+        cBSL_recover();
+        cBSL_set_info_b(STAT_NONE, 0);
+    }
+
+    // if there is a new image, then download it
+    if (*image_stat_ptr == STAT_DONWLOAD) {
+        cBSL_backup();
+        cBSL_load();
+        cBSL_set_info_b(STAT_PENDING_VALID, 0);
+    }
+
+    cBSL_put_cstr("cBSL resetting...\r\n");
+    // System RESET
+    SYSBSLC = SYSBSLPE + SYSBSLSIZE0 + SYSBSLSIZE1;  // Protect the BSL
+    PMMCTL0 = 0xA5;               // PMM Password
+    SYSRSTIV |= PMMSWBOR;         // Reset the System
+    PMMCTL0 = 0x00;               // Cange the password (useless, will reset)
 }
 
+// -----------------------------------------------------------------------------
+unsigned int cBSL_backup() {
+    cBSL_put_cstr("Backing Up...\r\n");
+    // TODO(TimS) Recover the old reset pointer
+    return 0;
+}
+
+// -----------------------------------------------------------------------------
+unsigned int cBSL_recover() {
+    cBSL_put_cstr("Recovering...\r\n");
+    return 0;
+}
+
+// -----------------------------------------------------------------------------
+unsigned int cBSL_load() {
+    cBSL_put_cstr("Loading...\r\n");
+    // TODO(TimS) Save the pointer to C_INIT00_VECTOR
+    return 0;
+}
+
+#pragma SET_CODE_SECTION()

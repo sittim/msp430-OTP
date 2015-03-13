@@ -104,14 +104,12 @@ BSL_REQ_APP_CALL   .equ  0x0002      ;Return Value for BSLUNLOCK Function to Cal
 BSL_Protect
               CLR      RET_low       ;lock (keep JTAGLOCK_KEY state)
 
-              ;BIS     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; protects BSL
+              BIS     #SYSBSLPE+SYSBSLSIZE0+SYSBSLSIZE1 , &SYSBSLC ; protects BSL
               ;BIC     #BSL_REQ_JTAG_OPEN, RET_low   ;lock (keep JTAGLOCK_KEY state)
               ;BIS     #BSL_REQ_JTAG_OPEN, RET_low   ;make sure it remains open for debugging
 
-              CMP.W    #0x00CC, &0x1900
+              CMP.W    #0x0033, &0x1900
               JNZ      BCC2BSL
-
-              RETA
 
               BIS.W   #BSL_REQ_APP_CALL, RET_low     ; set R12 to 2
 BCC2BSL       RETA

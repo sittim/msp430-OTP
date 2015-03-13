@@ -11,6 +11,7 @@ $(GEN_CMDS__FLAG) \
 "./main.obj" \
 "./serial.obj" \
 "./otp/BSL430_Low_Level_Init.obj" \
+"./otp/cBSL_hw_layer.obj" \
 "./otp/cBSL_main.obj" \
 "./otp/cBSL_serial.obj" \
 "../lnk_msp430f5335.cmd" \
@@ -148,8 +149,8 @@ msp430-OTP.txt: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "debug.pp" "hw_layer.pp" "main.pp" "serial.pp" "otp/cBSL_main.pp" "otp/cBSL_serial.pp" 
-	-$(RM) "debug.obj" "hw_layer.obj" "main.obj" "serial.obj" "otp/BSL430_Low_Level_Init.obj" "otp/cBSL_main.obj" "otp/cBSL_serial.obj" 
+	-$(RM) "debug.pp" "hw_layer.pp" "main.pp" "serial.pp" "otp/cBSL_hw_layer.pp" "otp/cBSL_main.pp" "otp/cBSL_serial.pp" 
+	-$(RM) "debug.obj" "hw_layer.obj" "main.obj" "serial.obj" "otp/BSL430_Low_Level_Init.obj" "otp/cBSL_hw_layer.obj" "otp/cBSL_main.obj" "otp/cBSL_serial.obj" 
 	-$(RM) "otp/BSL430_Low_Level_Init.pp" 
 	-@echo 'Finished clean'
 	-@echo ' '

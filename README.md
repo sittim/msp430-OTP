@@ -55,7 +55,6 @@ Code Composer Studio V6+ (CCS6) and msp430f5xxx uC
 1. 0x00EE - *NONE* - No activity, nothing to be done
 2. 0x00CC - *DOWNLOAD* - New Image in Download Area
 3. 0xFF88 - *PENDING_VALIDATION* - Waiting to be validated by application.
-4. 0x0088 - *VALIDATION*
 
 ## Usage
 

@@ -2,21 +2,26 @@
  * See LICENCE File
  * --/COPYRIGHT--*/
 
-#include "msp430-OTP/hw_layer.h"
+#include "msp430-OTP/otp/cBSL_hw_layer.h"
 
-uint16_t hooks;
-UI8_ARRAY(SerialRX, 128);                     // Init array
+#pragma SET_CODE_SECTION(".BSL")
+
+uint16_t g_hooks = 0;
+UI8_ARRAY(cBSL_SerialRX, 128);                     // Init array
+
+#pragma SET_DATA_SECTION()
 
 // -----------------------------------------------------------------------------
-void init() {
+void cBSL_init() {
     //
-    __disable_interrupt();
+    __disable_interrupt();                    // Disable the Interrupts
 
-    PMAPPWD = 0x02D52;                        // Enable Write to port mapping
+    PMAPPWD = 0x02D52;                        // Disable Write to port mapping
 
     PMAPCTL = PMAPRECFG;                      // Allow reconfig during runtime
 
-    // ----- 32 kHz crystal config
+    WDTCTL = WDTPW + WDTHOLD;                 // Stop WDT
+
     while (BAKCTL & LOCKBAK) {                // Unlock XT1 pins for operation
         BAKCTL &= ~(LOCKBAK);
     }
@@ -31,69 +36,39 @@ void init() {
         SFRIFG1 &= ~OFIFG;                  // Clear fault flags
     } while (SFRIFG1 & OFIFG);              // Test oscillator fault flag
 
+    // The next set of configurations were defined by driverlib in msp430-OTP
+    // project.  They can be seen by debugging the program then viewing
+    // registers.
 
-    // ----- Setup Clocks
-    UCS_clockSignalInit(
-                UCS_FLLREF,
-                UCS_XT1CLK_SELECT,
-                UCS_CLOCK_DIVIDER_1);
+    // Setup PMM
+    // PMMCTL0 = 0xA5;
+    // PMMCTL1  = 0x0000;
+    // SVSMHCTL = 0x4400;
+    // SVSMLCTL = 0x4400;
+    // PMMCTL0 = 0x00;
 
-    // Set ACLK = REFO
-    UCS_clockSignalInit(
-                UCS_ACLK,
-                UCS_XT1CLK_SELECT,
-                UCS_CLOCK_DIVIDER_1);
+    // Setup uC clock speed
+    UCSCTL0 = 0x13E0;
+    UCSCTL1 = 0x0020;
+    UCSCTL2 = 0x101F;
+    UCSCTL3 = 0x0000;
+    UCSCTL4 = 0x0044;
+    UCSCTL5 = 0x0000;
+    UCSCTL6 = 0xC1CC;
+    UCSCTL7 = 0x0400;
+    UCSCTL8 = 0x0707;
 
-    // Set DCO to 1,048,576 hz
-    UCS_initFLLSettle(1048, 32);      // 1,048,576 / 32,768 = 32
-    PMM_setVCore(PMM_CORE_LEVEL_0);   // Set Core Voltage
+    // Setup io
+    P2SEL = 0x30;
 
-    // ----- Configure UART
-    UCA0CTL1 |= UCSWRST;              // Disable UART
-
-    // Setup Debug UART Pins
-    GPIO_setAsPeripheralModuleFunctionInputPin(
-            GPIO_PORT_P2,
-            GPIO_PIN4 + GPIO_PIN5);
-
-    USCI_UART_initParam UART_init_params;  // Init UART config struct
-
-     // Setup the non uC rate dependent param of struct
-    UART_init_params.selectClockSource = USCI_A_UART_CLOCKSOURCE_SMCLK;
-    UART_init_params.parity            = USCI_A_UART_NO_PARITY;
-    UART_init_params.msborLsbFirst     = USCI_A_UART_LSB_FIRST;
-    UART_init_params.numberofStopBits  = USCI_A_UART_ONE_STOP_BIT;
-    UART_init_params.uartMode          = USCI_A_UART_MODE;
-    UART_init_params.overSampling
-                                = USCI_A_UART_LOW_FREQUENCY_BAUDRATE_GENERATION;
-    UART_init_params.clockPrescalar    = 9;  // set
-    UART_init_params.firstModReg       = 0;  // UART
-    UART_init_params.secondModReg      = 1;  // params
-
-    USCI_UART_init(USCI_A0_BASE, &UART_init_params);  // Init UART
-
-    USCI_A_UART_disableInterrupt(
-            USCI_A0_BASE,
-            USCI_UART_TRANSMIT_INTERRUPT);
-    USCI_A_UART_disableInterrupt(
-            USCI_A0_BASE,
-            USCI_A_UART_RECEIVE_INTERRUPT);
-
-    USCI_A_UART_clearInterruptFlag(
-               USCI_A0_BASE,
-               USCI_A_UART_RECEIVE_INTERRUPT);
-
-    UCA0CTL1 &= ~UCSWRST;               // Enable UART
-
-    WDT_A_watchdogTimerInit(WDT_A_BASE,
-                         WDT_A_CLOCKSOURCE_XCLK,
-                         WDT_A_CLOCKDIVIDER_8192);
-
-    PMAPPWD = 0;                        // Disable Write to port mapping
+    // Setup the A0 UART
+    UCA0CTLW0 = 0x0080;
+    UCA0BRW   = 0x0009;
+    UCA0MCTL  = 0x02;
 }
 
 // -----------------------------------------------------------------------------
-void putch(uint8_t data) {
+void cBSL_putch(uint8_t data) {
     if ((UCA0IE & UCTXIE) == 0) {             // Is interrupt disabled
         while ((UCA0IFG & UCTXIFG) == 0);     // Yes so wait
     }
@@ -101,7 +76,7 @@ void putch(uint8_t data) {
 }
 
 // -----------------------------------------------------------------------------
-inline void flash_erase(uint8_t* flash_ptr, uint32_t mode) {
+inline void cBSL_flash_erase(uint8_t* flash_ptr, uint32_t mode) {
     while (FCTL3 & BUSY) {}             // Test Busy
     FCTL3 = FWPW;                       // Clear Lock bit
     FCTL1 = FWPW + mode;                // Set erase mode bit
@@ -112,7 +87,7 @@ inline void flash_erase(uint8_t* flash_ptr, uint32_t mode) {
 }
 
 // -----------------------------------------------------------------------------
-void flash_write32(uint32_t* data_ptr,
+void cBSL_flash_write32(uint32_t* data_ptr,
                    uint32_t* flash_ptr,
                    unsigned int count) {
     FCTL3 = FWPW;                           // Clear Lock bit
@@ -131,21 +106,20 @@ void flash_write32(uint32_t* data_ptr,
 }
 
 // -----------------------------------------------------------------------------
-void set_img_stat_flg(uint16_t img_stat) {
-    UI8_ARRAY(Buffer, 128);                // Init array
+void cBSL_set_info_b(uint16_t img_stat, unsigned int offset) {
+    UI8_ARRAY(Buffer, 128);                          // Init array
 
-    uint8_t* info_b_ptr;                   // Pointer to info pointer
+    uint8_t* info_b_ptr;                             // Pointer to info pointer
     info_b_ptr = (uint8_t*)INFO_B_PTR;
 
-    push_mem(&Buffer, info_b_ptr, 128);    // Copy Data to RAM
+    cBSL_push_mem(&Buffer, info_b_ptr, 128);             // Copy Data to RAM
 
-    at_ui16_set(&Buffer, img_stat, 0);     // Set the Value
+    cBSL_at_ui16_set(&Buffer, img_stat, offset);         // Set the Value
 
-    flash_erase(info_b_ptr, ERASE);        // Erase the Flash
+    cBSL_flash_erase(info_b_ptr, ERASE);                 // Erase the Flash
 
-    flash_write32(Buffer.base_ptr, info_b_ptr, 4);  // Write Back
+    cBSL_flash_write32(Buffer.base_ptr, info_b_ptr, 4);  // Write Back
 }
-
 
 // // Echo back RXed character, confirm TX buffer is ready first
 // #pragma vector = USCI_A0_VECTOR

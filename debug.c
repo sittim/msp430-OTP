@@ -14,8 +14,7 @@ const char* dbg_keys[] = {
     "rst\r",         // 2 - System Reset
     "n\r",           // 3 - No Action
     "dl\r",          // 4 - New Downloaded image is available
-    "pv\r",            // 5 - Pending Validation
-    "v\r"              // 6 - Validation required
+    "pv\r"           // 5 - Pending Validation
 };
 
 // Qty of keys
@@ -38,10 +37,9 @@ void debug_scan() {
         } break;
         case 2: {
             put_cstr("Resetting ...\n");
-            ((void (*)())0x1000)(); // BSL0
-            // WDT_A_resetTimer(WDT_A_BASE);
-            // WDT_A_start(WDT_A_BASE);
-            // while(1);                       // timeout
+            while ((UCA0IFG & UCTXIFG) == 0);   // Wait for end of transmission
+            __disable_interrupt();
+            ((void (*)())0x1000)();             // start Boot Strap Loader
         } break;
         case 3: {  // None
             put_cstr("No Action ...\n");
@@ -55,10 +53,6 @@ void debug_scan() {
             put_cstr("Pending Validation ...\n");
             set_img_stat_flg(0xFF88);
         } break;
-        case 6: {  // Validation
-            put_cstr("Validation ...\n");
-            set_img_stat_flg(0x0088);
-        } break;
         default: {  // Error
            put_cstr("Error");
         }
@@ -66,3 +60,5 @@ void debug_scan() {
     flush(&SerialRX);
     put_cstr("\r\n>");
 }
+
+
