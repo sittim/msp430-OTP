@@ -25,7 +25,7 @@
 #define BSL_VECTOR          0x1000
 
 // --- Memory Regions
-// 1 sector = 0x200 bytes or 512 in decimal
+// 1 segment = 0x200 bytes or 512 in decimal
 #define APP_LENGTH    0x15400      // 87040 bytes (Decimal)
 #define APP_ADR       0x8000       // Start of Application  @ 32768 - 120832
 #define BACKUP_ADR    0x1D800      // Backup address        @ 120832

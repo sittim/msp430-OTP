@@ -5,7 +5,7 @@ if (IMAGE_STATUS == NONE) then (yes)
     : reboot;
     stop
 else (no)
-    if (IMAGE_STATUS == DOWNLOAD) then (yes)
+    if (IMAGE_STATUS ==\nDOWNLOAD) then (yes)
         if (cBSL_backup) then (success)
             :cBSL_load();
             :set IMAGE_STATUS =\nPENDING_VALIDATION;
@@ -18,7 +18,7 @@ else (no)
             stop
         endif
     else (no)
-        if (IMAGE_STATUS == PENDING_VALIDATION) (yes)
+        if (IMAGE_STATUS ==\nPENDING_VALIDATION) then (yes)
             :recover();
             :set IMAGE_STATUS =\nNONE;
             :reboot;
