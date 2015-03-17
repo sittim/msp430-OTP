@@ -148,6 +148,12 @@ unsigned int cBSL_put_cstr(const char* str);
 void cBSL_put_ui16(uint16_t out);
 
 /**
+ * Output Hex
+ * @param x hex to output
+ */
+void cBSL_put_ui16x(uint16_t x);
+
+/**
  * Output hex to uart
  */
 void cBSL_put_ui8(ui8_array* in);

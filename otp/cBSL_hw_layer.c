@@ -4,7 +4,8 @@
 
 #include "msp430-OTP/otp/cBSL_hw_layer.h"
 
-#pragma SET_CODE_SECTION(".BSL")
+
+#pragma SET_DATA_SECTION(".BSL")
 
 uint16_t g_hooks = 0;
 UI8_ARRAY(cBSL_SerialRX, 128);                     // Init array
@@ -76,22 +77,59 @@ void cBSL_putch(uint8_t data) {
 }
 
 // -----------------------------------------------------------------------------
-inline void cBSL_flash_erase(uint8_t* flash_ptr, uint32_t mode) {
+inline void cBSL_flash_erase(uint8_t* flash_ptr,
+                             uint32_t mode,
+                             unsigned int segment_sz,
+                             unsigned int set_qty) {
     while (FCTL3 & BUSY) {}             // Test Busy
     FCTL3 = FWPW;                       // Clear Lock bit
     FCTL1 = FWPW + mode;                // Set erase mode bit
-    *flash_ptr = 0;                     // Dummy write to erase flash segment
-    while (FCTL3 & BUSY) {}             // test busy
+
+    for (; seg_qty !=0; --seg_qty) {
+        *flash_ptr = 0;                 // Dummy write to erase flash segment
+        while (FCTL3 & BUSY) {}         // test busy
+        flash_ptr += segment_sz;        // Incrument to next segment
+    }
+
     FCTL1 = FWKEY;                      // Clear erase mode bit
     FCTL3 = FWKEY + LOCK;               // Set LOCK bit
 }
 
 // -----------------------------------------------------------------------------
-void cBSL_flash_write32(uint32_t* data_ptr,
+unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len) {
+    const unsigned int uint_sz = sizeof(unsigned int);
+    // Check 1 unsigned int at a time
+    while (len >= uint_sz) {                       // 1 more uint to check?
+        unsigned int* test_uint;                   // Pointer to the uint
+        test_uint = (unsigned int*)start_ptr;      // cast the pointer
+        if (*test_uint != ~((unsigned int)0)) {    // any uint bit low
+            return 0;                              // yes, failed
+        }
+        start_ptr += uint_sz;                      // Incrument the start ptr
+        len -= uint_sz;                            // Decrument length
+    }
+    // Check the leftover bytes
+    while (len != 0) {                             // Single bytes to check
+        if (*start_ptr != ~((uint8_t)0)) {         // yes, any low?
+            return 0;                              // yes, failed
+        }
+        ++start_ptr;                               // incrument ptr
+        --len;                                     // decrument length
+    }
+    return 1;                                      // return success
+}
+
+// -----------------------------------------------------------------------------
+unsigned int cBSL_flash_write32(uint32_t* data_ptr,
                    uint32_t* flash_ptr,
-                   unsigned int count) {
+                   uint32_t count) {
     FCTL3 = FWPW;                           // Clear Lock bit
     FCTL1 = FWKEY + BLKWRT;                 // Write to flash
+
+    const unsigned int uint_sz = sizeof(unsigned int);
+    uint32_t verify_cnt = count * 4 / uint_sz;
+    unsigned int* verify_data_ptr = (unsigned int*)data_ptr;
+    unsigned int* verify_flash_ptr = (unsigned int*)flash_ptr;
 
     while (count > 0) {
         while (FCTL3 & BUSY) {}             // test busy
@@ -103,6 +141,15 @@ void cBSL_flash_write32(uint32_t* data_ptr,
 
     FCTL1 = FWKEY;                          // Clear BLKWRT bit
     FCTL3 = FWKEY + LOCK;                   // Set Lock bit
+
+    while (verify_cnt != 0) {
+        if (*verify_data_ptr != *verify_flash_ptr) {
+            return 0;
+        }
+        ++verify_data_ptr;
+        ++verify_flash_ptr;
+    }
+    return 1;
 }
 
 // -----------------------------------------------------------------------------
@@ -121,22 +168,3 @@ void cBSL_set_info_b(uint16_t img_stat, unsigned int offset) {
     cBSL_flash_write32(Buffer.base_ptr, info_b_ptr, 4);  // Write Back
 }
 
-// // Echo back RXed character, confirm TX buffer is ready first
-// #pragma vector = USCI_A0_VECTOR
-// __interrupt void USCI_A0_ISR(void) {
-//     uint8_t tmp;
-//     switch (__even_in_range(UCA0IV, 4)) {
-//     case 0:break;                             // Vector 0 - no interrupt
-//     case 2:                                   // Vector 2 - RXIFG
-//         tmp = UCA0RXBUF;                      // Read off the buffer
-//         if (tmp == '\r') {
-//             hooks |= DEBG_INPUT_IN;           // Signal to handle debug input
-//         }
-//         push(&SerialRX, tmp);                 // Add char to the queue
-//         while ((UCA0IFG & UCTXIFG) == 0);     // wait for tx to transmit
-//         UCA0TXBUF = tmp;                      // Echo the char
-//     break;
-//     case 4:break;                             // Vector 4 - TXIFG
-//     default: break;
-//     }
-// }

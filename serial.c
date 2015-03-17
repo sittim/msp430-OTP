@@ -264,6 +264,36 @@ void put_ui16(uint16_t x) {
 }
 
 // -----------------------------------------------------------------------------
+void put_ui16x(uint16_t x) {
+    uint8_t out_bff[4];
+    unsigned int cout = 0;
+
+    uint8_t* s = out_bff + 4;
+    if (x == 0) {                      // is X zero
+        --s;
+        *s = '0';                      // Yes, handle special case
+        ++cout;
+    } else {
+        for (; x; x /= 16) {           // Divide out decimals
+            char y = x % 16;
+            if (y < 10) {
+                --s;
+                *s = '0' + y;        // Numeric Out
+            } else {
+                --s;
+                *s = 'A' + y - 10;   // Alpha output
+            }
+            ++cout;
+        }
+    }
+    putch('0');
+    putch('x');
+    for (; cout--;) {
+        putch(*(s++));
+    }
+}
+
+// -----------------------------------------------------------------------------
 // void put_ui8_arr(ui8_array* In) {
 
 // }

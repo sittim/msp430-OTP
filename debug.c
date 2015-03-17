@@ -14,7 +14,8 @@ const char* dbg_keys[] = {
     "rst\r",         // 2 - System Reset
     "n\r",           // 3 - No Action
     "dl\r",          // 4 - New Downloaded image is available
-    "pv\r"           // 5 - Pending Validation
+    "pv\r",          // 5 - Pending Validation
+    "stat\r"         // 6 - Image Status
 };
 
 // Qty of keys
@@ -52,6 +53,12 @@ void debug_scan() {
         case 5: {  // Pending Validation
             put_cstr("Pending Validation ...\n");
             set_img_stat_flg(0xFF88);
+        } break;
+        case 6: {
+            put_cstr("Image Status: ");
+            uint16_t* status = (uint16_t*)0x1900;
+            put_ui16x(*status);
+            putch('\n');
         } break;
         default: {  // Error
            put_cstr("Error");

@@ -74,7 +74,7 @@ unsigned int cBSL_push_cst(ui8_array* Arr, const char* str) {
         ++array_sz;
     }
 
-    unsigned int rm = room(Arr);                  // Maximum Length of the array
+    unsigned int rm = cBSL_room(Arr);             // Maximum Length of the array
 
     // Check if there are too many elements
     if (array_sz > 256 || array_sz > rm) {        // Adding small enough array?
@@ -86,7 +86,7 @@ unsigned int cBSL_push_cst(ui8_array* Arr, const char* str) {
 
     // Copy the elements
     while (array_sz != 0) {                       // Continue to count of zero
-        push(Arr, *el_ptr);                       // Add the element
+        cBSL_push(Arr, *el_ptr);                  // Add the element
         ++el_ptr;                                 // Advance pointer
         --array_sz;                               // Decrease the count
     }
@@ -96,7 +96,7 @@ unsigned int cBSL_push_cst(ui8_array* Arr, const char* str) {
 
 // -----------------------------------------------------------------------------
 unsigned int cBSL_push(ui8_array* Arr, uint8_t byte) {
-    if (room_r(Arr) > 0) {                    // room on the rigth?
+    if (cBSL_room_r(Arr) > 0) {               // room on the rigth?
         // Yes, do nothing here, code below will handle it
     } else if (Arr->len < Arr->max_len) {     // No room in the right, but left
         --Arr->start_ptr;                     // Backup start point
@@ -126,7 +126,7 @@ unsigned int cBSL_pop(ui8_array* Arr, uint8_t* byte) {
 unsigned int cBSL_push_l(ui8_array* Arr, uint8_t byte) {
     if (cBSL_room_l(Arr) > 0) {               // is there room left?
         --Arr->start_ptr;                     // Move start pointer left
-    } else if (room(Arr)) {                   // No, but is there room?
+    } else if (cBSL_room(Arr)) {              // No, but is there room?
         unsigned int to_cp = Arr->len;        // Init to - copy qty variable
         while (to_cp != 0) {                  // Yes move the elements right
             Arr->start_ptr[to_cp - 1] = Arr->start_ptr[to_cp - 1];
@@ -154,10 +154,10 @@ unsigned int cBSL_pop_l(ui8_array* Arr, uint8_t* byte) {
 // -----------------------------------------------------------------------------
 unsigned int cBSL_push_ui(ui8_array* Arr, unsigned int* source) {
     const unsigned int bus_w = sizeof(unsigned int);  // get the bus width
-    unsigned int rm_r = room_r(Arr);          // room on the right of array
+    unsigned int rm_r = cBSL_room_r(Arr);     // room on the right of array
     if (rm_r >= bus_w) {                      // room for unsigned int on right?
         // Yes, do nothing here, code below will handle it
-    } else if (room(Arr) >= bus_w) {          // No room in the back, but front
+    } else if (cBSL_room(Arr) >= bus_w) {     // No room in the back, but front
         unsigned int mv_step;                 // by how much to copy left
         mv_step = bus_w - rm_r;               // choose step of 1 or two
         Arr->start_ptr -= mv_step;            // Backup start point
@@ -179,7 +179,7 @@ unsigned int cBSL_push_mem(ui8_array* Arr,
                            uint8_t* start,
                            unsigned int length) {
     const unsigned int bus_w = sizeof(unsigned int);  // get the bus width
-    if (room(Arr) < length) {                 // Enough room in the array?
+    if (cBSL_room(Arr) < length) {            // Enough room in the array?
         return 0;                             // Indicate lack of room
     }
 
@@ -188,14 +188,14 @@ unsigned int cBSL_push_mem(ui8_array* Arr,
     cp_bus_l_qty = length / bus_w;            // calculate qty
     unsigned int itr = 0;
     for (; itr < cp_bus_l_qty; ++itr) {
-        push_ui(Arr, (unsigned int*)start);  // Push the value
+    	cBSL_push_ui(Arr, (unsigned int*)start);  // Push the value
         start += sizeof(unsigned int);        // incurment pointer by size
     }
 
     // copy by single byte
     itr = 0;
     for (; itr < length % bus_w; ++itr) {
-        push(Arr, *start);
+    	cBSL_push(Arr, *start);
         ++start;
     }
 
@@ -229,7 +229,7 @@ unsigned int cBSL_get_enum(ui8_array* Arr,
                            unsigned int key_sz) {
     unsigned int iii = 0;
     for (; iii < key_sz; ++iii) {
-        if (is_equal(Arr, keys[iii]) == 1) {
+        if (cBSL_is_equal(Arr, keys[iii]) == 1) {
             return iii;
         }
     }
@@ -242,7 +242,7 @@ unsigned int cBSL_get_enum(ui8_array* Arr,
 unsigned int cBSL_put_cstr(const char* str) {
     unsigned int max = 2048;
     while (*str != '\0') {
-        putch(*str);
+    	cBSL_putch(*str);
         ++str;
         --max;
         if (max == 0) {
@@ -267,7 +267,34 @@ void cBSL_put_ui16(uint16_t x) {
         ++cout;
     }
     for (; cout--;) {
-        putch(*(s++));
+    	cBSL_putch(*(s++));
+    }
+}
+
+// -----------------------------------------------------------------------------
+void cBSL_put_ui16x(uint16_t x) {
+    uint8_t out_bff[4];
+    unsigned int cout = 0;
+
+    uint8_t* s = out_bff + 4;
+    if (x == 0) {                      // is X zero
+        --s;
+        *s = '0';                      // Yes, handle special case
+        ++cout;
+    } else {
+        for (; x; x /= 16) {           // Divide out decimals
+            char y = x % 16;
+            if (y < 10) {
+                --s;
+                *s = '0' + y;        // Numeric Out
+            } else {
+                --s;
+                *s = 'A' + y - 10;   // Alpha output
+            }
+        }
+    }
+    for (; cout--;) {
+    	cBSL_putch(*(s++));
     }
 }
 

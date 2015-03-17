@@ -22,7 +22,6 @@
 extern ui8_array SerialRX;
 extern uint16_t hooks;
 
-
 int main(void) {
     WDTCTL = WDTPW + WDTHOLD;                 // Stop WDT
 

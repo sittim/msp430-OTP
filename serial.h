@@ -136,6 +136,12 @@ unsigned int put_cstr(const char* str);
 void put_ui16(uint16_t out);
 
 /**
+ * Output Hex to UART
+ * @param x Value to output
+ */
+void put_ui16x(uint16_t x);
+
+/**
  * Output hex to uart
  */
 void put_ui8(ui8_array* in);

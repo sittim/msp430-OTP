@@ -14,33 +14,21 @@ unsigned int cBSL_load();
 // -----------------------------------------------------------------------------
 #pragma RETAIN(cBSL_main)
 void cBSL_main(void) {
-    uint16_t* reset_vect_ptr = (uint16_t*)RESET_VECTOR;
+
+	uint16_t* reset_vect_ptr = (uint16_t*)RESET_VECTOR;
     uint16_t* image_stat_ptr = (uint16_t*)IMG_STAT_PTR;
 
     // if there is nothing to do and reset pointer has been saved, just reset
-    // if ((*image_stat_ptr == STAT_NONE) && (*reset_vect_ptr == BSL_VECTOR)) {
-    //     ((void (*)())C_INIT00_VECTOR)();
-    // }
+    if (*image_stat_ptr == STAT_NONE) {
+        PMMCTL0 = 0xA5;               // PMM Password
+        SYSRSTIV |= PMMSWBOR;         // Reset the System
+    }
 
     cBSL_init();
-    cBSL_put_cstr("cBSLyyy\r\n");
 
-    cBSL_put_cstr("xxx\r\n");
+    cBSL_put_cstr("cBSL\r\n");
 
     SYSBSLC &= ~SYSBSLPE;                          // Unprotect BSL
-
-    if (*reset_vect_ptr != BSL_VECTOR) {
-        cBSL_put_cstr("Crazy...\r\n");
-
-    }
-
-    // If the reset pointer has not been saved, save it
-    if (*reset_vect_ptr != BSL_VECTOR) {           // Reset Ptr not saved?
-        cBSL_put_cstr("Saving reset ptr...\r\n");
-        cBSL_set_info_b(*reset_vect_ptr, 1);       // Save the reset pointer
-    }
-
-
 
     // -- If this appears first, then the system was not able to validate the
     // the new image, so recovery is needed.
@@ -51,7 +39,17 @@ void cBSL_main(void) {
 
     // if there is a new image, then download it
     if (*image_stat_ptr == STAT_DONWLOAD) {
-        cBSL_backup();
+        uint8_t backup_result;
+        backup_result = cBSL_backup();
+        if (backup_result != 1) {
+            cBSL_set_info_b(backup_result, 6);  // Write out the error
+            cBSL_set_info_b(STAT_NONE, 0);      // Set Status to none
+            SYSBSLC = SYSBSLPE + SYSBSLSIZE0 + SYSBSLSIZE1;  // Protect the BSL
+            PMMCTL0 = 0xA5;                    // PMM Password
+            SYSRSTIV |= PMMSWBOR;              // Reset the System
+            return;
+        }
+        cBSL_set_reset_v();
         cBSL_load();
         cBSL_set_info_b(STAT_PENDING_VALID, 0);
     }
@@ -66,9 +64,30 @@ void cBSL_main(void) {
 
 // -----------------------------------------------------------------------------
 unsigned int cBSL_backup() {
-    cBSL_put_cstr("Backing Up...\r\n");
-    // TODO(TimS) Recover the old reset pointer
-    return 0;
+    cBSL_put_cstr("Backing Up...\r\n");     // Notify the User
+    void* app_ptr = (void*)APP_ADR;         // Begining of application
+    void* backup_ptr = (void*)BACKUP_ADR;   // Where to backup to
+    uint32_t app_len = APP_LENGTH;          // Length of Application
+
+    unsigned int retry = 5;
+
+    do {  // --- Keep trying to write, till write is successfull
+        do {  // Keep trying to erase till erase is successfull
+            cBSL_flash_erase(backup_ptr,
+                             ERASE, FLASH_SEG_SZ,
+                             APP_LENGTH / FLASH_SEG_SZ);
+            --retry;
+            if (retry == 0) {
+                return BACKUP_REGION_ERASE_ERROR;       // signal failure
+            }
+        } while (cBSL_flash_erase_check(backup_ptr, APP_LENGTH) == 0);
+        --retry;
+        if (retry == 0) {
+            return BACKUP_COPY_ERROR;                   // signal failure
+        }
+    } while (cBSL_flash_write32(app_ptr, backup_ptr, APP_LENGTH / 4) != 1);
+
+    return 1;
 }
 
 // -----------------------------------------------------------------------------
