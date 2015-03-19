@@ -7,10 +7,6 @@
 
 #pragma SET_CODE_SECTION(".BSL")
 
-unsigned int cBSL_backup();
-unsigned int cBSL_recover();
-unsigned int cBSL_load();
-
 // -----------------------------------------------------------------------------
 #pragma RETAIN(cBSL_main)
 void cBSL_main(void) {
@@ -36,9 +32,17 @@ void cBSL_main(void) {
 
     // --- If this appears first, then the system was not able to validate the
     // the new image, so recovery is needed.
-    if (*image_stat_ptr == STAT_PENDING_VALID) {
-        cBSL_recover();
-        cBSL_set_info_b(STAT_NONE, 0);
+    if ((*image_stat_ptr == STAT_PENDING_VALID) ||
+        (*image_stat_ptr == STAT_RECOVERING)) {
+        cBSL_put_cstr("Recovering...\r\n");     // Notify the User
+
+        // --- Copy Backup to Image
+        uint8_t result;
+        result = cBSL_flash_cp_mult_seg(backup_ptr,
+                                        app_ptr,
+                                        FLSH_SEG_SZ,
+                                        APP_LENGTH);
+
     }
 
     // --- Load the new image
@@ -49,11 +53,12 @@ void cBSL_main(void) {
         uint8_t result;
         result = cBSL_flash_cp_mult_seg(app_ptr,
                                         backup_ptr,
-                                        FLASH_SEG_SZ,
+                                        FLSH_SEG_SZ,
                                         APP_LENGTH);
         if (result != 1) {
-            cBSL_set_info_b(BACKUP_ERROR, 6);   // Write out the error
-            cBSL_set_info_b(STAT_NONE, 0);      // Set Status to none
+            // TODO(TimS) Change the image status
+            // cBSL_set_info_b(BACKUP_ERROR, 6);   // Write out the error
+            // cBSL_set_info_b(STAT_NONE, 0);      // Set Status to none
             // --- Reset the system
             SYSBSLC = SYSBSLPE + SYSBSLSIZE0 + SYSBSLSIZE1;  // Protect the BSL
             PMMCTL0 = 0xA5;                    // PMM Password
@@ -75,26 +80,12 @@ void cBSL_main(void) {
         // --- Load the new image
         result = cBSL_flash_cp_mult_seg(download_ptr,
                                         app_ptr,
-                                        FLASH_SEG_SZ,
+                                        FLSH_SEG_SZ,
                                         APP_LENGTH);
 
         // Set Image status to Pending Validation
         new_val = STAT_PENDING_VALID;
         cBSL_flash_set_array(new_val_ptr, reset_vect_ptr, 2, 0x200);
-    }
-
-    // --- Recover
-    if ((*image_stat_ptr == STAT_PENDING_VALID) ||
-        (*image_stat_ptr == STAT_RECOVERING)) {
-        cBSL_put_cstr("Recovering...\r\n");     // Notify the User
-
-        // --- Copy Backup to Image
-        uint8_t result;
-        result = cBSL_flash_cp_mult_seg(backup,
-                                        app_ptr,
-                                        FLASH_SEG_SZ,
-                                        APP_LENGTH);
-
     }
 
     cBSL_put_cstr("cBSL resetting...\r\n");

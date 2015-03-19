@@ -230,9 +230,7 @@ unsigned int cBSL_flash_set_array(uint8_t* src_ptr,
     union Pointer {
        uint32_t loc;
        uint8_t* loc_ptr;
-    };
-
-    Pointer SegStart;                    // declare Pointer Union
+    } SegStart;
 
     SegStart.loc_ptr = dest_ptr;         // Set to destination
 
