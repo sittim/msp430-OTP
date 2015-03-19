@@ -16,7 +16,9 @@
 // Image Status
 #define STAT_NONE           0x00EE
 #define STAT_DONWLOAD       0x00CC
+#define STAT_LOADING        0x0077
 #define STAT_PENDING_VALID  0xFF88
+#define STAT_RECOVERING     0xFF33
 
 // --- Memory Addresses
 #define INFO_B_PTR          0x1900
@@ -35,8 +37,7 @@
 
 // Return Error
 #define CBSL_STATUS_ADR           0x1906  // address of cBSL status
-#define BACKUP_REGION_ERASE_ERROR 0xEE    // cannot erase backup region
-#define BACKUP_COPY_ERROR         0xCC    // connot copy application to backup
+#define BACKUP_ERROR              0xCC    // connot copy application to backup
 
 
 #pragma SET_DATA_SECTION(".BSL")
@@ -61,17 +62,19 @@ void cBSL_putch(uint8_t data);
  * @param address pointer into the flash segment to be erased.
  * @param mode    ERASE - for segment erase or
  *                MERAS - for Bank Erase
- * @param segment_size size of segment
- * @param seg_qty Quantity of segments to erase
  *
  * Note: ERASE and MERAS are defind in msp430.h.  The code sequence is from
  * TI MSP430x5xx Family Users Guide section "Initiating Erase From Flash"
  */
-inline void cBSL_flash_erase(uint8_t* flash_ptr,
-                             uint32_t mode,
-                             unsigned int segment_sz,
-                             unsigned int set_qty);
+void cBSL_flash_erase(uint8_t* flash_ptr, uint16_t mode);
 
+/**
+ * Checks if the data has been erased properly
+ * @param  start_ptr whare to start checking
+ * @param  len       quan tity of bytes
+ * @return           1 for good erase, 0 for bad erase.
+ */
+unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len);
 /**
  *  Write to Flash
  *  @param data_ptr from
@@ -79,17 +82,55 @@ inline void cBSL_flash_erase(uint8_t* flash_ptr,
  *  @param count Quantity of double words to copy
  *  @return 0 if failed, 1 if success
  */
-unsigned int cBSL_flash_write32(uint32_t* data_ptr,
+void cBSL_flash_write32(uint32_t* data_ptr,
               uint32_t* flash_ptr,
-              unsigned int count);
+              unsigned int len);
 
 /**
- * Set the image status
- * @param img_stat New Image Status.
+ * Verifies that the memory locations are equal
+ * @param  src start of first location
+ * @param  dst start of second location
+ * @param  len quantity of bytes
+ * @return     1 if equial, otherwise zero
  */
-void cBSL_set_info_b(uint16_t value, unsigned int offset);
+unsigned int cBSL_flash_equal(uint8_t* src, uint8_t* dst, uint32_t len);
 
+/**
+ * Copies data, writes to flash
+ * @param  src  from
+ * @param  dest to, must be the begining of a segment
+ * @param  len  qty of bytes in the segment
+ * @return      1 for succusess, 0 failure
+ * Note: The destination must be at the begining of segment
+ */
+unsigned int cBSL_flash_copy_segment(uint8_t* src,
+                                     uint8_t* dest,
+                                     unsigned int len);
 
+/**
+ * Copy multiple segments
+ * @param  src  Source, must start at a begining of a segment
+ * @param  dest Destination
+ * @param  len  Length of data to copy, must be in multiples of segment size
+ * @return      1 for success, 0 for failure
+ */
+unsigned int cBSL_flash_cp_mult_seg(uint8_t* src,
+                                    uint8_t* dest,
+                                    unsigned int seg_sz,
+                                    uint32_t len);
+
+/**
+ * Set values in a single segment, note values cannot overlap segment
+ * @param  src      from where
+ * @param  dest     to where
+ * @param  len      number of bytes to copy
+ * @param  seg_size size of segment
+ * @return          1 for success, otherwise 0
+ */
+unsigned int cBSL_flash_set_array(uint8_t* src,
+                                  uint8_t* dest,
+                                  unsigned int len,
+                                  const unsigned int seg_size);
 
 #pragma SET_DATA_SECTION()
 #pragma SET_CODE_SECTION()

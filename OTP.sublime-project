@@ -24,7 +24,7 @@
     [
         {
             "name": "OTP",
-            "shell_cmd": "make && ./serial_unittest",
+            "shell_cmd": "make && ./unittest",
             "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
             "working_dir": "${file_path}",
             "selector": "source.C++"

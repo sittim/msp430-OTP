@@ -24,14 +24,15 @@ SRC_DIR = $(USER_DIR)/msp430-OTP
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
 # the compiler doesn't generate warnings in Google Test headers.
-CPPFLAGS += -isystem $(GTEST_DIR)/include -I $(USER_DIR)
+CPPFLAGS += -isystem $(GTEST_DIR)/include -isystem $(SRC_DIR)/unittest -I \
+            $(USER_DIR)
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread
+CXXFLAGS += -g -Wall -Wextra -pthread -Wno-unknown-pragmas
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = serial_unittest
+TESTS = unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -73,11 +74,19 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
+cBSL_serial.o : $(SRC_DIR)/otp/cBSL_serial.c $(SRC_DIR)/otp/cBSL_serial.h \
+                $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/otp/cBSL_serial.c
+
 serial.o : $(SRC_DIR)/serial.c $(SRC_DIR)/serial.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/serial.c
 
-serial_unittest.o : serial_unittest.cc
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c serial_unittest.cc
+cBSL_hw_layer.o : $(SRC_DIR)/otp/cBSL_hw_layer.c $(SRC_DIR)/otp/cBSL_hw_layer.h\
+                  $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/otp/cBSL_hw_layer.c
 
-serial_unittest : serial.o serial_unittest.o gtest_main.a
+unittest.o : unittest.cc $(SRC_DIR)/otp/cBSL_hw_layer.h
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c unittest.cc
+
+unittest : cBSL_serial.o serial.o cBSL_hw_layer.o unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@

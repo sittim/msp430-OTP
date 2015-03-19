@@ -3,6 +3,7 @@
  * --/COPYRIGHT--*/
 
 #include "msp430-OTP/otp/cBSL_hw_layer.h"
+#include "msp430-OTP/otp/cBSL_serial.h"
 
 
 #pragma SET_DATA_SECTION(".BSL")
@@ -77,19 +78,13 @@ void cBSL_putch(uint8_t data) {
 }
 
 // -----------------------------------------------------------------------------
-inline void cBSL_flash_erase(uint8_t* flash_ptr,
-                             uint32_t mode,
-                             unsigned int segment_sz,
-                             unsigned int set_qty) {
+void cBSL_flash_erase(uint8_t* flash_ptr, uint16_t mode) {
     while (FCTL3 & BUSY) {}             // Test Busy
     FCTL3 = FWPW;                       // Clear Lock bit
     FCTL1 = FWPW + mode;                // Set erase mode bit
 
-    for (; seg_qty !=0; --seg_qty) {
-        *flash_ptr = 0;                 // Dummy write to erase flash segment
-        while (FCTL3 & BUSY) {}         // test busy
-        flash_ptr += segment_sz;        // Incrument to next segment
-    }
+    *flash_ptr = 0xff;                  // Dummy write to erase flash segment
+    while (FCTL3 & BUSY) {}             // test busy
 
     FCTL1 = FWKEY;                      // Clear erase mode bit
     FCTL3 = FWKEY + LOCK;               // Set LOCK bit
@@ -102,7 +97,8 @@ unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len) {
     while (len >= uint_sz) {                       // 1 more uint to check?
         unsigned int* test_uint;                   // Pointer to the uint
         test_uint = (unsigned int*)start_ptr;      // cast the pointer
-        if (*test_uint != ~((unsigned int)0)) {    // any uint bit low
+        const unsigned int high = ~0;
+        if (*test_uint != high) {                  // any uint bit low
             return 0;                              // yes, failed
         }
         start_ptr += uint_sz;                      // Incrument the start ptr
@@ -110,7 +106,8 @@ unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len) {
     }
     // Check the leftover bytes
     while (len != 0) {                             // Single bytes to check
-        if (*start_ptr != ~((uint8_t)0)) {         // yes, any low?
+        const uint8_t high = ~0;
+        if (*start_ptr != high) {                  // yes, any low?
             return 0;                              // yes, failed
         }
         ++start_ptr;                               // incrument ptr
@@ -118,53 +115,151 @@ unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len) {
     }
     return 1;                                      // return success
 }
-
 // -----------------------------------------------------------------------------
-unsigned int cBSL_flash_write32(uint32_t* data_ptr,
-                   uint32_t* flash_ptr,
-                   uint32_t count) {
+void cBSL_flash_write32(uint32_t* src,
+                        uint32_t* dst,
+                        unsigned int len) {
+    //  .   .   .   .   .   .   .   .   .   .
     FCTL3 = FWPW;                           // Clear Lock bit
     FCTL1 = FWKEY + BLKWRT;                 // Write to flash
 
-    const unsigned int uint_sz = sizeof(unsigned int);
-    uint32_t verify_cnt = count * 4 / uint_sz;
-    unsigned int* verify_data_ptr = (unsigned int*)data_ptr;
-    unsigned int* verify_flash_ptr = (unsigned int*)flash_ptr;
-
-    while (count > 0) {
+    while (len > 0) {
         while (FCTL3 & BUSY) {}             // test busy
 
-        *flash_ptr++ = *data_ptr++;         // Write to Flash
+        *dst = *src;                        // Write to Flash
 
-        count--;
+        ++src;                              // next source location
+        ++dst;                              // next destination location
+
+        len--;
     }
 
     FCTL1 = FWKEY;                          // Clear BLKWRT bit
     FCTL3 = FWKEY + LOCK;                   // Set Lock bit
-
-    while (verify_cnt != 0) {
-        if (*verify_data_ptr != *verify_flash_ptr) {
-            return 0;
-        }
-        ++verify_data_ptr;
-        ++verify_flash_ptr;
-    }
-    return 1;
 }
 
 // -----------------------------------------------------------------------------
-void cBSL_set_info_b(uint16_t img_stat, unsigned int offset) {
-    UI8_ARRAY(Buffer, 128);                          // Init array
+unsigned int cBSL_flash_equal(uint8_t* src,
+                              uint8_t* dst,
+                              uint32_t len) {
+    //  .   .   .   .   .   .   .   .   .  .   .
+    const unsigned int uint_sz = sizeof(unsigned int);
 
-    uint8_t* info_b_ptr;                             // Pointer to info pointer
-    info_b_ptr = (uint8_t*)INFO_B_PTR;
+    // Check 1 unsigned int at a time
+    while (len >= uint_sz) {                   // 1 more uint to check?
 
-    cBSL_push_mem(&Buffer, info_b_ptr, 128);             // Copy Data to RAM
+        if ((unsigned int)(*src) != (unsigned int)(*dst)) {    // Not equal?
+            return 0;                          // yes, failed
+        }
+        src += uint_sz;                        // Incrument the start ptr
+        dst += uint_sz;                        // Incrument the start ptr
+        len -= uint_sz;                        // Decrument length
+    }
 
-    cBSL_at_ui16_set(&Buffer, img_stat, offset);         // Set the Value
+    // Check the leftover bytes
+    while (len != 0) {                         // Single bytes to check
+        if (*src != *dst) {                    // Not equal?
+            return 0;                          // yes, failed
+        }
+        ++src;                                 // incrument ptr
+        ++dst;                                 // incrument ptr
+        --len;                                 // decrument length
+    }
+    return 1;                                  // return success
+}
+// -----------------------------------------------------------------------------
+unsigned int cBSL_flash_copy_segment(uint8_t* src,
+                                     uint8_t* dst,
+                                     unsigned int len) {
+    //  .   .   .   .   .   .   .   .   .   .   .   .   .
+    unsigned int retries = 5;
 
-    cBSL_flash_erase(info_b_ptr, ERASE);                 // Erase the Flash
+    do {  // Keep trying to erase till erase is successfull
+        cBSL_flash_erase(dst, ERASE);            // Erase flash memroy
+        if (retries == 0) {                      // No Retires left?
+            return 0;                            // No, so return zero
+        }
+        --retries;                               // decrument retries
+    } while (cBSL_flash_erase_check(dst, len) == 0);  // Check erase
 
-    cBSL_flash_write32(Buffer.base_ptr, info_b_ptr, 4);  // Write Back
+    retries = 5;
+
+    do {  // Keep writing till sucessfull
+        cBSL_flash_write32((uint32_t*)src,
+                            (uint32_t*)dst,
+                            len / 4);  // Write
+        //  .   .   .   .   .   .   .
+        if (retries == 0) {                      // No retries left?
+            return 0;                            // No, so return zero
+        }
+        --retries;                               // Decrument Retries
+    } while (cBSL_flash_equal(src, dst, len) == 0);   // verify flash is equal
+
+    return 1;                                    // Signal success
 }
 
+// -----------------------------------------------------------------------------
+unsigned int cBSL_flash_cp_mult_seg(uint8_t* src,
+                                    uint8_t* dst,
+                                    unsigned int seg_size,
+                                    uint32_t len) {
+    //  .   .   .   .   .   .   .   .   .   .   .   .
+    uint32_t seg_qty;            // quantity of segments
+    seg_qty = len / seg_size;
+
+    while (seg_qty > 0) {
+        unsigned int result;     // Result of copy operation
+        result = cBSL_flash_copy_segment(src, dst, seg_size);
+        if (result == 0) {
+            return 0;            // Signal failure
+        }
+        src += seg_size;
+        dst += seg_size;
+        --seg_qty;               // decrument count
+    }
+    return 1;                    // Signal Success
+}
+
+// -----------------------------------------------------------------------------
+#include <stdio.h>
+unsigned int cBSL_flash_set_array(uint8_t* src_ptr,
+                                  uint8_t* dest_ptr,
+                                  unsigned int len,
+                                  unsigned int seg_size) {
+    //  .   .   .   .   .   .   .   .   .   .   .   .   .   .
+    union Pointer {
+       uint32_t loc;
+       uint8_t* loc_ptr;
+    };
+
+    Pointer SegStart;                    // declare Pointer Union
+
+    SegStart.loc_ptr = dest_ptr;         // Set to destination
+
+    uint32_t rem = SegStart.loc & (seg_size - 1);  // figure out remainder
+
+    SegStart.loc -= rem;                 // start of segment
+
+    UI8_ARRAY(SegRamBuff, seg_size);     // Init Memory Block
+
+    cBSL_push_mem(&SegRamBuff, SegStart.loc_ptr, seg_size);  // Cp Flash to RAM
+
+    uint32_t index = dest_ptr - SegStart.loc_ptr;            // Start of Index
+
+    while (len > 0) {
+        SegRamBuff.start_ptr[index] = src_ptr[0];
+        --len;
+        ++index;
+        ++src_ptr;
+    }
+
+    if (cBSL_flash_copy_segment(SegRamBuff.start_ptr,
+                                SegStart.loc_ptr,
+                                seg_size) == 0) {
+        //  .   .   .   .   .   .   .   .   .
+        return 0;                                  // signal failure
+    }
+    return 1;                                      // signal success
+}
+
+// -----------------------------------------------------------------------------

@@ -1,15 +1,17 @@
 /* --COPYRIGHT--
  * See LICENCE File
  * --/COPYRIGHT--*/
+#include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
 #include <string>
 #include "msp430-OTP/serial.h"
+#include "msp430-OTP/otp/cBSL_hw_layer.h"
 #include "gtest/gtest.h"
 
 /**
  * Compare Arrays Helper Function
- * Usage:  EXPECT_TRUE(ArraysMatch(two_sorted, two));
+ * Usage:  EXPECT_TRUE(ArraysMatch(one, two));
  */
 template<typename T, size_t size>
 ::testing::AssertionResult ArraysMatch(const T (&expected)[size],
@@ -19,6 +21,45 @@ template<typename T, size_t size>
             return ::testing::AssertionFailure() << "array[" << i
                 << "] (" << actual[i] << ") != expected[" << i
                 << "] (" << expected[i] << ")";
+        }
+    }
+    return ::testing::AssertionSuccess();
+}
+
+/**
+ * Compare Arrays Helper Function
+ * Usage:  EXPECT_TRUE(ArraysMatchLen(one, two, length));
+ */
+template<typename T>
+::testing::AssertionResult ArraysMatchLen(const T (*expected),
+                                       const T (*actual),
+                                       unsigned int size){
+    for (size_t i(0); i < size; ++i) {
+        if ((T)expected[i] != actual[i]) {
+            // ---- Build Actual String
+            std::string act_str;
+            char buffer[33];      // Buffer
+
+            for (int itr = 0; itr < (size - 1); ++itr) {
+                snprintf(buffer, sizeof(buffer), "0x%x, ", actual[itr]);
+                act_str.append(buffer);
+            }
+            snprintf(buffer, sizeof(buffer), "0x%x", actual[size-1]);
+            act_str.append(buffer);
+
+            // ----- Bild Expected String
+            std::string exp_str;
+            for (int itr = 0; itr < (size - 1); ++itr) {
+                snprintf(buffer, sizeof(buffer), "0x%x, ", expected[itr]);
+                exp_str.append(buffer);
+            }
+
+            snprintf(buffer, sizeof(buffer), "0x%x", expected[size - 1]);
+            exp_str.append(buffer);
+
+            return ::testing::AssertionFailure()
+                << "\nactual {" << act_str << "}\n"
+                <<   "expctd {" << exp_str << "}\n";
         }
     }
     return ::testing::AssertionSuccess();
@@ -362,4 +403,228 @@ TEST(Serial, get_enum) {
     push_cst(&In, "e");
     EXPECT_EQ(get_enum(&In, keys, keys_sz), ~0);
 }
+/**
+ * MSP430 memroy stub
+ */
 
+uint16_t msp430[0x48000];
+
+TEST(hw_layer, flash_erase) {
+    // write to the memory
+    uint8_t* start;
+    start = reinterpret_cast<uint8_t*>(msp430 + 0x8000) - 1;
+
+    for (int itr = 0; itr < 9; ++itr) {
+        start[itr] = 0x20 + itr;
+    }
+
+    uint8_t golden[] = {0x20, 0xFF, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28};
+
+    cBSL_flash_erase(start + 1, ERASE);
+
+    EXPECT_TRUE(ArraysMatchLen(golden, start, 9));
+}
+
+TEST(hw_layer, erase_check) {
+    // write to the memory
+    uint8_t* start;
+    start = reinterpret_cast<uint8_t*>(msp430 + 0x8000) - 1;
+
+    // --- Fill memory with all of the bits high 0xFF which is ~0
+    for (int itr = 1; itr < 8; ++itr) {
+        start[itr] = ~0;
+    }
+
+    start[0] = 0xEE;         // Add low bits on the left and the right of the
+    start[8] = 0xCC;         // array being tested
+
+    uint8_t golden[] = {0xEE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xCC};
+
+    EXPECT_EQ(cBSL_flash_erase_check(start + 1, 7), 1);
+
+    *(start + 1) = 0xEF;
+    EXPECT_EQ(cBSL_flash_erase_check(start + 1, 7), 0);
+
+    *(start + 1) = 0xFF;
+    EXPECT_EQ(cBSL_flash_erase_check(start + 1, 7), 1);
+
+    *(start + 6) = 0xEF;
+    EXPECT_EQ(cBSL_flash_erase_check(start + 1, 7), 0);
+
+    *(start + 6) = 0xFF;  // Change back
+    // verify that the memory stayed unchanged by function
+    EXPECT_TRUE(ArraysMatchLen(golden, start, 9));
+}
+
+TEST(hw_layer, flash_write32) {
+    uint32_t src[] = {0x01234567, 0x89ABCDEF};
+
+    uint32_t* dst = reinterpret_cast<uint32_t*>(msp430 + 0x800);
+
+    cBSL_flash_write32(src, dst, 2);
+
+    EXPECT_TRUE(ArraysMatchLen(src, dst, 2));
+}
+
+TEST(hw_layer, cBSL_flash_equal) {
+    // write to the memory
+    uint8_t* src = reinterpret_cast<uint8_t*>(msp430 + 0x8000) - 1;
+    uint8_t* dst = reinterpret_cast<uint8_t*>(msp430 + 0x9000) - 1;
+
+    uint8_t golden[] = {0xEE, 0x21, 0x22, 0x23, 0x24,
+                        0x25, 0x26, 0x27, 0x28, 0xFF};
+
+    for (unsigned int itr = 0; itr < sizeof(golden); ++itr) {
+        src[itr] = golden[itr];
+        dst[itr] = golden[itr];
+    }
+
+    EXPECT_EQ(cBSL_flash_equal(src + 1, dst + 1, 7), 1);
+
+    uint8_t saved = *(src + 1);
+    *(src + 1) = 0xEF;
+
+    EXPECT_EQ(cBSL_flash_equal(src + 1, dst + 1, 7), 0);
+
+    *(src + 1) = saved;
+    EXPECT_EQ(cBSL_flash_equal(src + 1, dst + 1, 7), 1);
+
+    saved = *(src + 6);
+    *(src + 6) -= 1;
+    EXPECT_EQ(cBSL_flash_equal(src + 1, dst + 1, 7), 0);
+
+    *(src + 6) = saved;
+    EXPECT_EQ(cBSL_flash_equal(src + 1, dst + 1, 7), 1);
+}
+
+TEST(hw_layer, cBSL_flash_copy_segment) {
+    // write to the memory
+    uint8_t* src;
+    src = reinterpret_cast<uint8_t*>(msp430) + 0x8000 - 1;
+
+    uint8_t* dst;
+    dst = reinterpret_cast<uint8_t*>(msp430) + 0x9000 - 1;
+
+    uint8_t gold_src[10];
+
+    for (int itr = 0; itr < 10; ++itr) {
+        src[itr] = 0x20 + itr;
+        gold_src[itr] = 0x20 + itr;
+        dst[itr] = 0xFF;
+    }
+
+    dst[0] = 0x88;
+    dst[9] = 0x99;
+
+    // Golden Image
+    uint8_t golden[] = {0x88, 0x21, 0x22, 0x23, 0x24,
+                        0x25, 0x26, 0x27, 0x28, 0x99};
+
+    EXPECT_EQ(cBSL_flash_copy_segment(src + 1, dst + 1, 8), 1);
+
+    EXPECT_TRUE(ArraysMatchLen(golden, dst, 10));
+
+    EXPECT_TRUE(ArraysMatchLen(gold_src, src, 10));  // src was not changed
+}
+
+TEST(hw_layer, cBSL_flash_cp_mult_seg) {
+    // write to the memory
+    uint8_t* src;
+    src = reinterpret_cast<uint8_t*>(msp430) + 0x8000 - 1;
+
+    uint8_t* dst;
+    dst = reinterpret_cast<uint8_t*>(msp430) + 0x9000 - 1;
+
+    uint8_t gold_src[18];
+
+    for (int itr = 0; itr < 18; ++itr) {
+        src[itr] = 0x20 + itr;
+        gold_src[itr] = 0x20 + itr;
+        dst[itr] = 0xFF;
+    }
+
+    dst[0]  = 0x88;
+    dst[17] = 0x99;
+
+    // Golden Image
+    uint8_t golden[] = {0x88, 0x21, 0x22, 0x23, 0x24,
+                              0x25, 0x26, 0x27, 0x28,
+                              0x29, 0x2A, 0x2B, 0x2C,
+                              0x2D, 0x2E, 0x2F, 0x30, 0x99};
+
+    EXPECT_EQ(cBSL_flash_cp_mult_seg(src + 1, dst + 1, 8, 16), 1);
+
+    EXPECT_TRUE(ArraysMatchLen(golden, dst, 18));
+
+    EXPECT_TRUE(ArraysMatchLen(gold_src, src, 18));  // src was not changed
+}
+
+TEST(hw_layer, cBSL_flash_set_array) {
+    // write to the memory
+    uint8_t* src;
+    src = reinterpret_cast<uint8_t*>(msp430) + 0x8000 - 1;
+
+    uint8_t* dst;
+    dst = reinterpret_cast<uint8_t*>(msp430) + 0x9000 - 1;
+
+    uint8_t gold_src[18];
+
+    for (int itr = 0; itr < 18; ++itr) {
+        src[itr] = 0x20 + itr;
+        gold_src[itr] = 0x20 + itr;
+        dst[itr] = 0xFF;
+    }
+
+    dst[0]  = 0x88;
+    dst[17] = 0x99;
+
+    // --- Test Changing 3 in the middle the (0x21, 0x22, 0x23)
+    // Golden Image
+    uint8_t golden1[] = {0x88, 0xFF, 0xFF, 0xFF, 0xFF,
+                               0xFF, 0xFF, 0xFF, 0xFF,
+                               0xFF, 0x21, 0x22, 0x23,
+                               0xFF, 0xFF, 0xFF, 0xFF, 0x99};
+
+    // Change 3 in middle
+    EXPECT_EQ(cBSL_flash_set_array(src + 1, dst + 10, 3, 4), 1);
+
+    EXPECT_TRUE(ArraysMatchLen(golden1, dst, 18));
+
+    EXPECT_TRUE(ArraysMatchLen(gold_src, src, 18));  // src was not changed
+
+    // --- Test Changing first one (0x24)
+    // Revert Destination
+    dst[10] = 0xFF;
+    dst[11] = 0xFF;
+    dst[12] = 0xFF;
+
+    // Golden Image
+    uint8_t golden2[] = {0x88, 0x24, 0xFF, 0xFF, 0xFF,
+                               0xFF, 0xFF, 0xFF, 0xFF,
+                               0xFF, 0xFF, 0xFF, 0xFF,
+                               0xFF, 0xFF, 0xFF, 0xFF, 0x99};
+
+    // Change first one
+    EXPECT_EQ(cBSL_flash_set_array(src + 4, dst + 1, 1, 4), 1);
+
+    EXPECT_TRUE(ArraysMatchLen(golden2, dst, 18));
+
+    EXPECT_TRUE(ArraysMatchLen(gold_src, src, 18));  // src was not changed
+
+    // --- Test Changing last one (0x25)
+    // Revert Destination
+    dst[1] = 0xFF;
+
+    // Golden Image
+    uint8_t golden3[] = {0x88, 0xFF, 0xFF, 0xFF, 0xFF,
+                               0xFF, 0xFF, 0xFF, 0xFF,
+                               0xFF, 0xFF, 0xFF, 0xFF,
+                               0xFF, 0xFF, 0xFF, 0x25, 0x99};
+
+    // Change first one
+    EXPECT_EQ(cBSL_flash_set_array(src + 5, dst + 16, 1, 4), 1);
+
+    EXPECT_TRUE(ArraysMatchLen(golden3, dst, 18));
+
+    EXPECT_TRUE(ArraysMatchLen(gold_src, src, 18));  // src was not changed
+}

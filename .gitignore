@@ -32,3 +32,4 @@ Debug/*.asm
 *.opt
 *.lst
 Debug/*.xml
+unittest/unittest

@@ -1,7 +1,6 @@
 /* --COPYRIGHT--
  * See LICENCE File
  * --/COPYRIGHT--*/
-#include <stdio.h>
 #include "msp430-OTP/otp/cBSL_serial.h"
 /**
  * Output singel char
