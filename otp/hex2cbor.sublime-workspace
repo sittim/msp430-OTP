@@ -4,6 +4,66 @@
 		"selected_items":
 		[
 			[
+				"dat",
+				"data_len"
+			],
+			[
+				"da",
+				"data	[]byte ν"
+			],
+			[
+				"print",
+				"Printf	n int, err error ƒ"
+			],
+			[
+				"uin",
+				"uint32	built-in ʈ"
+			],
+			[
+				"Hex",
+				"HexLine"
+			],
+			[
+				"data",
+				"data[3:7"
+			],
+			[
+				"hex",
+				"hex2bytes"
+			],
+			[
+				"mem",
+				"mem_adr	uint16 ν"
+			],
+			[
+				"prin",
+				"println"
+			],
+			[
+				"me",
+				"mem_adr"
+			],
+			[
+				"De",
+				"DecodeString	[]byte, error ƒ"
+			],
+			[
+				"in_b",
+				"in_bin_data	struct ʈ"
+			],
+			[
+				"uint",
+				"uint16	built-in ʈ"
+			],
+			[
+				"p",
+				"Println	n int, err error ƒ"
+			],
+			[
+				"Pr",
+				"Println	n int, err error ƒ"
+			],
+			[
 				"STAT",
 				"STAT_PENDING_VALID"
 			],
@@ -16,16 +76,8 @@
 				"bsl_vect_ptr"
 			],
 			[
-				"uin",
-				"uint8_t"
-			],
-			[
 				"BSL",
 				"BSL_VECTOR"
-			],
-			[
-				"uint",
-				"uint8_t"
 			],
 			[
 				"dest",
@@ -230,10 +282,6 @@
 			[
 				"folder",
 				"folder_exclude_patterns"
-			],
-			[
-				"data",
-				"data_ptr"
 			],
 			[
 				"IMAGE",
@@ -466,77 +514,37 @@
 			[
 				"Mode",
 				"ModemRX"
-			],
-			[
-				"mvp",
-				"mvp_r"
-			],
-			[
-				"delay",
-				"delay_ms"
-			],
-			[
-				"scan",
-				"scan_for"
-			],
-			[
-				"de",
-				"de910_dual"
-			],
-			[
-				"RTUI",
-				"RTUID_IS_READ"
-			],
-			[
-				"file",
-				"input_file"
-			],
-			[
-				"print",
-				"print_string"
-			],
-			[
-				"try",
-				"try_lock"
-			],
-			[
-				"SVMLV",
-				"SVMLVLRPE"
-			],
-			[
-				"SVML",
-				"SVMLVLRIFG"
-			],
-			[
-				"modem",
-				"modem_on_retry"
-			],
-			[
-				"uni",
-				"uint16_t"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "otp/hex2cbor.go",
+			"file": "/work/c1202-firmware/msp430-OTP/hex2cbor/hex2cbor.sublime-project",
 			"settings":
 			{
-				"buffer_size": 272,
+				"buffer_size": 363,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/sporty/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings",
+			"file": "/home/sporty/go/src/github.com/sittim/analyzer_data/analyzer_data.go",
 			"settings":
 			{
-				"buffer_size": 296,
+				"buffer_size": 4311,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/work/c1202-firmware/msp430-OTP/README.md",
+			"settings":
+			{
+				"buffer_size": 4088,
 				"line_ending": "Unix"
 			}
 		}
 	],
-	"build_system": "OTP",
+	"build_system": "Packages/GoSublime/GoSublime.sublime-build",
 	"command_palette":
 	{
 		"height": 375.0,
@@ -732,14 +740,21 @@
 	},
 	"expanded_folders":
 	[
+		"/home/sporty/go/src/github.com/sittim/hex_to_cbor"
 	],
 	"file_history":
 	[
+		"/work/c1202-firmware/msp430-OTP/otp/msp430-OTP.hex",
+		"/work/c1202-firmware/msp430-OTP/otp/hex2cbor.go",
+		"/work/c1202-firmware/msp430-OTP/otp/hex2cbor_test.go",
+		"/home/sporty/private",
+		"/home/sporty/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings",
+		"/home/sporty/go/src/github.com/sittim/aesb64/aesb64.go",
+		"/work/c1202-firmware/msp430-OTP/otp/hex2cbor.sublime-project",
+		"/home/sporty/.config/sublime-text-3/Packages/GoSublime/GoSublime.sublime-settings",
+		"/home/sporty/go/src/github.com/sittim/analyzer_data/analyzer_data.sublime-project",
 		"/work/c1202-firmware/msp430-OTP/README.md",
-		"/work/c1202-firmware/RIOT/sys/cbor/cbor.c",
-		"/work/c1202-firmware/RIOT/sys/include/cbor.h",
 		"/work/c1202-firmware/msp430-OTP/otp/rfc7049-errata-corrected.txt",
-		"/work/c1202-firmware/msp430-OTP/Debug/msp430-OTP.hex",
 		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/rf430frl152h.cmd",
 		"/work/c1202-firmware/msp430-OTP/lnk_msp430f5335.cmd",
 		"/work/c1202-firmware/msp430-OTP/otp/cBSL_main.c",
@@ -751,6 +766,7 @@
 		"/work/c1202-firmware/msp430-OTP/otp/cBSL_hw_layer.c",
 		"/work/c1202-firmware/msp430-OTP/otp/cBSL_serial.c",
 		"/home/sporty/.config/sublime-text-3/Packages/User/Markdown (Standard).sublime-settings",
+		"/work/c1202-firmware/msp430-OTP/Debug/msp430-OTP.hex",
 		"/home/sporty/.config/sublime-text-3/Packages/MarkdownEditing/README.md",
 		"/home/sporty/.config/sublime-text-3/Packages/User/Markdown.sublime-settings",
 		"/home/sporty/.config/sublime-text-3/Packages/User/Bold and Italic Markers.tmPreferences",
@@ -855,18 +871,11 @@
 		"/work/c1202-fw-v2/msp430-os/Debug/msp430-os.lib",
 		"/home/sporty/.xmonad/xmonad.hs",
 		"/usr/share/applications/nautilus.desktop",
-		"/home/sporty/.xmobarrc",
-		"/work/c1202-firmware/c1202-f5336/msp430-OTP/BSL430_Low_Level_Init.asm",
-		"/usr/share/applications/atom.desktop",
-		"/home/sporty/.local/share/applications/ccs.desktop",
-		"/home/sporty/.local/share/applications/playonlinux-Microsoft Powerpoint 2010.desktop",
-		"/work/c1202-firmware/aes/TI_aes_128.c",
-		"/work/c1202-firmware/c1202-f5336/msp430-OTP/lnk_msp430f5335.cmd",
-		"/work/c1202-firmware/msp430-os/sensor.cpp"
+		"/home/sporty/.xmobarrc"
 	],
 	"find":
 	{
-		"height": 37.0
+		"height": 24.0
 	},
 	"find_in_files":
 	{
@@ -915,6 +924,10 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			":",
+			"println",
+			"hex_line",
+			" ",
 			"cBSL_set_info_b",
 			"cBSL_recover",
 			"golden2",
@@ -1038,11 +1051,7 @@
 			"SYSBSLIND",
 			"RETURN_TO_BSL",
 			"BSL_ACTION0",
-			"JTAGLOCK_KEY",
-			"BSLSIG",
-			"HW_ABSTRACTION_H",
-			"P4DIR",
-			"HW_ABSTRACTION_H_"
+			"JTAGLOCK_KEY"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1086,31 +1095,26 @@
 			[
 				{
 					"buffer": 0,
-					"file": "otp/hex2cbor.go",
+					"file": "/work/c1202-firmware/msp430-OTP/hex2cbor/hex2cbor.sublime-project",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 272,
+						"buffer_size": 363,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								272,
-								272
+								363,
+								363
 							]
 						],
 						"settings":
 						{
-							"rulers":
-							[
-								80
-							],
-							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"tab_size": 4,
-							"translate_tabs_to_spaces": false,
-							"wrap_width": 0
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1122,29 +1126,60 @@
 			]
 		},
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 1,
-					"file": "/home/sporty/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings",
+					"file": "/home/sporty/go/src/github.com/sittim/analyzer_data/analyzer_data.go",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 296,
+						"buffer_size": 4311,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								296,
-								296
+								298,
+								298
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/work/c1202-firmware/msp430-OTP/README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4088,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1184,7 +1219,7 @@
 		"cols":
 		[
 			0.0,
-			0.5,
+			0.538859548863,
 			1.0
 		],
 		"rows":
@@ -1194,6 +1229,18 @@
 		]
 	},
 	"menu_visible": true,
+	"output.9o:///home/sporty/.config/sublime-text-3/Packages/User":
+	{
+		"height": 108.0
+	},
+	"output.9o:///home/sporty/go/src/github.com/sittim/analyzer_data":
+	{
+		"height": 565.0
+	},
+	"output.9o:///work/c1202-firmware/msp430-OTP/otp":
+	{
+		"height": 341.0
+	},
 	"output.GoSublime-main-output":
 	{
 		"height": 138.0
@@ -1218,12 +1265,12 @@
 	{
 		"height": 137.0
 	},
-	"project": "OTP.sublime-project",
+	"project": "hex2cbor.sublime-project",
 	"replace":
 	{
 		"height": 44.0
 	},
-	"save_all_on_build": true,
+	"save_all_on_build": false,
 	"select_file":
 	{
 		"height": 0.0,

@@ -519,24 +519,8 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "otp/hex2cbor.go",
-			"settings":
-			{
-				"buffer_size": 272,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/sporty/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings",
-			"settings":
-			{
-				"buffer_size": 296,
-				"line_ending": "Unix"
-			}
-		}
 	],
-	"build_system": "OTP",
+	"build_system": "hex2cbor",
 	"command_palette":
 	{
 		"height": 375.0,
@@ -732,14 +716,14 @@
 	},
 	"expanded_folders":
 	[
+		"/home/sporty/go/src/github.com/sittim/hex_to_cbor"
 	],
 	"file_history":
 	[
+		"/work/c1202-firmware/msp430-OTP/otp/hex2cbor.sublime-project",
+		"/home/sporty/go/src/github.com/sittim/analyzer_data/analyzer_data.sublime-project",
 		"/work/c1202-firmware/msp430-OTP/README.md",
-		"/work/c1202-firmware/RIOT/sys/cbor/cbor.c",
-		"/work/c1202-firmware/RIOT/sys/include/cbor.h",
 		"/work/c1202-firmware/msp430-OTP/otp/rfc7049-errata-corrected.txt",
-		"/work/c1202-firmware/msp430-OTP/Debug/msp430-OTP.hex",
 		"/home/sporty/ti/ccsv6/ccs_base/msp430/include/rf430frl152h.cmd",
 		"/work/c1202-firmware/msp430-OTP/lnk_msp430f5335.cmd",
 		"/work/c1202-firmware/msp430-OTP/otp/cBSL_main.c",
@@ -751,6 +735,7 @@
 		"/work/c1202-firmware/msp430-OTP/otp/cBSL_hw_layer.c",
 		"/work/c1202-firmware/msp430-OTP/otp/cBSL_serial.c",
 		"/home/sporty/.config/sublime-text-3/Packages/User/Markdown (Standard).sublime-settings",
+		"/work/c1202-firmware/msp430-OTP/Debug/msp430-OTP.hex",
 		"/home/sporty/.config/sublime-text-3/Packages/MarkdownEditing/README.md",
 		"/home/sporty/.config/sublime-text-3/Packages/User/Markdown.sublime-settings",
 		"/home/sporty/.config/sublime-text-3/Packages/User/Bold and Italic Markers.tmPreferences",
@@ -866,7 +851,7 @@
 	],
 	"find":
 	{
-		"height": 37.0
+		"height": 24.0
 	},
 	"find_in_files":
 	{
@@ -1081,78 +1066,13 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "otp/hex2cbor.go",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 272,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								272,
-								272
-							]
-						],
-						"settings":
-						{
-							"rulers":
-							[
-								80
-							],
-							"syntax": "Packages/GoSublime/syntax/GoSublime-Go.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": false,
-							"wrap_width": 0
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		},
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 1,
-					"file": "/home/sporty/.config/sublime-text-3/Packages/User/GoSublime.sublime-settings",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 296,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								296,
-								296
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -1184,7 +1104,7 @@
 		"cols":
 		[
 			0.0,
-			0.5,
+			0.490422808025,
 			1.0
 		],
 		"rows":
@@ -1218,12 +1138,12 @@
 	{
 		"height": 137.0
 	},
-	"project": "OTP.sublime-project",
+	"project": "hex2cbor.sublime-project",
 	"replace":
 	{
 		"height": 44.0
 	},
-	"save_all_on_build": true,
+	"save_all_on_build": false,
 	"select_file":
 	{
 		"height": 0.0,
@@ -1780,7 +1700,7 @@
 		],
 		"width": 473.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},

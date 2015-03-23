@@ -33,3 +33,4 @@ Debug/*.asm
 *.lst
 Debug/*.xml
 unittest/unittest
+Debug/makefile

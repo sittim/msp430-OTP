@@ -106,6 +106,35 @@ The Application will be able to set image status to the following:
 Below is the high level sequence of the over the air programming.
 ![cBSL Activity](otp/uml/concept.png)
 
+## Hex to Bin
+
+In order to maximize the efficiency of transmission of the application over the network, the hex file is translated to Consise Binary Object Representation file (CBOR http://cbor.io/spec.html). 
+
+| byte 1  |
+|---|-----|
+| 3 | 5   |
+
+
+| Memory Address |  data |
+
+```
+4:25                    -- Array with uint16_t additional info
+    98                  -- Element count is 98
+    0:25                -- uint16_t
+        5               -- id of 5
+    0:25                -- uint16_t
+        25              -- Out of 25
+    4:2                 -- Array of length 2
+        0:26            -- uint32_t -> Memry location of first byte
+            0xf658      -- The memory location
+        2:26            -- Array with uint32_t additional info
+            50          -- 50 bytes of data
+                ...     -- .. the 50 bytes of data
+    0:25                -- uint16_t
+        0xfadc          -- CRC16
+```
+
+
 
 
 
