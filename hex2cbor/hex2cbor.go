@@ -11,38 +11,29 @@ import (
 	"os"
 )
 
+// *****************************************************************************
+// BinRecord is the struct that contains the data for each of the linex in the
+// Intel file.
+// *****************************************************************************
 // input file hex line
-type bin_line struct {
+type BinRecord struct {
 	data_len byte
-	offset   uint32
+	address  uint32
 	r_type   byte
 	data     []byte
-	crs      uint16
-}
-
-type in_bin_data struct {
-	line []bin_line
-}
-
-var InBinData in_bin_data
-
-// -----------------------------------------------------------------------------
-// Convert Hex to array of bytes
-func hex2bytes(data string) []byte {
-
-	out, err := hex.DecodeString(data)
-
-	if err != nil {
-		println("Error Converting Hex\n")
-		println("Hex Data: ", data, "\n")
-		os.Exit(1)
-	}
-	return out
+	crc      byte
 }
 
 // -----------------------------------------------------------------------------
-// Convert a line from Intex Hex to bin_line struct
-func hex2bin_line(data string) bin_line {
+// Print out a BinRecord
+func (l *BinRecord) Print() {
+	fmt.Printf("Len: 0x%x, Addr: 0x%x, Type: %d, %v\n", l.data_len, l.address,
+		l.r_type, l.data)
+}
+
+// -----------------------------------------------------------------------------
+// Convert a line from Intel Hex to BinRecord struct
+func (ln *BinRecord) hex2bin_line(data string) {
 
 	//|--|----|--|-------------------------------------------|--|
 	// |  |    |   ^ Data [9:9 + (record size * 2)]           ^ Checksum[]
@@ -50,50 +41,168 @@ func hex2bin_line(data string) bin_line {
 	// |  ^ Address [3:7]
 	// ^ record size [1:3]
 
-	var HexLine bin_line
+	// Convert to bytes
+	bt, err := hex.DecodeString(data[1:])
 
-	var bt []byte
+	if err != nil {
+		println("Error Converting Hex\n")
+		println("Hex Data: ", data, "\n")
+		os.Exit(1)
+	}
 
-	// Decode Length
-	bt = hex2bytes(data[1:3])
+	ln.data_len = bt[0]
 
-	HexLine.data_len = bt[0]
+	ln.address = uint32(binary.BigEndian.Uint16(bt[1:3]))
 
-	// Decode Address
-	bt = hex2bytes(data[3:7]) // Decode
+	ln.r_type = bt[3]
 
-	HexLine.offset = uint32(binary.BigEndian.Uint16(bt))
+	// Verify that only supported record types are in the hex file
+	// NOTE: other record types may need to be supported
+	if (ln.r_type >= 0x02) && (ln.r_type != 0x4) {
+		fmt.Println(">>>>>>> Record Type: ", ln.r_type, " is Not supported")
+		fmt.Println(data)
+		os.Exit(1)
+	}
 
-	bt = hex2bytes(data[7:9])
+	slice_end := 4 + ln.data_len
 
-	HexLine.r_type = bt[0]
+	ln.data = bt[4:slice_end]
 
-	slice_end := 9 + (HexLine.data_len * 2)
+	ln.crc = bt[slice_end]
 
-	HexLine.data = hex2bytes(data[9:slice_end])
+	var sum uint64
 
-	fmt.Println("Line: ", data, "\nData Len: ", HexLine.data_len,
-		"Address: ", HexLine.offset, ", r type: ", HexLine.r_type)
+	// ----- Calculate the checksum
+	// Calculate the sum
+	for _, element := range bt[0 : len(bt)-1] {
+		sum = sum + uint64(element)
+	}
 
-	fmt.Printf("Len: %d, Data: %v\n", len(HexLine.data), HexLine.data)
+	// extract the LSB
+	b := make([]byte, 8)
+	binary.BigEndian.PutUint64(b, uint64(sum))
 
-	// var mem_adr uint16
+	// Calculate the two complements
+	checksum := ^(b[7]) + 1
 
-	// buf := bytes.NewReader(mem_adr_bytes)
-
-	// _ = binary.Read(buf, binary.LittleEndian, &mem_adr)
-
-	// println("Line: ", data, ", [1:2]: ", data[1:3], ", Len: ", length[0],
-	// 	", Addres Hex: ", buf[0], ", Address: ", mem_adr, "\n")
-	//
-	return HexLine
+	// Verify Checksum
+	if checksum != ln.crc {
+		println("Checksum is not matching\n")
+		os.Exit(1)
+	}
 }
 
-// keeps track of reading data
-// type cbor struct {
-// 	max_sec_len int64
-// }
+// *****************************************************************************
+// Struct contains the binary data
+// *****************************************************************************
+type BinData struct {
+	line []BinRecord
+}
 
+// -----------------------------------------------------------------------------
+// Add line to the BinRecord Array
+func (bd *BinData) push_line(data string) {
+	var bl BinRecord
+	bl.hex2bin_line(data)
+	bd.line = append(bd.line, bl)
+}
+
+// -----------------------------------------------------------------------------
+// Takes into consideration the 0x4 record types
+func (bd *BinData) correct_address() {
+	var upper_mem uint32
+	upper_mem = 0 // Init upper Memory location
+	for itr, bdl := range bd.line {
+		switch {
+		case bdl.r_type == 0x0:
+			bd.line[itr].address = bdl.address + upper_mem // add the upper memeory
+			// Handle the address
+		case bdl.r_type == 0x1:
+			// Do nothing for now
+		case bdl.r_type == 0x4:
+			upper_mem = uint32(binary.BigEndian.Uint16(bdl.data[0:2]))
+			upper_mem = upper_mem << 16
+			fmt.Printf("Itr: %d, Upper Memory: %x\n", itr, upper_mem)
+		}
+
+	}
+}
+
+// *****************************************************************************
+// Struct contains continious Section of Memroy
+// *****************************************************************************
+type Section struct {
+	address uint32 // Memroy Location
+	data    []byte // Data
+}
+
+// -----------------------------------------------------------------------------
+// Returns the length of CBOR section in bytes
+// (2) 4:2                 -- Array of length 2
+// (2)     0:26            -- uint32_t -> Memry location of first byte
+// (4)         0xa365      -- The memory location
+// (2)     2:26            -- Array with uint32_t additional info
+// (2)         20          -- 20 bytes of data
+// (len(data))     ...     -- .. the 20 bytes of data
+// 2+2+4+2+2+len(data) = 12+len(data)
+func (sec *Section) length() uint {
+	return uint(8 + len(sec.data))
+}
+
+// -----------------------------------------------------------------------------
+// Add record
+func (sec *Section) add_record(rec BinRecord, max_len uint) bool {
+	// Check if the record type needs skipping
+	if rec.r_type != 0 {
+		return true // This record can be skipped
+	}
+
+	// Check if the record will fit into section
+	if (max_len - sec.length()) < uint(rec.data_len) {
+		return false // Not enough room
+	}
+
+	// Check if the data is continious
+	next_address := sec.address + uint32(len(sec.data)) // Calc next address
+
+	if (next_address != rec.address) && (len(sec.data) != 0) {
+		return false // Not continious
+	}
+
+	// Add The data
+	sec.data = append(sec.data, rec.data...)
+
+	return true
+}
+
+// *****************************************************************************
+// Data Unit
+// *****************************************************************************
+type DataUnit struct {
+	sect        []Section
+	max_sec_len uint
+}
+
+// -----------------------------------------------------------------------------
+// Add section to Data Unit
+func (du *DataUnit) add(rec BinRecord) {
+
+	du.sect = append(du.sect, sec)
+}
+
+// -----------------------------------------------------------------------------
+// Calculate room in the Data Unit
+func (du *DataUnit) room() uint {
+	var length uint
+	length = 0
+	for _, sec := range du.sect {
+		length += sec.length()
+	}
+	return du.max_sec_len - length
+}
+
+// ----------------------------------------------------------------------------
+// Main Function
 func main() {
 
 	// Handle Arguments
@@ -124,24 +233,21 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
+	var BD BinData
+
+	// Add each line to the scanner
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line[0] != ':' {
 			fmt.Println("Expecting ':' at the begining of each line\n")
 			os.Exit(50)
 		}
-		hex2bin_line(line)
+		BD.push_line(line)
+	}
 
+	BD.correct_address()
+
+	for _, ln := range BD.line {
+		ln.Print()
 	}
 }
-
-// example1
-// import "strconv"
-// func Convert(data []byte) (uint32, error) {
-// 	v, err := strconv.ParseUint(string(data), 10, 32)
-// 	if err != nil {
-// 		return 0, err
-// 	}
-// 	return uint32(v), nil
-// }
-// // example2

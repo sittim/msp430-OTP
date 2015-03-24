@@ -119,17 +119,24 @@ In order to maximize the efficiency of transmission of the application over the 
 
 ```
 4:25                    -- Array with uint16_t additional info
-    98                  -- Element count is 98
-    0:25                -- uint16_t
-        5               -- id of 5
-    0:25                -- uint16_t
-        25              -- Out of 25
+    5                   -- Element count is 5
+-------------------------------------------------------------------------------
     4:2                 -- Array of length 2
         0:26            -- uint32_t -> Memry location of first byte
             0xf658      -- The memory location
         2:26            -- Array with uint32_t additional info
             50          -- 50 bytes of data
                 ...     -- .. the 50 bytes of data
+-------------------------------------------------------------------------------
+    4:2                 -- Array of length 2
+        0:26            -- uint32_t -> Memry location of first byte
+            0xa365      -- The memory location
+        2:26            -- Array with uint32_t additional info
+            20          -- 20 bytes of data
+                ...     -- .. the 20 bytes of data
+-------------------------------------------------------------------------------
+    ....                -- .. The 3 Arrays of Data
+-------------------------------------------------------------------------------
     0:25                -- uint16_t
         0xfadc          -- CRC16
 ```
