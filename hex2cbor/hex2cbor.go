@@ -24,6 +24,16 @@ type BinRecord struct {
 	crc      byte
 }
 
+// cbor section overhead
+// (2) 4:2                 -- Array of length 2
+// (2)     0:26            -- uint32_t -> Memry location of first byte
+// (4)         0xa365      -- The memory location
+// (2)     2:26            -- Array with uint32_t additional info
+// (2)         20          -- 20 bytes of data
+// (len(data))     ...     -- .. the 20 bytes of data
+// 2+2+4+2+2+len(data) = 12+len(data)
+const SEC_OVERHEAD = 12
+
 // -----------------------------------------------------------------------------
 // Print out a BinRecord
 func (l *BinRecord) Print() {
@@ -87,7 +97,8 @@ func (ln *BinRecord) hex2bin_line(data string) {
 
 	// Verify Checksum
 	if checksum != ln.crc {
-		println("Checksum is not matching\n")
+		fmt.Printf(">>>>> Error:\n")
+		fmt.Printf("Expecting Checksum: %x, checksum is %x\n", checksum, ln.crc)
 		os.Exit(1)
 	}
 }
@@ -122,7 +133,6 @@ func (bd *BinData) correct_address() {
 		case bdl.r_type == 0x4:
 			upper_mem = uint32(binary.BigEndian.Uint16(bdl.data[0:2]))
 			upper_mem = upper_mem << 16
-			fmt.Printf("Itr: %d, Upper Memory: %x\n", itr, upper_mem)
 		}
 
 	}
@@ -146,59 +156,132 @@ type Section struct {
 // (len(data))     ...     -- .. the 20 bytes of data
 // 2+2+4+2+2+len(data) = 12+len(data)
 func (sec *Section) length() uint {
-	return uint(8 + len(sec.data))
+	return uint(SEC_OVERHEAD + len(sec.data))
 }
 
 // -----------------------------------------------------------------------------
-// Add record
-func (sec *Section) add_record(rec BinRecord, max_len uint) bool {
+// Add record to section
+// returns true if the current record has been handled, false if the record is
+// not continues with the section (i.e. there is memroy gap)
+func (sec *Section) add_record(rec BinRecord) bool {
 	// Check if the record type needs skipping
 	if rec.r_type != 0 {
 		return true // This record can be skipped
 	}
 
-	// Check if the record will fit into section
-	if (max_len - sec.length()) < uint(rec.data_len) {
-		return false // Not enough room
-	}
+	// ----- Special case, the section is empty
+	if len(sec.data) == 0 {
+		sec.address = rec.address
+	} else {
+		// Check if the data is continious
+		next_address := sec.address + uint32(len(sec.data)) // Calc next address
 
-	// Check if the data is continious
-	next_address := sec.address + uint32(len(sec.data)) // Calc next address
-
-	if (next_address != rec.address) && (len(sec.data) != 0) {
-		return false // Not continious
+		if next_address != rec.address {
+			return false // Not continious
+		}
 	}
 
 	// Add The data
 	sec.data = append(sec.data, rec.data...)
 
-	return true
+	return true // Normal
 }
 
 // *****************************************************************************
 // Data Unit
 // *****************************************************************************
 type DataUnit struct {
-	sect        []Section
-	max_sec_len uint
+	sect []Section // Slice of slices of Sections
 }
 
 // -----------------------------------------------------------------------------
-// Add section to Data Unit
-func (du *DataUnit) add(rec BinRecord) {
+func NewDataUnit() *DataUnit {
+	du := new(DataUnit)
+	sec := new(Section)
+	du.sect = append(du.sect, *sec)
+	return du
+}
 
-	du.sect = append(du.sect, sec)
+// -----------------------------------------------------------------------------
+// return pointer to last section
+func (du *DataUnit) last_sec() *Section {
+	return &(du.sect[len(du.sect)-1])
 }
 
 // -----------------------------------------------------------------------------
 // Calculate room in the Data Unit
-func (du *DataUnit) room() uint {
+func (du *DataUnit) room(max_len uint) uint {
 	var length uint
 	length = 0
 	for _, sec := range du.sect {
 		length += sec.length()
 	}
-	return du.max_sec_len - length
+
+	length += 8 // 2 for 4:25, 2 for element count, 2 for uint16_t, to for CRC16
+
+	return max_len - length
+}
+
+// -----------------------------------------------------------------------------
+// Add record to the Data Unit
+func (du *DataUnit) add_record(rec BinRecord, max_len uint) bool {
+	du_room := du.room(max_len)
+
+	// Check if the record will fit into data unit
+	if du_room >= uint(rec.data_len) {
+		if du.last_sec().add_record(rec) == true {
+			return true // Added record to las section
+		}
+	} else {
+		return false // Not enough room
+	}
+
+	// add the record
+	if du_room >= uint(rec.data_len)+SEC_OVERHEAD {
+		var new_sec Section
+		new_sec.add_record(rec)
+		du.sect = append(du.sect, new_sec)
+		return true
+	} else {
+		return false
+	}
+
+}
+
+// *****************************************************************************
+// File
+// *****************************************************************************
+type File struct {
+	du         []DataUnit // Slice of slices of Sections
+	max_du_len uint
+}
+
+// -----------------------------------------------------------------------------
+func NewFile(max_data_unit_len uint) *File {
+	fl := new(File)
+	fl.max_du_len = max_data_unit_len
+	du := NewDataUnit()
+	fl.du = append(fl.du, *du)
+	return fl
+}
+
+// -----------------------------------------------------------------------------
+// Returns the pointer to last record
+func (file *File) last_du() *DataUnit {
+	return &(file.du[len(file.du)-1])
+}
+
+// -----------------------------------------------------------------------------
+// Add bin record to File
+func (fl *File) add_record(rec BinRecord) bool {
+	if fl.last_du().add_record(rec, fl.max_du_len) == false {
+		du := NewDataUnit()
+		fl.du = append(fl.du, *du)
+		if fl.last_du().add_record(rec, fl.max_du_len) == false {
+			return false
+		}
+	}
+	return true
 }
 
 // ----------------------------------------------------------------------------
