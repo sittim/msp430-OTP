@@ -9,6 +9,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/howeyc/crc16"
+	"github.com/ugorji/go/codec"
 )
 
 // *****************************************************************************
@@ -142,8 +145,8 @@ func (bd *BinData) correct_address() {
 // Struct contains continious Section of Memroy
 // *****************************************************************************
 type Section struct {
-	address uint32 // Memroy Location
-	data    []byte // Data
+	Address uint32 // Memroy Location
+	Data    []byte // Data
 }
 
 // -----------------------------------------------------------------------------
@@ -156,7 +159,7 @@ type Section struct {
 // (len(data))     ...     -- .. the 20 bytes of data
 // 2+2+4+2+2+len(data) = 12+len(data)
 func (sec *Section) length() uint {
-	return uint(SEC_OVERHEAD + len(sec.data))
+	return uint(SEC_OVERHEAD + len(sec.Data))
 }
 
 // -----------------------------------------------------------------------------
@@ -170,11 +173,11 @@ func (sec *Section) add_record(rec BinRecord) bool {
 	}
 
 	// ----- Special case, the section is empty
-	if len(sec.data) == 0 {
-		sec.address = rec.address
+	if len(sec.Data) == 0 {
+		sec.Address = rec.address
 	} else {
 		// Check if the data is continious
-		next_address := sec.address + uint32(len(sec.data)) // Calc next address
+		next_address := sec.Address + uint32(len(sec.Data)) // Calc next address
 
 		if next_address != rec.address {
 			return false // Not continious
@@ -182,7 +185,7 @@ func (sec *Section) add_record(rec BinRecord) bool {
 	}
 
 	// Add The data
-	sec.data = append(sec.data, rec.data...)
+	sec.Data = append(sec.Data, rec.data...)
 
 	return true // Normal
 }
@@ -191,21 +194,21 @@ func (sec *Section) add_record(rec BinRecord) bool {
 // Data Unit
 // *****************************************************************************
 type DataUnit struct {
-	sect []Section // Slice of slices of Sections
+	Sect []Section // Slice of slices of Sections
 }
 
 // -----------------------------------------------------------------------------
 func NewDataUnit() *DataUnit {
 	du := new(DataUnit)
 	sec := new(Section)
-	du.sect = append(du.sect, *sec)
+	du.Sect = append(du.Sect, *sec)
 	return du
 }
 
 // -----------------------------------------------------------------------------
 // return pointer to last section
 func (du *DataUnit) last_sec() *Section {
-	return &(du.sect[len(du.sect)-1])
+	return &(du.Sect[len(du.Sect)-1])
 }
 
 // -----------------------------------------------------------------------------
@@ -213,7 +216,7 @@ func (du *DataUnit) last_sec() *Section {
 func (du *DataUnit) room(max_len uint) uint {
 	var length uint
 	length = 0
-	for _, sec := range du.sect {
+	for _, sec := range du.Sect {
 		length += sec.length()
 	}
 
@@ -240,7 +243,7 @@ func (du *DataUnit) add_record(rec BinRecord, max_len uint) bool {
 	if du_room >= uint(rec.data_len)+SEC_OVERHEAD {
 		var new_sec Section
 		new_sec.add_record(rec)
-		du.sect = append(du.sect, new_sec)
+		du.Sect = append(du.Sect, new_sec)
 		return true
 	} else {
 		return false
@@ -291,9 +294,14 @@ func main() {
 	// Handle Arguments
 	args := os.Args
 
-	// max_sec := flag.Int("max_sec", 940, "Maximum Section Size")
+	if len(args) == 0 {
+		fmt.Println("At least file name is needed")
+		os.Exit(1)
+	}
 
-	// outFile := flag.String("of", "name", "Output File, CBOR")
+	max_sec := flag.Uint("max_sec", 940, "Maximum Section Size")
+
+	outFile := flag.String("of", args[1], "Output File, CBOR")
 
 	flag.Parse()
 
@@ -316,7 +324,9 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-	var BD BinData
+	fl := NewFile(*max_sec)
+
+	bd := new(BinData)
 
 	// Add each line to the scanner
 	for scanner.Scan() {
@@ -325,12 +335,39 @@ func main() {
 			fmt.Println("Expecting ':' at the begining of each line\n")
 			os.Exit(50)
 		}
-		BD.push_line(line)
+		bd.push_line(line)
 	}
 
-	BD.correct_address()
+	bd.correct_address()
 
-	for _, ln := range BD.line {
-		ln.Print()
+	for _, rec := range bd.line {
+		if fl.add_record(rec) == false {
+			fmt.Println("Record Add Error")
+		}
 	}
+
+	os.Remove(*outFile + ".cbor")
+
+	f, err := os.Create(*outFile + ".cbor")
+
+	// cbor buffer
+	var b []byte = make([]byte, 0, 4096)
+
+	h := new(codec.CborHandle)
+	h.StructToArray = true
+
+	for idx, du := range fl.du {
+		codec.NewEncoderBytes(&b, h).Encode(du)
+		fmt.Fprintf(f, ">>>%d:%d\n", idx+1, len(fl.du))
+
+		fmt.Fprintf(f, "%s%04x\n",
+			hex.EncodeToString(b),
+			crc16.ChecksumCCITT(b))
+
+		b = nil
+	}
+
+	// ioutil.WriteFile(*outFile+".cbor", d1, 0644)
+
+	fmt.Println(*outFile)
 }

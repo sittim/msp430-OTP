@@ -8,6 +8,11 @@ This code does not yet work, I am looking for contributors.  If you would like t
 
 ## Revisions
 
+### v0.0.3
+Compiler: TI v4.3.5 3/6/2015
+
+1. hex2cbor now works
+
 ### v0.0.2
 Compiler: TI v4.3.5 3/6/2015
 
@@ -136,11 +141,10 @@ In order to maximize the efficiency of transmission of the application over the 
                 ...     -- .. the 20 bytes of data
 -------------------------------------------------------------------------------
     ....                -- .. The 3 Arrays of Data
--------------------------------------------------------------------------------
-    0:25                -- uint16_t
-        0xfadc          -- CRC16
-```
 
+-------------------------------------------------------------------------------
+0xfadc                  -- CRC16 attached to the end of the string 
+```
 
 
 
