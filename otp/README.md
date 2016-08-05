@@ -75,7 +75,7 @@ Code Composer Studio V6+ (CCS6) and msp430f5xxx uC
 ### Debugging with CCS6
 
 Be sure to check the "Allow read/write erase to BSL memory" as shown below:
-![BSL Memory Config](otp/uml/allow_read_write_erase_bsl.png)
+![BSL Memory Config](uml/allow_read_write_erase_bsl.png)
 
 
 ## BSL and The Application
@@ -99,7 +99,7 @@ The BSL will be able to set image status to the following:
 1. *PENDING_VALIDATION*, indicating to the application that this is the new image, it needs to be validated.
 
 The following is the activity diagram of the process:
-![cBSL Activity](otp/uml/cBSL.png)
+![cBSL Activity](uml/cBSL.png)
 
 ## Application Role
 
@@ -115,7 +115,7 @@ The Application will be able to set image status to the following:
 ## High Level
 
 Below is the high level sequence of the over the air programming.
-![cBSL Activity](otp/uml/concept.png)
+![cBSL Activity](uml/concept.png)
 
 ## Hex to Bin
 
