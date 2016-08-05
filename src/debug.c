@@ -2,7 +2,7 @@
  * See LICENCE File
  * --/COPYRIGHT--*/
 
-#include "msp430-OTP/debug.h"
+#include "src/debug.h"
 /**
  * @brief List of debug commands
  */
@@ -37,35 +37,36 @@ void debug_scan() {
            // Do nothing here
         } break;
         case 2: {
-            put_cstr("Resetting ...\n");
+            put_cstr("Resetting ...\r");
             while ((UCA0IFG & UCTXIFG) == 0);   // Wait for end of transmission
             __disable_interrupt();
             ((void (*)())0x1000)();             // start Boot Strap Loader
         } break;
         case 3: {  // None
-            put_cstr("No Action ...\n");
+            put_cstr("No Action ...\r");
             set_img_stat_flg(0x00EE);
         } break;
         case 4: {  // download
-            put_cstr("Download ...\n");
+            put_cstr("Download ...\r");
             set_img_stat_flg(0x00CC);
         } break;
         case 5: {  // Pending Validation
-            put_cstr("Pending Validation ...\n");
+            put_cstr("Pending Validation ...\r");
             set_img_stat_flg(0xFF88);
         } break;
         case 6: {
             put_cstr("Image Status: ");
             uint16_t* status = (uint16_t*)0x1900;
             put_ui16x(*status);
-            putch('\n');
+            putch('\r');
         } break;
         default: {  // Error
-           put_cstr("Error");
+           put_ui16(enum_input);
+           put_cstr(" Error");
         }
     }
     flush(&SerialRX);
-    put_cstr("\r\n>");
+    put_cstr("\r>");
 }
 
 

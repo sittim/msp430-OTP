@@ -14,9 +14,9 @@
 ******************************************************************************/
 
 #include <msp430.h>
-#include "msp430-OTP/serial.h"
-#include "msp430-OTP/hw_layer.h"
-#include "msp430-OTP/debug.h"
+#include "src/serial.h"
+#include "src/hw_layer.h"
+#include "src/debug.h"
 #include "driverlib/driverlib.h"
 
 extern ui8_array SerialRX;
@@ -27,7 +27,7 @@ int main(void) {
 
     init();
 
-    put_cstr("cBSL App\r\n>");
+    put_cstr("cBSL App\r>");
 
     hooks = 0;                                // Init hooks
 
@@ -42,13 +42,14 @@ int main(void) {
             tmp = UCA0RXBUF;                  // Read off the buffer
             if (tmp == '\r') {
                 hooks |= DEBG_INPUT_IN;       // Signal to handle debug input
-                while ((UCA0IFG & UCTXIFG) == 0);   // wait for tx to transmit
-                UCA0TXBUF = '\n';                   // Add newline char
+                /* while ((UCA0IFG & UCTXIFG) == 0);   // wait for tx to transmit */
+                /* UCA0TXBUF = '\n';                   // Add newline char */
             }
             push(&SerialRX, tmp);                   // Add char to the queue
             while ((UCA0IFG & UCTXIFG) == 0);       // wait for tx to transmit
             UCA0TXBUF = tmp;                        // Echo the char
         }
+        WDTCTL = WDTPW + WDTCNTCL;  // Reset WDT counter
     }
 }
 

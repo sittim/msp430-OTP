@@ -66,7 +66,7 @@ MEMORY
     INFOC                   : origin = 0x1880, length = 0x0080
     INFOB                   : origin = 0x1900, length = 0x0080
     INFOA                   : origin = 0x1980, length = 0x0080
-    RAM                     : origin = 0x1C00, length = 0x4800
+    RAM                     : origin = 0x1C00, length = 0x4800   // 0x6400
     FLASH                   : origin = 0x8000, length = 0x7F80   // 32,640 bytes
     FLASH2                  : origin = 0x10000,length = 0xD400   // 57,328 bytes
     OTP                     : origin = 0x1D800,length = 0x2A800  // For OTP

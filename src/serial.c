@@ -2,7 +2,7 @@
  * See LICENCE File
  * --/COPYRIGHT--*/
 #include <stdio.h>
-#include "msp430-OTP/serial.h"
+#include "src/serial.h"
 /**
  * Output singel char
  */
@@ -292,9 +292,4 @@ void put_ui16x(uint16_t x) {
         putch(*(s++));
     }
 }
-
-// -----------------------------------------------------------------------------
-// void put_ui8_arr(ui8_array* In) {
-
-// }
 

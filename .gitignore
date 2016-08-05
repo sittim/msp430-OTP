@@ -32,5 +32,15 @@ Debug/*.asm
 *.opt
 *.lst
 Debug/*.xml
+Debug/*.mk
 unittest/unittest
 Debug/makefile
+/Debug/
+
+tags
+project.log
+
+.launches
+.ycm_extra_conf.pyc
+
+

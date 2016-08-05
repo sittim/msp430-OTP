@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 #include <msp430.h>
-#include "msp430-OTP/otp/cBSL_serial.h"
+#include "otp/cBSL_serial.h"
 
 #define DEBG_INPUT_IN   0x0001
 

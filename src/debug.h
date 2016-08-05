@@ -9,8 +9,8 @@ prohibited.  By: Timofey Sitikov Created on: 3 April 2013
 
 #include <stdint.h>
 #include <msp430.h>
-#include "msp430-OTP/serial.h"
-#include "msp430-OTP/hw_layer.h"
+#include "src/serial.h"
+#include "src/hw_layer.h"
 
 #define SIZEOFKEY(k) (sizeof(k)/sizeof(k[0]))
 

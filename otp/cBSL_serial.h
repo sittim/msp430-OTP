@@ -6,26 +6,25 @@
  *
  * */
 
-
 #ifndef SERIAL_H
 #define SERIAL_H
 
 #include <stdint.h>
 #include <stdlib.h>
 
-#define UI8_ARRAY(name, len) \
-uint8_t name ## len[(len)];\
-ui8_array name = {name ## len, name ## len, len, 0};
-
-typedef struct {
-    const uint8_t* base_ptr;
-    uint8_t* start_ptr;
-    const unsigned int max_len;
-    unsigned int len;
-} ui8_array;
+#define UI8_ARRAY(name, len)  \
+    uint8_t name##len[(len)]; \
+    ui8_array name = {name##len, name##len, len, 0};
 
 #pragma SET_DATA_SECTION(".BSL")
 #pragma SET_CODE_SECTION(".BSL")
+
+typedef struct {
+    uint8_t* base_ptr;
+    uint8_t* start_ptr;
+    unsigned int max_len;
+    unsigned int len;
+} ui8_array;
 
 /**
  * Reinit the array
@@ -44,6 +43,12 @@ unsigned int cBSL_room(ui8_array* Arr);
  * @return     room on the right side of the array
  */
 unsigned int cBSL_room_r(ui8_array* Arr);
+/**
+ * Room on the left side of the array
+ * @param  Arr Array to analyze
+ * @return     room on the left side of the array
+ */
+unsigned int cBSL_room_l(ui8_array* Arr);
 
 /**
  * Get the Value at location
@@ -52,8 +57,7 @@ unsigned int cBSL_room_r(ui8_array* Arr);
  * @param  offset offset
  * @return        1 if value is within range, zero if not
  */
-unsigned int cBSL_at_ui16_get(ui8_array* Arr,
-                              uint16_t* val,
+unsigned int cBSL_at_ui16_get(ui8_array* Arr, uint16_t* val,
                               unsigned int offset);
 
 /**
@@ -63,8 +67,7 @@ unsigned int cBSL_at_ui16_get(ui8_array* Arr,
  * @param  offset   Offset from start of array
  * @return          1 if the value is in range, zero otherwise
  */
-unsigned int cBSL_at_ui16_set(ui8_array* Arr,
-                              uint16_t val,
+unsigned int cBSL_at_ui16_set(ui8_array* Arr, uint16_t val,
                               unsigned int offset);
 
 /**
@@ -111,9 +114,7 @@ unsigned int cBSL_push_ui(ui8_array* Arr, unsigned int* source);
  * @param  len   leng to copy in bytes
  * @return       1 if there was enough room, 0 if there was not
  */
-unsigned int cBSL_push_mem(ui8_array* Arr,
-                           uint8_t* start,
-                           unsigned int length);
+unsigned int cBSL_push_mem(ui8_array* Arr, uint8_t* start, unsigned int length);
 
 /**
  * Compare ui8_array to char array
@@ -123,8 +124,7 @@ unsigned int cBSL_push_mem(ui8_array* Arr,
  *
  * Note:  Handles strings up to 128 chars long
  */
-unsigned int cBSL_is_equal(ui8_array* Arr,
-                           const char* in);
+unsigned int cBSL_is_equal(ui8_array* Arr, const char* in);
 
 /**
  * Match up the input to one of the strings in the array of strings.
@@ -133,8 +133,7 @@ unsigned int cBSL_is_equal(ui8_array* Arr,
  * @param  Arr    input
  * @return        key number if match is found, otherwise return ~0
  */
-unsigned int cBSL_get_enum(ui8_array* Arr,
-                           const char* keys[],
+unsigned int cBSL_get_enum(ui8_array* Arr, const char* keys[],
                            unsigned int key_sz);
 /**
  * Output Constant String to Debug port

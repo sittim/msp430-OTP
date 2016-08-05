@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <msp430.h>
 #include "driverlib/driverlib.h"
-#include "msp430-OTP/serial.h"
+#include "src/serial.h"
 
 #define DEBG_INPUT_IN   0x0001
 
