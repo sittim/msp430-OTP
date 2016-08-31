@@ -6,9 +6,6 @@
  * Output singel char
  */
 
-// Init the rx Array
-UI8_ARRAY(cBSL_DebugRX, 16);
-
 // -----------------------------------------------------------------------------
 void cBSL_flush(ui8_array* Arr) {
     Arr->start_ptr = (uint8_t*)Arr->base_ptr;      // Reinit Base Ptr
@@ -298,7 +295,3 @@ void cBSL_put_ui16x(uint16_t x) {
 }
 
 // -----------------------------------------------------------------------------
-// void put_ui8_arr(ui8_array* In) {
-
-// }
-

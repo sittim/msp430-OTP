@@ -5,13 +5,6 @@
 #include "otp/cBSL_hw_layer.h"
 #include "otp/cBSL_serial.h"
 
-#pragma SET_DATA_SECTION(".BSL")
-
-uint16_t g_hooks = 0;
-UI8_ARRAY(cBSL_SerialRX, 128);  // Init array
-
-#pragma SET_DATA_SECTION()
-
 // -----------------------------------------------------------------------------
 void cBSL_init() {
     //
@@ -41,14 +34,7 @@ void cBSL_init() {
     // project.  They can be seen by debugging the program then viewing
     // registers.
 
-    // Setup PMM
-    // PMMCTL0 = 0xA5;
-    // PMMCTL1  = 0x0000;
-    // SVSMHCTL = 0x4400;
-    // SVSMLCTL = 0x4400;
-    // PMMCTL0 = 0x00;
-
-    // Setup uC clock speed
+    // Setup uC clock
     UCSCTL0 = 0x13E0;
     UCSCTL1 = 0x0020;
     UCSCTL2 = 0x101F;
@@ -101,21 +87,21 @@ void cBSL_flash_erase(uint8_t* flash_ptr, uint16_t mode) {
 
 // -----------------------------------------------------------------------------
 unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len) {
-    /* const unsigned int uint_sz = sizeof(unsigned int); */
-    /* // Check 1 unsigned int at a time */
-    /* while (len >= uint_sz) {                   // 1 more uint to check? */
-        /* unsigned int* test_uint;               // Pointer to the uint */
-        /* test_uint = (unsigned int*)start_ptr;  // cast the pointer */
-        /* const unsigned high = 0xFFFF; */
-        /* if (*test_uint != high) {  // any uint bit low */
-            /* cBSL_putch('E'); */
-            /* cBSL_putch('2'); */
-            /* cBSL_putch('\r'); */
-            /* return 0;              // yes, failed */
-        /* } */
-        /* start_ptr += uint_sz;  // Incrument the start ptr */
-        /* len -= uint_sz;        // Decrument length */
-    /* } */
+    const unsigned int uint_sz = sizeof(unsigned int);
+    // Check 1 unsigned int at a time
+    while (len >= uint_sz) {                   // 1 more uint to check?
+        unsigned int* test_uint;               // Pointer to the uint
+        test_uint = (unsigned int*)start_ptr;  // cast the pointer
+        const unsigned high = 0xFFFF;
+        if (*test_uint != high) {  // any uint bit low
+            cBSL_putch('E');
+            cBSL_putch('2');
+            cBSL_putch('\r');
+            return 0;              // yes, failed
+        }
+        start_ptr += uint_sz;  // Incrument the start ptr
+        len -= uint_sz;        // Decrument length
+    }
     // Check the leftover bytes
     while (len != 0) {  // Single bytes to check
         const uint8_t high = ~0;
@@ -254,8 +240,6 @@ unsigned int cBSL_flash_set_array(uint8_t* src_ptr, uint8_t* dest_ptr,
 
     SegStart.loc -= rem;  // start of segment
 
-    /* uint8_t* SegRamBuff_mem = (uint8_t*)malloc(seg_size); */
-
     uint8_t SegRamBuff_mem[0x400];
 
     ui8_array SegRamBuff;
@@ -264,8 +248,6 @@ unsigned int cBSL_flash_set_array(uint8_t* src_ptr, uint8_t* dest_ptr,
     SegRamBuff.start_ptr = SegRamBuff_mem;
     SegRamBuff.max_len = seg_size;
     SegRamBuff.len = 0;
-
-    /* = {SegRamBuff_mem, SegRamBuff_mem, seg_size, 0}; */
 
     cBSL_push_mem(&SegRamBuff, SegStart.loc_ptr, seg_size);  // Cp Flash to RAM
 

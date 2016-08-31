@@ -9,53 +9,40 @@
 #include <msp430.h>
 #include "otp/cBSL_serial.h"
 
-#define DEBG_INPUT_IN   0x0001
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 // image status flag is stored in the INFO B area
 
 // Image Status
-#define STAT_NONE           0x00EE
-#define STAT_DONWLOAD       0x00CC
-#define STAT_LOADING        0x0077
-#define STAT_PENDING_VALID  0xFF88
-#define STAT_RECOVERING     0xFF33
+#define STAT_NONE 0x00EE      // Normal Reboot
+#define STAT_DONWLOAD 0x00CC  // Ready to flash
+#define STAT_LOADING 0x0077   // flashing
 
 // --- Memory Addresses
-#define INFO_B_PTR          0x1900
-#define IMG_STAT_PTR        0x1900
-#define C_INIT00_VECTOR     0x1902
-#define BSL_VECTOR          0x1000
+#define INFO_B_AD
+#define IMG_STAT_ADR 0x1900     // Info B Address
+#define CBSL_STATUS_ADR 0x1906  // address of cBSL status
+#define APP_LENGTH_ADR 0x1908   // Length of the image
 
 // --- Memory Regions
 // 1 segment = 0x200 bytes or 512 in decimal
-#define APP_LENGTH    0x15400      // 87040 bytes (Decimal)
-#define APP_ADR       0x8000       // Start of Application  @ 32768 - 120832
-#define BACKUP_ADR    0x1D800      // Backup address        @ 120832
-#define DOWNLOAD_ADR  0x32C00      // Start Of Download  - 0x48000
-                                   // @ 207872 - 294912
-#define FLSH_SEG_SZ   0x200        // 512 bytes
-
-// Return Error
-#define CBSL_STATUS_ADR           0x1906  // address of cBSL status
-#define BACKUP_ERROR              0xCC    // connot copy application to backup
-
-
-#pragma SET_DATA_SECTION(".BSL")
-#pragma SET_CODE_SECTION(".BSL")
-
-extern uint16_t g_hooks;
-extern ui8_array cBSL_SerialRX;
+#define APP_ADR 0x8000        // Start Of Download  - 0x48000
+#define DOWNLOAD_ADR 0x26400  // Start Of Download  - 0x48000
+                              // @ 207872 - 294912
+#define FLSH_SEG_SZ 0x200     // 512 bytes
+#define INFO_SEG_SZ 0x80      // 128 bytes
 
 /**
  * Init System IO
  */
-void cBSL_init();
+void cBSL_init() __attribute__((section(".BSL")));
 
 /**
  * Output single char to the uart port
  * @param data byte to output
  */
-void cBSL_putch(uint8_t data);
+void cBSL_putch(uint8_t data) __attribute__((section(".BSL")));
 
 /**
  * Erase Flash Memory
@@ -66,7 +53,8 @@ void cBSL_putch(uint8_t data);
  * Note: ERASE and MERAS are defind in msp430.h.  The code sequence is from
  * TI MSP430x5xx Family Users Guide section "Initiating Erase From Flash"
  */
-void cBSL_flash_erase(uint8_t* flash_ptr, uint16_t mode);
+void cBSL_flash_erase(uint8_t* flash_ptr, uint16_t mode)
+    __attribute__((section(".BSL")));
 
 /**
  * Checks if the data has been erased properly
@@ -74,7 +62,8 @@ void cBSL_flash_erase(uint8_t* flash_ptr, uint16_t mode);
  * @param  len       quan tity of bytes
  * @return           1 for good erase, 0 for bad erase.
  */
-unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len);
+unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len)
+    __attribute__((section(".BSL")));
 /**
  *  Write to Flash
  *  @param data_ptr from
@@ -82,9 +71,8 @@ unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len);
  *  @param count Quantity of double words to copy
  *  @return 0 if failed, 1 if success
  */
-void cBSL_flash_write32(uint32_t* data_ptr,
-              uint32_t* flash_ptr,
-              unsigned int len);
+void cBSL_flash_write32(uint32_t* data_ptr, uint32_t* flash_ptr,
+                        unsigned int len) __attribute__((section(".BSL")));
 
 /**
  * Verifies that the memory locations are equal
@@ -93,7 +81,8 @@ void cBSL_flash_write32(uint32_t* data_ptr,
  * @param  len quantity of bytes
  * @return     1 if equial, otherwise zero
  */
-unsigned int cBSL_flash_equal(uint8_t* src, uint8_t* dst, uint32_t len);
+unsigned int cBSL_flash_equal(uint8_t* src, uint8_t* dst, uint32_t len)
+    __attribute__((section(".BSL")));
 
 /**
  * Copies data, writes to flash
@@ -103,9 +92,9 @@ unsigned int cBSL_flash_equal(uint8_t* src, uint8_t* dst, uint32_t len);
  * @return      1 for succusess, 0 failure
  * Note: The destination must be at the begining of segment
  */
-unsigned int cBSL_flash_copy_segment(uint8_t* src,
-                                     uint8_t* dest,
-                                     unsigned int len);
+unsigned int cBSL_flash_copy_segment(uint8_t* src, uint8_t* dest,
+                                     unsigned int len)
+    __attribute__((section(".BSL")));
 
 /**
  * Copy multiple segments
@@ -114,10 +103,9 @@ unsigned int cBSL_flash_copy_segment(uint8_t* src,
  * @param  len  Length of data to copy, must be in multiples of segment size
  * @return      1 for success, 0 for failure
  */
-unsigned int cBSL_flash_cp_mult_seg(uint8_t* src,
-                                    uint8_t* dest,
-                                    unsigned int seg_sz,
-                                    uint32_t len);
+unsigned int cBSL_flash_cp_mult_seg(uint8_t* src, uint8_t* dest,
+                                    unsigned int seg_sz, uint32_t len)
+    __attribute__((section(".BSL")));
 
 /**
  * Set values in a single segment, note values cannot overlap segment
@@ -127,12 +115,12 @@ unsigned int cBSL_flash_cp_mult_seg(uint8_t* src,
  * @param  seg_size size of segment
  * @return          1 for success, otherwise 0
  */
-unsigned int cBSL_flash_set_array(uint8_t* src,
-                                  uint8_t* dest,
-                                  unsigned int len,
-                                  const unsigned int seg_size);
+unsigned int cBSL_flash_set_array(uint8_t* src_ptr, uint8_t* dest_ptr,
+                                  unsigned int len, unsigned int seg_size)
+    __attribute__((section(".BSL")));
 
-#pragma SET_DATA_SECTION()
-#pragma SET_CODE_SECTION()
+#ifdef __cplusplus
+}
+#endif
 
 #endif
