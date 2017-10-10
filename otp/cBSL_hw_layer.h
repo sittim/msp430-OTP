@@ -5,8 +5,8 @@
 #ifndef ARRAY_SAFE_H
 #define ARRAY_SAFE_H
 
-#include <stdint.h>
 #include <msp430.h>
+#include <stdint.h>
 #include "otp/cBSL_serial.h"
 
 #ifdef __cplusplus
@@ -15,23 +15,23 @@ extern "C" {
 // image status flag is stored in the INFO B area
 
 // Image Status
-#define STAT_NONE 0x00EE      // Normal Reboot
-#define STAT_DONWLOAD 0x00CC  // Ready to flash
-#define STAT_LOADING 0x0077   // flashing
+#define STAT_NONE ((uint8_t)0x00EEu)      // Normal Reboot
+#define STAT_DONWLOAD ((uint8_t)0x00CCu)  // Ready to flash
+#define STAT_LOADING ((uint8_t)0x0077u)   // flashing
 
 // --- Memory Addresses
 #define INFO_B_AD
-#define IMG_STAT_ADR 0x1900     // Info B Address
-#define CBSL_STATUS_ADR 0x1906  // address of cBSL status
-#define APP_LENGTH_ADR 0x1908   // Length of the image
+#define IMG_STAT_PTR ((uint8_t*)0x1900)    // Info B Address
+#define APP_LENGTH_PTR ((uint8_t*)0x1902)  // Length of the image
 
 // --- Memory Regions
 // 1 segment = 0x200 bytes or 512 in decimal
-#define APP_ADR 0x8000        // Start Of Download  - 0x48000
-#define DOWNLOAD_ADR 0x26400  // Start Of Download  - 0x48000
-                              // @ 207872 - 294912
-#define FLSH_SEG_SZ 0x200     // 512 bytes
-#define INFO_SEG_SZ 0x80      // 128 bytes
+#define APP_PTR ((uint8_t*)0x8000)  // Start Of actvie image
+
+#define DOWNLOAD_PTR ((uint8_t*)0x28000)  // Start Of downloaded image
+                                          // @ 207872 - 294912
+#define FLSH_SEG_SZ 0x200                 // 512 bytes
+#define INFO_SEG_SZ 0x80                  // 128 bytes
 
 /**
  * Init System IO

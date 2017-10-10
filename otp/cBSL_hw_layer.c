@@ -30,10 +30,6 @@ void cBSL_init() {
         SFRIFG1 &= ~OFIFG;      // Clear fault flags
     } while (SFRIFG1 & OFIFG);  // Test oscillator fault flag
 
-    // The next set of configurations were defined by driverlib in msp430-OTP
-    // project.  They can be seen by debugging the program then viewing
-    // registers.
-
     // Setup uC clock
     UCSCTL0 = 0x13E0;
     UCSCTL1 = 0x0020;
@@ -48,17 +44,15 @@ void cBSL_init() {
     // Setup io
     P2SEL = 0x30;
 
+    while (P2SEL == 0) {
+        P2SEL = 0x30;
+    }
+
     // Setup the A0 UART
     UCA0CTLW0 = 0x0080;
-    UCA0BRW = 0x0009;
-    UCA0MCTL = 0x02;
-
-    // Configure WDT - in case BSL has an issue, it will continue to reset.
-    /* WDTCTL = 0x69E0; */
-    /* WDTCTL = WDTPW+WDTCNTCL+WDTSSEL0+WDTIS2; */
-
-    /* WDTCTL &= ~WDTHOLD; */
-    /* WDTCTL |= WDTPW; */
+    UCA0BRW = 0x0036;
+    UCA0MCTL = 0x0A;
+    return;
 }
 
 // -----------------------------------------------------------------------------
@@ -77,7 +71,7 @@ void cBSL_flash_erase(uint8_t* flash_ptr, uint16_t mode) {
     FCTL3 = FWPW;         // Clear Lock bit
     FCTL1 = FWPW + mode;  // Set erase mode bit
 
-    *flash_ptr = 0xff;  // Dummy write to erase flash segment
+    *flash_ptr = 0;  // Dummy write to erase flash segment
     while (FCTL3 & BUSY) {
     }  // test busy
 
@@ -97,7 +91,7 @@ unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len) {
             cBSL_putch('E');
             cBSL_putch('2');
             cBSL_putch('\r');
-            return 0;              // yes, failed
+            return 0;  // yes, failed
         }
         start_ptr += uint_sz;  // Incrument the start ptr
         len -= uint_sz;        // Decrument length
@@ -109,7 +103,7 @@ unsigned int cBSL_flash_erase_check(uint8_t* start_ptr, uint32_t len) {
             cBSL_putch('E');
             cBSL_putch('1');
             cBSL_putch('\r');
-            return 0;              // yes, failed
+            return 0;  // yes, failed
         }
         ++start_ptr;  // incrument ptr
         --len;        // decrument length
@@ -160,7 +154,7 @@ unsigned int cBSL_flash_equal(uint8_t* src, uint8_t* dst, uint32_t len) {
             cBSL_putch('E');
             cBSL_putch('5');
             cBSL_putch('\r');
-            return 0;        // yes, failed
+            return 0;  // yes, failed
         }
         ++src;  // incrument ptr
         ++dst;  // incrument ptr
@@ -174,18 +168,25 @@ unsigned int cBSL_flash_copy_segment(uint8_t* src, uint8_t* dst,
     //  .   .   .   .   .   .   .   .   .   .   .   .   .
     unsigned int retries = 5;
 
+    /* cBSL_putch('R'); */
+    /* cBSL_putch('1'); */
+    /* cBSL_putch(','); */
+
     do {  // Keep trying to erase till erase is successfull
         cBSL_flash_erase(dst, ERASE);  // Erase flash memroy
         if (retries == 0) {            // No Retires left?
             cBSL_putch('E');
             cBSL_putch('9');
             cBSL_putch('\r');
-            return 0;                  // No, so return zero
+            return 0;  // No, so return zero
         }
         --retries;                                    // decrument retries
     } while (cBSL_flash_erase_check(dst, len) == 0);  // Check erase
 
     retries = 5;
+    /* cBSL_putch('R'); */
+    /* cBSL_putch('2'); */
+    /* cBSL_putch(','); */
 
     do {  // Keep writing till sucessfull
         cBSL_flash_write32((uint32_t*)src, (uint32_t*)dst, len / 4);  // Write
@@ -194,10 +195,13 @@ unsigned int cBSL_flash_copy_segment(uint8_t* src, uint8_t* dst,
             cBSL_putch('E');
             cBSL_putch('3');
             cBSL_putch('\r');
-            return 0;        // No, so return zero
+            return 0;  // No, so return zero
         }
         --retries;                                   // Decrument Retries
     } while (cBSL_flash_equal(src, dst, len) == 0);  // verify flash is equal
+    /* cBSL_putch('R'); */
+    /* cBSL_putch('3'); */
+    /* cBSL_putch('\r'); */
 
     return 1;  // Signal success
 }
@@ -207,8 +211,11 @@ unsigned int cBSL_flash_cp_mult_seg(uint8_t* src, uint8_t* dst,
                                     unsigned int seg_size, uint32_t len) {
     //  .   .   .   .   .   .   .   .   .   .   .   .
     uint32_t seg_qty;  // quantity of segments
-    seg_qty = len / seg_size;
+    seg_qty = len / seg_size + 1;
 
+    cBSL_put_ui16(seg_qty);  // Debug Output
+
+    // uint16_t seg = 0;
     while (seg_qty > 0) {
         unsigned int result;  // Result of copy operation
         result = cBSL_flash_copy_segment(src, dst, seg_size);
@@ -218,10 +225,13 @@ unsigned int cBSL_flash_cp_mult_seg(uint8_t* src, uint8_t* dst,
             cBSL_putch('\r');
             return 0;  // Signal failure
         }
+        /* cBSL_put_ui16(seg++);  // Debug Output */
+        /* cBSL_putch(' ');       // Debug Output */
         src += seg_size;
         dst += seg_size;
         --seg_qty;  // decrument count
     }
+
     return 1;  // Signal Success
 }
 

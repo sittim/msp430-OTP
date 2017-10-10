@@ -2,10 +2,6 @@
 
 MSP430f5xxx Over The Air Programming.
 
-# Notice
-
-This code does not yet work, I am looking for contributors.  If you would like to help, please communicate with me via issues.
-
 ## Revisions
 
 ### v0.0.4

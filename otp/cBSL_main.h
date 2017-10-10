@@ -13,10 +13,7 @@
 extern "C" {
 #endif
 
-#ifdef DONOTDEFINE
-void cBSL_main(void) __attribute__((section(".ZAREA"), used));
-#endif
-
+void cBSL_flash(void) __attribute__((section(".ZAREA"), used));
 void cBSL_main(void) __attribute__((section(".BSL"), used));
 
 #ifdef __cplusplus
